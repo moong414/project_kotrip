@@ -26,7 +26,7 @@ class AppButton extends StatelessWidget {
           tapTargetSize: MaterialTapTargetSize.shrinkWrap,
           shadowColor: Colors.transparent,
           shape: RoundedRectangleBorder(borderRadius: BorderRadiusGeometry.circular(10)),
-          backgroundColor: bgColor ?? primary,
+          backgroundColor: bgColor ?? colPrimary,
         ),
         child: Text(text ?? '확인', style: TextStyle(color: txtColor ?? Colors.white, fontSize: 16)),
       ),
