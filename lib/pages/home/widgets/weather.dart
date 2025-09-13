@@ -11,7 +11,7 @@ class Weather extends StatelessWidget {
       padding: EdgeInsetsGeometry.symmetric(horizontal: 20),
       child: Container(
         padding: EdgeInsets.all(20),
-        decoration: BoxDecoration(border: BoxBorder.all(color: colGreybr), borderRadius: BorderRadius.circular(10)),
+        decoration: BoxDecoration(border: BoxBorder.all(color: colBkBtn), borderRadius: BorderRadius.circular(10)),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -26,7 +26,7 @@ class Weather extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
             Text('서울의 날씨'),
-            Text('2025. 09. 01', style: TextStyles.txtStL),
+            Text('2025. 09. 01', style: AppTxtSt.txtStL),
           ],)
         ],),
       ),

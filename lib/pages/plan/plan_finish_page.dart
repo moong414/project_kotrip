@@ -7,31 +7,53 @@ import 'package:project_kotrip/pages/plan/model/plan_item.dart';
 import 'package:project_kotrip/pages/plan/widgets/plan_floating_btn.dart';
 import 'package:project_kotrip/pages/plan/widgets/plan_item_widget.dart';
 
-class PlanPage extends StatefulWidget {
-  const PlanPage({super.key});
+class PlanFinishPage extends StatefulWidget {
+  const PlanFinishPage({super.key});
 
   @override
-  State<PlanPage> createState() => _PlanPageState();
+  State<PlanFinishPage> createState() => _PlanFinishPageState();
 }
 
-class _PlanPageState extends State<PlanPage> {
+class _PlanFinishPageState extends State<PlanFinishPage> {
   // 임시 리스트
   List<PlanItem> planItems = [
     PlanItem(time: '08:15', loca: '제주공항', todo: '서울 출발 → 제주 도착. 렌터카 수령'),
     PlanItem(time: '08:30', loca: '제주공항', todo: '제주 공항 근처에서 아침식사 (고기국수)'),
-    PlanItem(time: '12:00', loca: '제주공항', todo: '점심: 흑돼지 근고기 구이'),
-    PlanItem(time: '14:00', loca: '제주공항', todo: '한림공원 (사진 포인트 + 산책)'),
+    PlanItem(time: '12:00', todo: '점심: 흑돼지 근고기 구이'),
+    PlanItem(time: '14:00', loca: '한림공원', todo: '한림공원 (사진 포인트 + 산책)'),
     PlanItem(time: '16:00', loca: '오설록 티뮤지엄', todo: '오설록 티뮤지엄 & 인근 녹차밭'),
-    PlanItem(time: '18:00',  todo: '저녁: 해산물 뷔페나 회정식'),
+    PlanItem(time: '18:00', todo: '저녁: 해산물 뷔페나 회정식'),
     PlanItem(time: '20:00', loca: '제주가고싶다호텔', todo: '숙소 체크인'),
   ];
+  List<PlanItem> planItems2 = [
+    PlanItem(
+      time: '07:30',
+      loca: '숙소근처 카페',
+      todo: '숙소 근처 카페에서 아침 (바다 뷰 카페 강추)',
+    ),
+    PlanItem(
+      time: '09:00',
+      loca: '한라산',
+      todo: '한라산 어리목 코스 (가볍게 2~3시간 트래킹) → 힘들면 대신 에코랜드 산책 코스로 변경 가능',
+    ),
+    PlanItem(time: '12:00', todo: '점심: 갈치조림 or 전복돌솥밥'),
+    PlanItem(time: '14:00', todo: '성산일출봉 근처 → 우도 뷰 즐기기'),
+    PlanItem(time: '16:00', loca: '섭지코지', todo: '섭지코지 드라이브 & 산책'),
+    PlanItem(time: '18:00', loca: '제주공항', todo: '저녁: 공항 근처 고기국수 / 김밥 간단히'),
+    PlanItem(time: '20:00', loca: '제주공항', todo: '제주 출발 → 서울 도착'),
+  ];
+
+  List get planlist => [planItems, planItems2];
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: BasicAppBar(),
-      floatingActionButton: PlanFloatingBtn(),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -53,67 +75,21 @@ class _PlanPageState extends State<PlanPage> {
                         Text('25.09.27 - 25.09.28', style: AppTxtSt.txtStL),
                       ],
                     ),
-                    Container(
-                      margin: EdgeInsets.only(top: 20),
-                      decoration: BoxDecoration(
-                        color: colGreyBg,
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          SizedBox(width: 56, height: 56),
-                          Row(
-                            children: [
-                              Text(
-                                'Day 1 ',
-                                style: AppTxtSt.txtStL.copyWith(
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                              Text('25. 09. 27', style: AppTxtSt.txtStR),
-                            ],
-                          ),
-                          GestureDetector(
-                            onTap: () {
-                              print('클릭!');
-                            },
-                            child: Container(
-                              width: 56,
-                              height: 56,
-                              padding: EdgeInsets.all(16),
-                              color: Colors.transparent,
-                              child: Image.asset(
-                                'assets/images/icon_go_arrow.png',
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
                   ],
                 ),
               ),
-              (planItems.length == 0) ?
-              Expanded(child: Center(child: Text('일정을 추가해보세요!', style: AppTxtSt.txtStL.copyWith(color: Color(0xff999999)),),))
-              : Expanded(
-                child: ReorderableListView.builder(
+              Expanded(
+                child: ListView.builder(
                   padding: const EdgeInsets.only(bottom: 100),
                   itemCount: planItems.length,
                   itemBuilder: (context, index) {
-                    final item = index;
                     return PlanItemWidget(
-                      key: ValueKey(item),
                       index: index,
                       listLen: planItems.length,
                       item: planItems[index],
                     );
                   },
-                  onReorder: (int oldIndex, int newIndex) {
-                    if (newIndex > oldIndex) newIndex -= 1;
-                    final item = planItems.removeAt(oldIndex);
-                    planItems.insert(newIndex, item);
-                  },
+                  
                 ),
               ),
               Container(
@@ -123,9 +99,8 @@ class _PlanPageState extends State<PlanPage> {
                   children: [
                     Expanded(
                       child: AppButton(
-                        bgColor: colGreyBtn,
-                        txtColor: colBkTxt,
-                        text: '취소',
+                        bgColor: colRedBtn,
+                        text: '삭제',
                         onPressed: () {},
                       ),
                     ),

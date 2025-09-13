@@ -11,4 +11,3 @@ const colBkBtn = Color(0xff555555);
 const colRedBtn = Color(0xffFF6868);
 const colGreenAi = Color(0xff49AF8B);
 const colMintAi = Color(0xff3DE3C4);
-const colGreybr = Color(0xffdddddd);

@@ -5,8 +5,6 @@ class PlacePage extends StatelessWidget{
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Text('PlacePage'),
-    );
+    return Text('PlacePage');
   }
 }

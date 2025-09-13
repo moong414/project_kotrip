@@ -20,11 +20,11 @@ class PhotoListview extends StatelessWidget {
                   if (boldTitle != null)
                     Text(
                       boldTitle!,
-                      style: TextStyles.titleSt.copyWith(
+                      style: AppTxtSt.titleSt.copyWith(
                         fontWeight: FontWeight.w800,
                       ),
                     ),
-                  Text(title, style: TextStyles.titleSt),
+                  Text(title, style: AppTxtSt.titleSt),
                 ],
               ),
               GestureDetector(

@@ -6,6 +6,7 @@ class AppButton extends StatelessWidget {
   final Color? txtColor;
   final String? text;
   final VoidCallback? onPressed;
+  final Image? img;
 
   const AppButton({
     super.key,
@@ -13,6 +14,7 @@ class AppButton extends StatelessWidget {
     this.txtColor,
     this.text,
     required this.onPressed,
+    this.img,
   });
 
   @override
