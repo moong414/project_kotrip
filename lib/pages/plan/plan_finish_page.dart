@@ -46,11 +46,6 @@ class _PlanFinishPageState extends State<PlanFinishPage> {
   List get planlist => [planItems, planItems2];
 
   @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: BasicAppBar(),
@@ -65,12 +60,7 @@ class _PlanFinishPageState extends State<PlanFinishPage> {
                   children: [
                     Row(
                       children: [
-                        Text(
-                          '제주도',
-                          style: AppTxtSt.titleSt.copyWith(
-                            fontWeight: FontWeight.w700,
-                          ),
-                        ),
+                        Text('제주도', style: AppTxtSt.titleStB),
                         SizedBox(width: 8),
                         Text('25.09.27 - 25.09.28', style: AppTxtSt.txtStL),
                       ],
@@ -78,18 +68,88 @@ class _PlanFinishPageState extends State<PlanFinishPage> {
                   ],
                 ),
               ),
-              Expanded(
-                child: ListView.builder(
-                  padding: const EdgeInsets.only(bottom: 100),
-                  itemCount: planItems.length,
+              Container(
+                margin: EdgeInsets.only(bottom: 20),
+                height: 56,
+                child: ListView.separated(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: 4,
                   itemBuilder: (context, index) {
-                    return PlanItemWidget(
-                      index: index,
-                      listLen: planItems.length,
-                      item: planItems[index],
+                    return GestureDetector(
+                      onTap: () {},
+                      child: Container(
+                        width: 100,
+                        height: 50,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: colPrimary,
+                        ),
+                        child: Center(
+                          child: Text(
+                            'Day 1',
+                            style: AppTxtSt.txtStL.copyWith(
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      ),
                     );
                   },
-                  
+                  separatorBuilder: (BuildContext context, int index) {
+                    return SizedBox(width: 12);
+                  },
+                ),
+              ),
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 20),
+                        child: Row(
+                          children: [
+                            Text('Day1', style: AppTxtSt.txtStLB),
+                            SizedBox(width: 4),
+                            Text('(25. 09 .26)'),
+                          ],
+                        ),
+                      ),
+                      ListView.builder(
+                        shrinkWrap: true,
+                        physics: NeverScrollableScrollPhysics(),
+                        itemCount: planItems.length,
+                        itemBuilder: (context, index) {
+                          return PlanItemWidget(
+                            index: index,
+                            listLen: planItems.length,
+                            item: planItems[index],
+                          );
+                        },
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 20),
+                        child: Row(
+                          children: [
+                            Text('Day2', style: AppTxtSt.txtStLB),
+                            SizedBox(width: 4),
+                            Text('(25. 09 .27)'),
+                          ],
+                        ),
+                      ),
+                      ListView.builder(
+                        shrinkWrap: true,
+                        physics: NeverScrollableScrollPhysics(),
+                        itemCount: planItems.length,
+                        itemBuilder: (context, index) {
+                          return PlanItemWidget(
+                            index: index,
+                            listLen: planItems.length,
+                            item: planItems[index],
+                          );
+                        },
+                      ),
+                    ],
+                  ),
                 ),
               ),
               Container(

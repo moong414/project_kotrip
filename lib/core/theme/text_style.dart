@@ -9,6 +9,11 @@ class AppTxtSt {
     fontSize: 18,
     fontWeight: FontWeight.w400
   );
+  static const TextStyle titleStB = TextStyle(
+    color: colBkTxt,
+    fontSize: 18,
+    fontWeight: FontWeight.w700
+  );
 
   //본문스타일 16폰트
   static const TextStyle txtStL = TextStyle(
@@ -16,12 +21,23 @@ class AppTxtSt {
     fontSize: 16,
     fontWeight: FontWeight.w400
   );
+  static const TextStyle txtStLB = TextStyle(
+    color: colBkTxt,
+    fontSize: 16,
+    fontWeight: FontWeight.w700
+  );
+  
 
   //본문스타일 14폰트
   static const TextStyle txtStR = TextStyle(
     color: colBkTxt,
     fontSize: 14,
     fontWeight: FontWeight.w400
+  );
+  static const TextStyle txtStRB = TextStyle(
+    color: colBkTxt,
+    fontSize: 14,
+    fontWeight: FontWeight.w700
   );
 
   //본문스타일 12폰트
@@ -30,6 +46,7 @@ class AppTxtSt {
     fontSize: 12,
     fontWeight: FontWeight.w400
   );
+
 
   //강조 16
   static const TextStyle txtPrimary = TextStyle(

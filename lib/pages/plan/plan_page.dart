@@ -45,9 +45,7 @@ class _PlanPageState extends State<PlanPage> {
                       children: [
                         Text(
                           '제주도',
-                          style: AppTxtSt.titleSt.copyWith(
-                            fontWeight: FontWeight.w700,
-                          ),
+                          style: AppTxtSt.titleStB
                         ),
                         SizedBox(width: 8),
                         Text('25.09.27 - 25.09.28', style: AppTxtSt.txtStL),
@@ -67,9 +65,7 @@ class _PlanPageState extends State<PlanPage> {
                             children: [
                               Text(
                                 'Day 1 ',
-                                style: AppTxtSt.txtStL.copyWith(
-                                  fontWeight: FontWeight.w600,
-                                ),
+                                style: AppTxtSt.txtStLB
                               ),
                               Text('25. 09. 27', style: AppTxtSt.txtStR),
                             ],

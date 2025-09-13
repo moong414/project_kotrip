@@ -20,9 +20,7 @@ class PhotoListview extends StatelessWidget {
                   if (boldTitle != null)
                     Text(
                       boldTitle!,
-                      style: AppTxtSt.titleSt.copyWith(
-                        fontWeight: FontWeight.w800,
-                      ),
+                      style: AppTxtSt.titleStB
                     ),
                   Text(title, style: AppTxtSt.titleSt),
                 ],
