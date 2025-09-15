@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:project_kotrip/core/theme/colors.dart';
 import 'package:project_kotrip/core/theme/text_style.dart';
 import 'package:project_kotrip/core/widgets/basic_app_bar.dart';
-import 'package:project_kotrip/pages/place/model/review.dart';
+import 'package:project_kotrip/pages/place/model/review_model.dart';
 import 'package:project_kotrip/pages/place/widgets/place_map_btn.dart';
 import 'package:project_kotrip/pages/place/widgets/my_review_dialog.dart';
 import 'package:project_kotrip/pages/place/widgets/place_review_list.dart';
@@ -16,10 +16,10 @@ class PlaceDetailPage extends StatelessWidget {
   );
 
   //리뷰리스트
-  List<Review> reviewList = [
-    Review(author: '김땡땡', content: '성산일출봉은 제주도 여행 중 꼭 들러야 할 명소입니다.', date: '25.09.09'),
-    Review(author: '임땡땡', content: '성산일출봉은 제주도 여행 중 꼭 들러야 할 명소입니다.', date: '25.09.09'),
-    Review(author: '문땡땡', content: '성산일출봉은 제주도 여행 중 꼭 들러야 할 명소입니다.', date: '25.09.09')
+  List<ReviewModel> reviewList = [
+    ReviewModel(author: '김땡땡', content: '성산일출봉은 제주도 여행 중 꼭 들러야 할 명소입니다.', date: '25.09.09'),
+    ReviewModel(author: '임땡땡', content: '성산일출봉은 제주도 여행 중 꼭 들러야 할 명소입니다.', date: '25.09.09'),
+    ReviewModel(author: '문땡땡', content: '성산일출봉은 제주도 여행 중 꼭 들러야 할 명소입니다.', date: '25.09.09')
   ];
 
   @override
