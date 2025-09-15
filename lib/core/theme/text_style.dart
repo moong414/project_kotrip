@@ -14,6 +14,12 @@ class AppTxtSt {
     fontSize: 18,
     fontWeight: FontWeight.w700
   );
+  static const TextStyle titleStWtB = TextStyle(
+    color: Colors.white,
+    fontSize: 18,
+    fontWeight: FontWeight.w700,
+    shadows: [Shadow(offset: Offset(1, 1), blurRadius: 4, color: Colors.black38)]
+  );
 
   //본문스타일 16폰트
   static const TextStyle txtStL = TextStyle(
@@ -34,10 +40,18 @@ class AppTxtSt {
     fontSize: 14,
     fontWeight: FontWeight.w400
   );
+  
   static const TextStyle txtStRB = TextStyle(
     color: colBkTxt,
     fontSize: 14,
     fontWeight: FontWeight.w700
+  );
+
+  static const TextStyle txtStRWt = TextStyle(
+    color: Colors.white,
+    fontSize: 14,
+    fontWeight: FontWeight.w400,
+    shadows: [Shadow(offset: Offset(0, 0), blurRadius: 6, color: Colors.black26)]
   );
 
   //본문스타일 12폰트

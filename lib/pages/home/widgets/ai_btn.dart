@@ -33,7 +33,7 @@ class _AiBtnState extends State<AiBtn> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.fromLTRB(20, 22, 20, 0),
+      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
       child: Stack(
         children: [
           Padding(

@@ -7,6 +7,7 @@ class BasicAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
+      backgroundColor: Colors.transparent,
       centerTitle: true,
       title: Image.asset(darkMode ? 'assets/images/logo_s_wt.png' : 'assets/images/logo_s.png', height: 19),
     );

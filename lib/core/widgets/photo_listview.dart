@@ -9,7 +9,7 @@ class PhotoListview extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(20, 20, 0, 20),
+      padding: const EdgeInsets.only(left: 20, bottom: 10),
       child: Column(
         children: [
           Row(

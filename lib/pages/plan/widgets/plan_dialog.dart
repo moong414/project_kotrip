@@ -4,8 +4,8 @@ import 'package:project_kotrip/core/theme/text_style.dart';
 import 'package:project_kotrip/core/widgets/app_button.dart';
 import 'package:project_kotrip/core/widgets/dialog_text_form_field.dart';
 
-class PlanFloatingBtn extends StatelessWidget {
-  const PlanFloatingBtn({super.key});
+class PlanDialog extends StatelessWidget {
+  const PlanDialog({super.key});
 
   @override
   Widget build(BuildContext context) {

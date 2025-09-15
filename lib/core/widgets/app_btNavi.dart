@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:project_kotrip/core/theme/colors.dart';
-import 'package:project_kotrip/core/widgets/app_bar.dart';
+import 'package:project_kotrip/core/widgets/basic_app_bar.dart';
 import 'package:project_kotrip/pages/home/home_page.dart';
 import 'package:project_kotrip/pages/my/my_page.dart';
 import 'package:project_kotrip/pages/place/place_page.dart';

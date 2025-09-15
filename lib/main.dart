@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:project_kotrip/core/theme/colors.dart';
-import 'package:project_kotrip/pages/plan/Plan_page.dart';
-
-
-
+import 'package:project_kotrip/core/widgets/app_btNavi.dart';
 
 void main() {
   runApp(const MyApp());
@@ -27,7 +24,7 @@ class MyApp extends StatelessWidget {
         ),
         fontFamily: 'SCDream',
       ),
-      home: PlanPage(),
+      home: AppBtNavi(),
     );
   }
 }

@@ -17,11 +17,8 @@ class HomePage extends StatelessWidget {
           child: Row(
             children: [
               Text('이번엔', style: AppTxtSt.titleSt),
-              Text(
-                '어디로',
-                style: AppTxtSt.titleSt.copyWith(fontWeight: FontWeight.w800),
-              ),
-              Text('갈까요?', style: AppTxtSt.titleSt),
+              Text(' 어디로', style: AppTxtSt.titleStB),
+              Text(' 갈까요?', style: AppTxtSt.titleSt),
             ],
           ),
         ),
