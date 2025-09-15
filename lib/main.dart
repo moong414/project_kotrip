@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:project_kotrip/pages/home/home_page.dart';
+import 'package:project_kotrip/core/theme/colors.dart';
+import 'package:project_kotrip/core/widgets/app_btNavi.dart';
 
 void main() {
   runApp(const MyApp());
@@ -10,13 +11,20 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    
     return MaterialApp(
       theme: ThemeData(
+        colorScheme: ColorScheme.light(
+          primary: colPrimary,
+          surface: Colors.white,
+        ),
+        appBarTheme: AppBarTheme(backgroundColor: Colors.white),
+        scaffoldBackgroundColor: Colors.white,
+        bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+          backgroundColor: Colors.white,
+        ),
         fontFamily: 'SCDream',
       ),
-      home: HomePage(),
+      home: AppBtNavi(),
     );
   }
 }
-
