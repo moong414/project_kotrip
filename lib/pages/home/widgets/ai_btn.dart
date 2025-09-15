@@ -20,14 +20,14 @@ class _AiBtnState extends State<AiBtn> {
     super.initState();
     Timer.periodic(Duration(milliseconds: 1000), (timer) {
       setState(() {
-        if(down){
+        if (down) {
           top = 5;
-        }else{
+        } else {
           top = 0;
         }
         down = !down;
       });
-    },);
+    });
   }
 
   @override
@@ -43,9 +43,7 @@ class _AiBtnState extends State<AiBtn> {
               children: [
                 Text(
                   '여행계획 세우기 귀찮을 땐?',
-                  style: AppTxtSt.txtStL.copyWith(
-                    fontWeight: FontWeight.w300,
-                  ),
+                  style: AppTxtSt.txtStL.copyWith(fontWeight: FontWeight.w300),
                 ),
                 SizedBox(height: 16),
                 Container(
@@ -54,18 +52,21 @@ class _AiBtnState extends State<AiBtn> {
                     gradient: LinearGradient(colors: [colGreenAi, colMintAi]),
                     borderRadius: BorderRadius.circular(50),
                   ),
-                  child: ElevatedButton(
-                    style:
-                        ElevatedButton.styleFrom(
-                          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                          backgroundColor: Colors.white,
-                          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 16)
-                        ),
-                    onPressed: () {},
+                  child: TextButton(
+                    onPressed: () {
+                      //Ai에게 부탁하기
+                    },
+                    style: TextButton.styleFrom(
+                      backgroundColor: Colors.white,
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 20,
+                        vertical: 16,
+                      ),
+                    ),
                     child: Row(
                       children: [
                         Image.asset('assets/images/icon_ai.png', width: 20),
-                        SizedBox(width: 8,),
+                        SizedBox(width: 8),
                         Text(
                           'AI에게 부탁하기!',
                           style: TextStyle(
@@ -86,7 +87,7 @@ class _AiBtnState extends State<AiBtn> {
             top: top,
             curve: Curves.easeInOut,
             duration: Duration(milliseconds: 1000),
-            child: Image.asset('assets/images/img_ai.png', width: 85,),
+            child: Image.asset('assets/images/img_ai.png', width: 85),
           ),
         ],
       ),

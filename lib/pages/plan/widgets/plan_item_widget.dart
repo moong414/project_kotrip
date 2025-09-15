@@ -16,65 +16,45 @@ class PlanItemWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        if(index != listLen-1)
-        Positioned(
-          left: 20,
-          top: 0,
-          bottom: 0,
-          width: 2,
-          child: Image.asset(
-            'assets/images/bg_border.png',
-            repeat: ImageRepeat.repeatY,
-            fit: BoxFit.none,
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 16, left: 11),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            width: 18,
+            height: 22,
+            margin: EdgeInsets.only(right: 9),
+            child: Image.asset('assets/images/icon_plan_list.png',)
           ),
-        ),
-        Padding(
-          padding: const EdgeInsets.only(bottom: 16, left: 13),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
-                width: 16,
-                height: 16,
-                margin: EdgeInsets.only(right: 10),
-                decoration: BoxDecoration(
-                  border: BoxBorder.all(color: (index % 2 ==0) ? colPrimary : Color(0xff999999), width: 4),
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(16),
-                ),
-              ),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
                   children: [
-                    Row(
-                      children: [
-                        Text(
-                          item.time ?? '',
-                          style: AppTxtSt.txtStR.copyWith(
-                            fontWeight: FontWeight.w700,
-                          ),
-                        ),
-                        SizedBox(width: 4),
-                        Text(item.loca ?? '', style: AppTxtSt.txtStR),
-                      ],
-                    ),
-                    SizedBox(height: 4),
                     Text(
-                      item.todo,
-                      style: AppTxtSt.txtStL,
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
+                      item.time ?? '',
+                      style: AppTxtSt.txtStR.copyWith(
+                        fontWeight: FontWeight.w700,
+                      ),
                     ),
+                    SizedBox(width: 4),
+                    Text(item.loca ?? '', style: AppTxtSt.txtStR),
                   ],
                 ),
-              ),
-            ],
+                SizedBox(height: 4),
+                Text(
+                  item.todo,
+                  style: AppTxtSt.txtStL,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ],
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

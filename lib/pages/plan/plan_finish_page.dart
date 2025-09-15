@@ -4,8 +4,7 @@ import 'package:project_kotrip/core/theme/text_style.dart';
 import 'package:project_kotrip/core/widgets/app_bar.dart';
 import 'package:project_kotrip/core/widgets/app_button.dart';
 import 'package:project_kotrip/pages/plan/model/plan_item.dart';
-import 'package:project_kotrip/pages/plan/widgets/plan_floating_btn.dart';
-import 'package:project_kotrip/pages/plan/widgets/plan_item_widget.dart';
+import 'package:project_kotrip/pages/plan/widgets/plan_finish_item_widget.dart';
 
 class PlanFinishPage extends StatefulWidget {
   const PlanFinishPage({super.key});
@@ -119,7 +118,7 @@ class _PlanFinishPageState extends State<PlanFinishPage> {
                         physics: NeverScrollableScrollPhysics(),
                         itemCount: planItems.length,
                         itemBuilder: (context, index) {
-                          return PlanItemWidget(
+                          return PlanFinishItemWidget(
                             index: index,
                             listLen: planItems.length,
                             item: planItems[index],
@@ -141,7 +140,7 @@ class _PlanFinishPageState extends State<PlanFinishPage> {
                         physics: NeverScrollableScrollPhysics(),
                         itemCount: planItems.length,
                         itemBuilder: (context, index) {
-                          return PlanItemWidget(
+                          return PlanFinishItemWidget(
                             index: index,
                             listLen: planItems.length,
                             item: planItems[index],

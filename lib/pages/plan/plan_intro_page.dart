@@ -36,26 +36,31 @@ class PlanIntroPage extends StatelessWidget {
             labelText: '도착일',
           ),
           SizedBox(height: 20),
-          AppButton(text: '직접 여행 계획 세우기', onPressed: () {
-            Navigator.push(context, MaterialPageRoute(builder: (context) {
-              return PlanPage();
-            },));
-          }),
+          AppButton(
+            text: '직접 여행 계획 세우기',
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) {
+                    return PlanPage();
+                  },
+                ),
+              );
+            },
+          ),
           SizedBox(height: 10),
           Container(
             decoration: BoxDecoration(
               gradient: LinearGradient(colors: [colGreenAi, colMintAi]),
               borderRadius: BorderRadius.circular(10),
             ),
-            child: ElevatedButton(
+            child: TextButton(
               onPressed: () {
                 //AI에게 부탁하기
               },
-              style: ElevatedButton.styleFrom(
+              style: TextButton.styleFrom(
                 padding: EdgeInsets.fromLTRB(16, 17, 16, 16),
-                backgroundColor: Colors.transparent,
-                shadowColor: Colors.transparent,
-                surfaceTintColor: Colors.transparent,
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,

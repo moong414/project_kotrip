@@ -55,5 +55,12 @@ class AppTxtSt {
     fontWeight: FontWeight.w500
   );
 
+  //힌트스타일 14
+  static const TextStyle hintStR = TextStyle(
+    color: colHintTxt,
+    fontSize: 14,
+    fontWeight: FontWeight.w400
+  );
+
   
 }

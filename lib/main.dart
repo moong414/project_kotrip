@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:project_kotrip/core/theme/colors.dart';
-import 'package:project_kotrip/pages/plan/plan_finish_page.dart';
+import 'package:project_kotrip/pages/plan/Plan_page.dart';
+
+
 
 
 void main() {
@@ -25,7 +27,7 @@ class MyApp extends StatelessWidget {
         ),
         fontFamily: 'SCDream',
       ),
-      home: PlanFinishPage(),
+      home: PlanPage(),
     );
   }
 }

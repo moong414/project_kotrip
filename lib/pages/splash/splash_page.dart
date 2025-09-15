@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:project_kotrip/core/theme/colors.dart';
+import 'package:project_kotrip/pages/splash/widget/splash_btn.dart';
 
 class SplashPage extends StatefulWidget {
   const SplashPage({super.key});
@@ -47,62 +48,8 @@ class _SplashPageState extends State<SplashPage> {
                     ),
                   ),
                   SizedBox(height: 120),
-                  SizedBox(
-                    width: double.infinity,
-                    height: 56,
-                    child: ElevatedButton(
-                      onPressed: () {},
-                      style: ElevatedButton.styleFrom(
-                        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                        shadowColor: Colors.transparent,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadiusDirectional.only(
-                            topStart: Radius.circular(10),
-                            topEnd: Radius.circular(10),
-                          ),
-                        ),
-                        backgroundColor: colPrimary,
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Image.asset('assets/images/icon_google.png', width: 20,),
-                          Text(
-                            '구글로 로그인',
-                            style: TextStyle(color: Colors.white, fontSize: 16),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    width: double.infinity,
-                    height: 56,
-                    child: ElevatedButton(
-                      onPressed: () {},
-                      style: ElevatedButton.styleFrom(
-                        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                        shadowColor: Colors.transparent,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadiusDirectional.only(
-                            bottomStart: Radius.circular(10),
-                            bottomEnd: Radius.circular(10),
-                          ),
-                        ),
-                        backgroundColor: colSecond,
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Image.asset('assets/images/icon_apple.png', width: 20,),
-                          Text(
-                            '애플로 로그인',
-                            style: TextStyle(color: Colors.white, fontSize: 16),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
+                  SplashBtn(imgSrc: 'assets/images/icon_google.png', title: '구글로 로그인',),
+                  SplashBtn(imgSrc: 'assets/images/icon_apple.png', title: '애플로 로그인', bgColor: colSecond, upSideDown: true,),
                 ],
               ),
             ),

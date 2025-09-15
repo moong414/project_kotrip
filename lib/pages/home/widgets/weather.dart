@@ -11,7 +11,7 @@ class Weather extends StatelessWidget {
       padding: EdgeInsetsGeometry.symmetric(horizontal: 20),
       child: Container(
         padding: EdgeInsets.all(20),
-        decoration: BoxDecoration(border: BoxBorder.all(color: colBkBtn), borderRadius: BorderRadius.circular(10)),
+        decoration: BoxDecoration(border: BoxBorder.all(color: colGreyBtn), borderRadius: BorderRadius.circular(10)),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
