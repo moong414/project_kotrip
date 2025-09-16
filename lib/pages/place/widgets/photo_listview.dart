@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:project_kotrip/core/theme/text_style.dart';
 import 'package:project_kotrip/core/widgets/app_bt_navi.dart';
+import 'package:project_kotrip/pages/place/place_detail_page.dart';
 import 'package:project_kotrip/pages/place/place_view_model.dart';
 
 class PhotoListview extends ConsumerStatefulWidget {
@@ -22,20 +23,21 @@ class PhotoListview extends ConsumerStatefulWidget {
 }
 
 class _PhotoListviewState extends ConsumerState<PhotoListview> {
-  
   @override
   void initState() {
     super.initState();
     if (widget.code != null) {
-      ref.read(placeViewModelProvider.notifier).loadPlaces(
-        areaCode: widget.code!
-      );
+      ref
+          .read(placeViewModelProvider.notifier)
+          .loadPlaces(areaCode: widget.code!);
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    final state = ref.watch(placeViewModelProvider).funcPlaceList(widget.kindPlace.toString());
+    final state = ref
+        .watch(placeViewModelProvider)
+        .funcPlaceList(widget.kindPlace.toString());
 
     return Padding(
       padding: const EdgeInsets.only(left: 20, bottom: 10),
@@ -51,21 +53,25 @@ class _PhotoListviewState extends ConsumerState<PhotoListview> {
                   Text(widget.title, style: AppTxtSt.titleSt),
                 ],
               ),
-              GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (_) => AppBtNavi(initialIndex: 2,)),
-                  );
-                },
-                child: Padding(
-                  padding: const EdgeInsets.all(20),
-                  child: Image.asset(
-                    'assets/images/icon_go_arrow.png',
-                    width: 24,
-                  ),
-                ),
-              ),
+              widget.code == null
+                  ? Padding(padding: const EdgeInsets.all(32))
+                  : GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => AppBtNavi(initialIndex: 2),
+                          ),
+                        );
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.all(20),
+                        child: Image.asset(
+                          'assets/images/icon_go_arrow.png',
+                          width: 24,
+                        ),
+                      ),
+                    ),
             ],
           ),
           SizedBox(height: 5),
@@ -77,21 +83,28 @@ class _PhotoListviewState extends ConsumerState<PhotoListview> {
               itemBuilder: (context, index) {
                 return Stack(
                   children: [
-                    Container(
-                      width: 160,
-                      height: 190,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: Colors.black,
-                      ),
-                      child: ClipRRect(
-                        borderRadius: BorderRadiusGeometry.circular(10),
-                        child: Opacity(
-                          opacity: 0.9,
-                          child: Image.network(
-                                  state[index].firstimage,
-                                  fit: BoxFit.cover,
-                                ),
+                    GestureDetector(
+                      onTap: (){
+                        Navigator.push(context, MaterialPageRoute(builder: (context) {
+                          return PlaceDetailPage(index: index, kindPlace: widget.kindPlace.toString());
+                        },));
+                      },
+                      child: Container(
+                        width: 160,
+                        height: 190,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: Colors.black,
+                        ),
+                        child: ClipRRect(
+                          borderRadius: BorderRadiusGeometry.circular(10),
+                          child: Opacity(
+                            opacity: 0.9,
+                            child: Image.network(
+                              state[index].firstimage,
+                              fit: BoxFit.cover,
+                            ),
+                          ),
                         ),
                       ),
                     ),
