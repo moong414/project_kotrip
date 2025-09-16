@@ -3,7 +3,7 @@ import 'package:project_kotrip/core/theme/colors.dart';
 import 'package:project_kotrip/core/theme/text_style.dart';
 import 'package:project_kotrip/core/widgets/app_button.dart';
 import 'package:project_kotrip/core/widgets/dialog_text_form_field.dart';
-import 'package:project_kotrip/pages/place/model/review_model.dart';
+import 'package:project_kotrip/data/model/review_model.dart';
 
 class MyReviewDialog extends StatelessWidget {
   ReviewModel? myReview;
