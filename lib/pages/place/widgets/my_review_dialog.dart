@@ -83,7 +83,7 @@ class MyReviewDialog extends StatelessWidget {
                               GestureDetector(
                                 onTap: () {
                                   //삭제
-                                  print('클릭됨');
+                                  
                                 },
                                 child: Container(
                                   width: 40,
