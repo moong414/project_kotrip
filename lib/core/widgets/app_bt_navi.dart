@@ -7,14 +7,16 @@ import 'package:project_kotrip/pages/place/place_page.dart';
 import 'package:project_kotrip/pages/plan/plan_intro_page.dart';
 
 class AppBtNavi extends StatefulWidget {
-  const AppBtNavi({super.key});
+  final int initialIndex;
+  const AppBtNavi({super.key, this.initialIndex = 0});
 
   @override
   State<AppBtNavi> createState() => _AppBtNaviState();
 }
 
 class _AppBtNaviState extends State<AppBtNavi> {
-  int thisIndex = 0;
+  late int thisIndex;
+  
 
   // 페이지 리스트
   static final List<Widget> pages = <Widget>[
@@ -30,6 +32,13 @@ class _AppBtNaviState extends State<AppBtNavi> {
       thisIndex = index;
     });
   }
+
+  @override
+  void initState() {
+    super.initState();
+    thisIndex = widget.initialIndex;
+  }
+
 
   @override
   Widget build(BuildContext context) {
