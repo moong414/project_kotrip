@@ -51,7 +51,7 @@ class AppTxtSt {
     color: Colors.white,
     fontSize: 14,
     fontWeight: FontWeight.w400,
-    shadows: [Shadow(offset: Offset(0, 0), blurRadius: 6, color: Colors.black26)]
+    shadows: [Shadow(offset: Offset(1, 1), blurRadius: 2, color: Colors.black38)]
   );
 
   //본문스타일 12폰트

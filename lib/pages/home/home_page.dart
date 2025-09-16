@@ -13,6 +13,7 @@ class HomePage extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
 
+    //페이지 접속할때마다 랜덤한 관광지 표출
     final random = Random();
     final keys = placeCodeMap.keys.toList();
     final randomKey = keys[random.nextInt(keys.length)];
