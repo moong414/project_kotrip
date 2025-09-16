@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:project_kotrip/core/theme/colors.dart';
 import 'package:project_kotrip/core/theme/text_style.dart';
-import 'package:project_kotrip/pages/plan/model/plan_item.dart';
+import 'package:project_kotrip/data/model/plan_item.dart';
 
 class PlanFinishItemWidget extends StatelessWidget {
   PlanFinishItemWidget({

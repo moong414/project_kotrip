@@ -1,14 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:project_kotrip/core/theme/colors.dart';
 import 'package:project_kotrip/core/theme/text_style.dart';
 import 'package:project_kotrip/core/widgets/basic_app_bar.dart';
-import 'package:project_kotrip/pages/place/model/review.dart';
+import 'package:project_kotrip/data/model/review_model.dart';
+import 'package:project_kotrip/pages/place/place_view_model.dart';
 import 'package:project_kotrip/pages/place/widgets/place_map_btn.dart';
 import 'package:project_kotrip/pages/place/widgets/my_review_dialog.dart';
 import 'package:project_kotrip/pages/place/widgets/place_review_list.dart';
 
-class PlaceDetailPage extends StatelessWidget {
-  PlaceDetailPage({super.key});
+class PlaceDetailPage extends ConsumerWidget {
+  int index;
+  String kindPlace;
+
+  PlaceDetailPage({super.key, required this.index, required this.kindPlace});
 
   final placeBorder = OutlineInputBorder(
     borderSide: BorderSide(color: colSecond, width: 1),
@@ -16,26 +21,40 @@ class PlaceDetailPage extends StatelessWidget {
   );
 
   //리뷰리스트
-  List<Review> reviewList = [
-    Review(author: '김땡땡', content: '성산일출봉은 제주도 여행 중 꼭 들러야 할 명소입니다.', date: '25.09.09'),
-    Review(author: '임땡땡', content: '성산일출봉은 제주도 여행 중 꼭 들러야 할 명소입니다.', date: '25.09.09'),
-    Review(author: '문땡땡', content: '성산일출봉은 제주도 여행 중 꼭 들러야 할 명소입니다.', date: '25.09.09')
+  List<ReviewModel> reviewList = [
+    ReviewModel(
+      author: '김땡땡',
+      content: '성산일출봉은 제주도 여행 중 꼭 들러야 할 명소입니다.',
+      date: '25.09.09',
+    ),
+    ReviewModel(
+      author: '임땡땡',
+      content: '성산일출봉은 제주도 여행 중 꼭 들러야 할 명소입니다.',
+      date: '25.09.09',
+    ),
+    ReviewModel(
+      author: '문땡땡',
+      content: '성산일출봉은 제주도 여행 중 꼭 들러야 할 명소입니다.',
+      date: '25.09.09',
+    ),
   ];
 
   @override
-  Widget build(BuildContext context) {
-    TextEditingController controller = TextEditingController();
+  Widget build(BuildContext context, WidgetRef ref) {
+    final state = ref
+        .watch(placeViewModelProvider)
+        .funcPlaceList(kindPlace.toString());
 
     return Scaffold(
       body: Stack(
         children: [
-          SizedBox(
+          Container(
+            color: Colors.black,
             width: double.infinity,
             height: 490,
-            child: Image.asset(
-              'assets/images/img_jeju.png',
-              fit: BoxFit.fitHeight,
-            ),
+            child: Opacity(
+              opacity: 0.9,
+              child: Image.network(state[index].firstimage, fit: BoxFit.cover)),
           ),
           Positioned(
             top: 380,
@@ -46,10 +65,10 @@ class PlaceDetailPage extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('제주루루룰루', style: AppTxtSt.titleStWtB),
+                  Text(state[index].title, style: AppTxtSt.titleStWtB),
                   SizedBox(height: 5),
                   Text(
-                    '제주의 어딘가제주의 어딘가제주의 어딘가제주의 어딘가제주의 어딘가',
+                    state[index].addr,
                     style: AppTxtSt.txtStRWt,
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
@@ -84,10 +103,10 @@ class PlaceDetailPage extends StatelessWidget {
                         ],
                       ),
                     ),
-                    PlaceReviewList(reviewList: reviewList,),
+                    PlaceReviewList(reviewList: reviewList),
                     PlaceMapBtn(),
                     MyReviewDialog(),
-                    SizedBox(height: 30,)
+                    SizedBox(height: 30),
                   ],
                 ),
               ),
@@ -104,4 +123,3 @@ class PlaceDetailPage extends StatelessWidget {
     );
   }
 }
-

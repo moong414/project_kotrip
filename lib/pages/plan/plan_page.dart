@@ -3,7 +3,7 @@ import 'package:project_kotrip/core/theme/colors.dart';
 import 'package:project_kotrip/core/theme/text_style.dart';
 import 'package:project_kotrip/core/widgets/basic_app_bar.dart';
 import 'package:project_kotrip/core/widgets/app_button.dart';
-import 'package:project_kotrip/pages/plan/model/plan_item.dart';
+import 'package:project_kotrip/data/model/plan_item.dart';
 import 'package:project_kotrip/pages/plan/widgets/plan_dialog.dart';
 import 'package:project_kotrip/pages/plan/widgets/plan_item_widget.dart';
 
@@ -90,7 +90,7 @@ class _PlanPageState extends State<PlanPage> {
                   ],
                 ),
               ),
-              (planItems.length == 0) ?
+              (planItems.isEmpty) ?
               Expanded(child: Center(child: Text('일정을 추가해보세요!', style: AppTxtSt.txtStL.copyWith(color: Color(0xff999999)),),))
               : Expanded(
                 child: ReorderableListView.builder(
