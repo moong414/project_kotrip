@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:project_kotrip/core/theme/colors.dart';
-import 'package:project_kotrip/core/widgets/app_btNavi.dart';
+import 'package:project_kotrip/core/widgets/app_bt_navi.dart';
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();

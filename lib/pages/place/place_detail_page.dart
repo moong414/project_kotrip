@@ -24,7 +24,6 @@ class PlaceDetailPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    TextEditingController controller = TextEditingController();
 
     return Scaffold(
       body: Stack(

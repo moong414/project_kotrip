@@ -3,10 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:project_kotrip/core/theme/colors.dart';
 import 'package:project_kotrip/core/theme/text_style.dart';
-import 'package:project_kotrip/core/widgets/photo_listview.dart';
+import 'package:project_kotrip/pages/place/widgets/photo_listview.dart';
 import 'package:project_kotrip/data/service/place_code_map.dart';
 import 'package:project_kotrip/pages/place/place_view_model.dart';
-import 'package:project_kotrip/pages/place/widgets/place_filter_item.dart';
 
 class PlacePage extends ConsumerStatefulWidget {
   const PlacePage({super.key});
@@ -83,6 +82,7 @@ class _PlacePageState extends ConsumerState<PlacePage> {
   @override
   Widget build(BuildContext context) {
     final state = ref.watch(placeViewModelProvider);
+    
     final thisPlace = placeCodeMap.entries.firstWhere((element) {
       return element.value == state.areaCode;
     },).key;
@@ -112,7 +112,7 @@ class _PlacePageState extends ConsumerState<PlacePage> {
                         enabledBorder: placeBorder,
                         focusedBorder: placeBorder,
                         disabledBorder: placeBorder,
-                        hintText: thisPlace ?? '지역을 선택하세요',
+                        hintText: thisPlace,
                       ),
                     ),
                     Positioned(
@@ -133,23 +133,24 @@ class _PlacePageState extends ConsumerState<PlacePage> {
                   ],
                 ),
                 SizedBox(height: 16),
-                Row(
-                  children: [
-                    PlaceFilterItem(title: '전체', isSelectd: true),
-                    SizedBox(width: 10),
-                    PlaceFilterItem(title: '관광지'),
-                    SizedBox(width: 10),
-                    PlaceFilterItem(title: '문화시설'),
-                    SizedBox(width: 10),
-                    PlaceFilterItem(title: '음식'),
-                  ],
-                ),
+                //Todo: 필터 만들것!!
+                // Row(
+                //   children: [
+                //     PlaceFilterItem(title: '전체', isSelectd: true),
+                //     SizedBox(width: 10),
+                //     PlaceFilterItem(title: '관광지'),
+                //     SizedBox(width: 10),
+                //     PlaceFilterItem(title: '문화시설'),
+                //     SizedBox(width: 10),
+                //     PlaceFilterItem(title: '음식'),
+                //   ],
+                // ),
               ],
             ),
           ),
-          PhotoListview(title: '관광지', contentTypeId: '12'),
-          PhotoListview(title: '문화시설', contentTypeId: '14'),
-          PhotoListview(title: '음식', contentTypeId: '39'),
+          PhotoListview(title: '관광지', kindPlace: 'tourPlaceList'),
+          PhotoListview(title: '문화시설', kindPlace: 'culturePlaceList'),
+          PhotoListview(title: '음식', kindPlace: 'foodPlaceList' ),
         ],
       ),
     );

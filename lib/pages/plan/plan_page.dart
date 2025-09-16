@@ -90,7 +90,7 @@ class _PlanPageState extends State<PlanPage> {
                   ],
                 ),
               ),
-              (planItems.length == 0) ?
+              (planItems.isEmpty) ?
               Expanded(child: Center(child: Text('일정을 추가해보세요!', style: AppTxtSt.txtStL.copyWith(color: Color(0xff999999)),),))
               : Expanded(
                 child: ReorderableListView.builder(

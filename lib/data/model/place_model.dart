@@ -4,7 +4,7 @@ class PlaceModel {
   final String mapx;
   final String mapy;
   final String firstimage;
-  final String contentTypeId;
+  final String contenttypeid;
 
   PlaceModel({
     required this.title,
@@ -12,7 +12,7 @@ class PlaceModel {
     required this.mapx,
     required this.mapy,
     required this.firstimage,
-    required this.contentTypeId
+    required this.contenttypeid
   });
 
   factory PlaceModel.fromJson(Map<String, dynamic> map) {
@@ -22,7 +22,7 @@ class PlaceModel {
       mapx: map['mapx']?.toString() ?? '',
       mapy: map['mapy']?.toString() ?? '',
       firstimage: map['firstimage']?.toString() ?? '',
-      contentTypeId: map['contentTypeId']?.toString() ?? '',
+      contenttypeid: map['contenttypeid']?.toString() ?? '',
     );
   }
 
@@ -33,7 +33,7 @@ class PlaceModel {
       'mapx': mapx,
       'mapy': mapy,
       'firstimage': firstimage,
-      'contentTypeId': contentTypeId,
+      'contenttypeid': contenttypeid,
     };
   }
 }
