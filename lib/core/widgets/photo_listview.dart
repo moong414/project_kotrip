@@ -1,13 +1,43 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:project_kotrip/core/theme/text_style.dart';
+import 'package:project_kotrip/core/widgets/app_btNavi.dart';
+import 'package:project_kotrip/pages/place/place_view_model.dart';
 
-class PhotoListview extends StatelessWidget {
+class PhotoListview extends ConsumerStatefulWidget {
   String? boldTitle;
   String title;
-  PhotoListview({super.key, this.boldTitle, required this.title});
+  String? code;
+  String? contentTypeId;
+  PhotoListview({
+    super.key,
+    this.boldTitle,
+    required this.title,
+    this.code,
+    this.contentTypeId,
+  });
+
+  @override
+  ConsumerState<PhotoListview> createState() => _PhotoListviewState();
+}
+
+class _PhotoListviewState extends ConsumerState<PhotoListview> {
+  
+  @override
+  void initState() {
+    super.initState();
+    if (widget.code != null) {
+      ref.read(placeViewModelProvider.notifier).loadPlaces(
+        areaCode: widget.code!,
+        contentTypeId: widget.contentTypeId,
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
+    final state = ref.watch(placeViewModelProvider);
+
     return Padding(
       padding: const EdgeInsets.only(left: 20, bottom: 10),
       child: Column(
@@ -17,16 +47,18 @@ class PhotoListview extends StatelessWidget {
             children: [
               Row(
                 children: [
-                  if (boldTitle != null)
-                    Text(
-                      boldTitle!,
-                      style: AppTxtSt.titleStB
-                    ),
-                  Text(title, style: AppTxtSt.titleSt),
+                  if (widget.boldTitle != null)
+                    Text(widget.boldTitle!, style: AppTxtSt.titleStB),
+                  Text(widget.title, style: AppTxtSt.titleSt),
                 ],
               ),
               GestureDetector(
-                onTap: () {},
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (_) => AppBtNavi(initialIndex: 2,)),
+                  );
+                },
                 child: Padding(
                   padding: const EdgeInsets.all(20),
                   child: Image.asset(
@@ -42,7 +74,7 @@ class PhotoListview extends StatelessWidget {
             height: 190,
             child: ListView.separated(
               scrollDirection: Axis.horizontal,
-              itemCount: 10,
+              itemCount: state.places.length,
               itemBuilder: (context, index) {
                 return Stack(
                   children: [
@@ -57,10 +89,15 @@ class PhotoListview extends StatelessWidget {
                         borderRadius: BorderRadiusGeometry.circular(10),
                         child: Opacity(
                           opacity: 0.9,
-                          child: Image.asset(
-                            'assets/images/img_jeju.png',
-                            fit: BoxFit.cover,
-                          ),
+                          child: (state == null)
+                              ? Image.asset(
+                                  'assets/images/img_jeju.png',
+                                  fit: BoxFit.cover,
+                                )
+                              : Image.network(
+                                  state.places[index].firstimage,
+                                  fit: BoxFit.cover,
+                                ),
                         ),
                       ),
                     ),
@@ -82,9 +119,20 @@ class PhotoListview extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text('섭지코지', style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600)),
-                          SizedBox(height: 6,),
-                          Text('제주 서귀포시 성산읍 고성리제주 서귀포시 성산읍 고성리', style: TextStyle(color: Colors.white, fontSize: 12,), maxLines: 2, overflow: TextOverflow.ellipsis,)
+                          Text(
+                            state.places[index].title,
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          SizedBox(height: 6),
+                          Text(
+                            state.places[index].addr,
+                            style: TextStyle(color: Colors.white, fontSize: 12),
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                          ),
                         ],
                       ),
                     ),
