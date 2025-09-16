@@ -4,36 +4,46 @@ import 'package:project_kotrip/data/repository/place_repository.dart';
 
 class PlaceState {
   String areaCode;
-  List<PlaceModel> places;
-  PlaceState({required this.areaCode, required this.places});
+  List<PlaceModel> tourPlaceList;
+  List<PlaceModel> culturePlaceList;
+  List<PlaceModel> foodPlaceList;
+
+  PlaceState({
+    required this.areaCode,
+    this.tourPlaceList = const [],
+    this.culturePlaceList = const [],
+    this.foodPlaceList = const [],
+  });
+
+  List<PlaceModel> funcPlaceList(String kindPlace){
+    if(kindPlace == 'tourPlaceList'){
+      return tourPlaceList;
+    }else if(kindPlace == 'culturePlaceList'){
+      return culturePlaceList;
+    }else{
+      return foodPlaceList;
+    }
+  }
 }
 
 class PlaceViewModel extends Notifier<PlaceState> {
   @override
   PlaceState build() {
-    return PlaceState(areaCode: '', places: []);
+    return PlaceState(areaCode: '');
   }
 
-  Future<void> loadPlaces({
-    required String areaCode,
-    String? contentTypeId,
-  }) async {
+  Future<void> loadPlaces({required String areaCode}) async {
     final placeRepository = PlaceRepository();
-    var placeList = await placeRepository.fetchPlaceList(areaCode);
+    final tourData = await placeRepository.fetchPlaceList(areaCode: areaCode, contentTypeId: '12');
+    final culData = await placeRepository.fetchPlaceList(areaCode: areaCode, contentTypeId: '14');
+    final foodData = await placeRepository.fetchPlaceList(areaCode: areaCode, contentTypeId: '39');
 
     // 이미지 없는 항목 제거
-    placeList = placeList
-        .where((place) => place.firstimage.isNotEmpty)
-        .toList();
+    final tourList = tourData.where((place) => place.firstimage.isNotEmpty).toList();
+    final culList = culData.where((place) => place.firstimage.isNotEmpty).toList();
+    final foodList = foodData.where((place) => place.firstimage.isNotEmpty).toList();
 
-    // contentTypeId 필터링
-    if (contentTypeId != null) {
-      placeList = placeList
-          .where((place) => place.contentTypeId.toString() == contentTypeId)
-          .toList();
-    }
-
-    state = PlaceState(areaCode: areaCode, places: placeList);
+    state = PlaceState(areaCode: areaCode, tourPlaceList: tourList, culturePlaceList: culList, foodPlaceList: foodList);
   }
 }
 

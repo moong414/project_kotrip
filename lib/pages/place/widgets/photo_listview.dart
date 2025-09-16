@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:project_kotrip/core/theme/text_style.dart';
-import 'package:project_kotrip/core/widgets/app_btNavi.dart';
+import 'package:project_kotrip/core/widgets/app_bt_navi.dart';
 import 'package:project_kotrip/pages/place/place_view_model.dart';
 
 class PhotoListview extends ConsumerStatefulWidget {
   String? boldTitle;
   String title;
   String? code;
-  String? contentTypeId;
+  String kindPlace;
   PhotoListview({
     super.key,
     this.boldTitle,
     required this.title,
     this.code,
-    this.contentTypeId,
+    this.kindPlace = 'tourPlaceList',
   });
 
   @override
@@ -28,15 +28,14 @@ class _PhotoListviewState extends ConsumerState<PhotoListview> {
     super.initState();
     if (widget.code != null) {
       ref.read(placeViewModelProvider.notifier).loadPlaces(
-        areaCode: widget.code!,
-        contentTypeId: widget.contentTypeId,
+        areaCode: widget.code!
       );
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    final state = ref.watch(placeViewModelProvider);
+    final state = ref.watch(placeViewModelProvider).funcPlaceList(widget.kindPlace.toString());
 
     return Padding(
       padding: const EdgeInsets.only(left: 20, bottom: 10),
@@ -74,7 +73,7 @@ class _PhotoListviewState extends ConsumerState<PhotoListview> {
             height: 190,
             child: ListView.separated(
               scrollDirection: Axis.horizontal,
-              itemCount: state.places.length,
+              itemCount: state.length,
               itemBuilder: (context, index) {
                 return Stack(
                   children: [
@@ -89,13 +88,8 @@ class _PhotoListviewState extends ConsumerState<PhotoListview> {
                         borderRadius: BorderRadiusGeometry.circular(10),
                         child: Opacity(
                           opacity: 0.9,
-                          child: (state == null)
-                              ? Image.asset(
-                                  'assets/images/img_jeju.png',
-                                  fit: BoxFit.cover,
-                                )
-                              : Image.network(
-                                  state.places[index].firstimage,
+                          child: Image.network(
+                                  state[index].firstimage,
                                   fit: BoxFit.cover,
                                 ),
                         ),
@@ -120,7 +114,7 @@ class _PhotoListviewState extends ConsumerState<PhotoListview> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            state.places[index].title,
+                            state[index].title,
                             style: TextStyle(
                               color: Colors.white,
                               fontWeight: FontWeight.w600,
@@ -128,7 +122,7 @@ class _PhotoListviewState extends ConsumerState<PhotoListview> {
                           ),
                           SizedBox(height: 6),
                           Text(
-                            state.places[index].addr,
+                            state[index].addr,
                             style: TextStyle(color: Colors.white, fontSize: 12),
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,

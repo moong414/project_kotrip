@@ -1,7 +1,7 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:project_kotrip/core/theme/text_style.dart';
-import 'package:project_kotrip/core/widgets/photo_listview.dart';
+import 'package:project_kotrip/pages/place/widgets/photo_listview.dart';
 import 'package:project_kotrip/data/service/place_code_map.dart';
 import 'package:project_kotrip/pages/home/widgets/ai_btn.dart';
 import 'package:project_kotrip/pages/home/widgets/home_photo_slide.dart';

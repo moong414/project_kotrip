@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:project_kotrip/core/theme/colors.dart';
 import 'package:project_kotrip/core/theme/text_style.dart';
-import 'package:project_kotrip/core/widgets/basic_app_bar.dart';
 import 'package:project_kotrip/pages/my/widgets/my_plan_link.dart';
 import 'package:project_kotrip/pages/my/widgets/my_review_link.dart';
 

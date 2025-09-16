@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:project_kotrip/core/theme/colors.dart';
 import 'package:project_kotrip/core/theme/text_style.dart';
 import 'package:project_kotrip/core/widgets/app_button.dart';
-import 'package:project_kotrip/pages/plan/Plan_page.dart';
+import 'package:project_kotrip/pages/plan/plan_page.dart';
 import 'package:project_kotrip/pages/plan/widgets/plan_text_form.dart';
 
 class PlanIntroPage extends StatelessWidget {

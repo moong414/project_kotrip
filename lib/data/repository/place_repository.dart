@@ -7,7 +7,7 @@ class PlaceRepository {
   final key = Uri.decodeFull(dotenv.env['TOUR_API_KEY'] ?? '');
   final url = 'https://apis.data.go.kr/B551011/KorService2/areaBasedList2?';
 
-  Future<List<PlaceModel>> fetchPlaceList(String areaCode) async {
+  Future<List<PlaceModel>> fetchPlaceList({required String areaCode, String? contentTypeId}) async {
     try {
       final response = await dio.get(
         url,
@@ -16,10 +16,10 @@ class PlaceRepository {
           'MobileApp': 'Kotrip',
           'serviceKey': key,
           'areaCode': areaCode,
-          'contentTypeId': '12',
+          if (contentTypeId != null) 'contentTypeId': contentTypeId,
           //12관광지 14문화시설 39음식점
           // 'pageNo': '1',
-          // 'numOfRows': '10',
+          'numOfRows': '20',
           '_type': 'json',
         },
       );
