@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:project_kotrip/core/theme/text_style.dart';
 import 'package:project_kotrip/core/widgets/app_bt_navi.dart';
 import 'package:project_kotrip/pages/place/place_detail_page.dart';
-import 'package:project_kotrip/pages/place/place_view_model.dart';
+import 'package:project_kotrip/pages/place/view_model/place_view_model.dart';
 
 class PhotoListview extends ConsumerStatefulWidget {
   String? boldTitle;
@@ -104,17 +104,17 @@ class _PhotoListviewState extends ConsumerState<PhotoListview> {
                         ),
                       ),
                     ),
-                    Positioned(
-                      top: 12,
-                      right: 14,
-                      child: Row(
-                        children: [
-                          Icon(Icons.star, color: Colors.white, size: 14),
-                          SizedBox(width: 3),
-                          Text('4.6', style: TextStyle(color: Colors.white)),
-                        ],
-                      ),
-                    ),
+                    // Positioned(
+                    //   top: 12,
+                    //   right: 14,
+                    //   child: Row(
+                    //     children: [
+                    //       Icon(Icons.star, color: Colors.white, size: 14),
+                    //       SizedBox(width: 3),
+                    //       Text('4.6', style: TextStyle(color: Colors.white)),
+                    //     ],
+                    //   ),
+                    // ),
                     Positioned(
                       left: 14,
                       bottom: 12,

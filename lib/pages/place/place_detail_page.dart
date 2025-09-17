@@ -4,7 +4,7 @@ import 'package:project_kotrip/core/theme/colors.dart';
 import 'package:project_kotrip/core/theme/text_style.dart';
 import 'package:project_kotrip/core/widgets/basic_app_bar.dart';
 import 'package:project_kotrip/data/model/place_model.dart';
-import 'package:project_kotrip/pages/place/review_view_model.dart';
+import 'package:project_kotrip/pages/place/view_model/review_view_model.dart';
 import 'package:project_kotrip/pages/place/widgets/place_map_btn.dart';
 import 'package:project_kotrip/pages/place/widgets/my_review_dialog.dart';
 import 'package:project_kotrip/pages/place/widgets/place_review_list.dart';

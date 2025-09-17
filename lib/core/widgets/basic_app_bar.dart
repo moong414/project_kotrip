@@ -9,15 +9,26 @@ class BasicAppBar extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       backgroundColor: Colors.transparent,
       centerTitle: true,
-      title: Image.asset(darkMode ? 'assets/images/logo_s_wt.png' : 'assets/images/logo_s.png', height: 19),
-      leading: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Image.asset(darkMode ? 'assets/images/icon_back_wt.png' : 'assets/images/icon_back.png', height: 24),
+      title: Image.asset(
+        darkMode ? 'assets/images/logo_s_wt.png' : 'assets/images/logo_s.png',
+        height: 19,
       ),
+      leading: Navigator.canPop(context)
+          ? IconButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              icon: Image.asset(
+                darkMode
+                    ? 'assets/images/icon_back_wt.png'
+                    : 'assets/images/icon_back.png',
+                height: 24,
+              ),
+            )
+          : null,
     );
   }
 
-  @override
   @override
   Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 }
