@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:project_kotrip/data/model/place_model.dart';
-import 'package:project_kotrip/data/repository/place_repository.dart';
+import 'package:project_kotrip/data/repository/tour_place_repository.dart';
 
 class PlaceState {
   String areaCode;
@@ -27,13 +27,14 @@ class PlaceState {
 }
 
 class PlaceViewModel extends Notifier<PlaceState> {
+  final placeRepository = TourPlaceRepository();
+
   @override
   PlaceState build() {
     return PlaceState(areaCode: '');
   }
 
   Future<void> loadPlaces({required String areaCode}) async {
-    final placeRepository = PlaceRepository();
     final tourData = await placeRepository.fetchPlaceList(areaCode: areaCode, contentTypeId: '12');
     final culData = await placeRepository.fetchPlaceList(areaCode: areaCode, contentTypeId: '14');
     final foodData = await placeRepository.fetchPlaceList(areaCode: areaCode, contentTypeId: '39');
@@ -45,6 +46,7 @@ class PlaceViewModel extends Notifier<PlaceState> {
 
     state = PlaceState(areaCode: areaCode, tourPlaceList: tourList, culturePlaceList: culList, foodPlaceList: foodList);
   }
+  
 }
 
 final placeViewModelProvider = NotifierProvider<PlaceViewModel, PlaceState>(() {

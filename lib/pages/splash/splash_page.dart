@@ -40,7 +40,7 @@ class _SplashPageState extends State<SplashPage> {
                   Image.asset('assets/images/logo.png', height: 45),
                   SizedBox(height: 15),
                   Text(
-                    '손쉽게 짜는 나만의 국내여행 일정',
+                    '손쉽게 만드는 나만의 국내여행 일정',
                     style: TextStyle(
                       color: colBkTxt,
                       fontWeight: FontWeight.w300,

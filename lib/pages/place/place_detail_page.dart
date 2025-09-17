@@ -3,47 +3,42 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:project_kotrip/core/theme/colors.dart';
 import 'package:project_kotrip/core/theme/text_style.dart';
 import 'package:project_kotrip/core/widgets/basic_app_bar.dart';
-import 'package:project_kotrip/data/model/review_model.dart';
-import 'package:project_kotrip/pages/place/place_view_model.dart';
+import 'package:project_kotrip/data/model/place_model.dart';
+import 'package:project_kotrip/pages/place/view_model/review_view_model.dart';
 import 'package:project_kotrip/pages/place/widgets/place_map_btn.dart';
 import 'package:project_kotrip/pages/place/widgets/my_review_dialog.dart';
 import 'package:project_kotrip/pages/place/widgets/place_review_list.dart';
 
-class PlaceDetailPage extends ConsumerWidget {
-  int index;
-  String kindPlace;
+class PlaceDetailPage extends ConsumerStatefulWidget {
+  PlaceModel placemodel;
 
-  PlaceDetailPage({super.key, required this.index, required this.kindPlace});
+  PlaceDetailPage({super.key, required this.placemodel});
 
+  @override
+  ConsumerState<PlaceDetailPage> createState() => _PlaceDetailPageState();
+}
+
+class _PlaceDetailPageState extends ConsumerState<PlaceDetailPage> {
   final placeBorder = OutlineInputBorder(
     borderSide: BorderSide(color: colSecond, width: 1),
     borderRadius: BorderRadius.circular(10),
   );
 
   //리뷰리스트
-  List<ReviewModel> reviewList = [
-    ReviewModel(
-      author: '김땡땡',
-      content: '성산일출봉은 제주도 여행 중 꼭 들러야 할 명소입니다.',
-      date: '25.09.09',
-    ),
-    ReviewModel(
-      author: '임땡땡',
-      content: '성산일출봉은 제주도 여행 중 꼭 들러야 할 명소입니다.',
-      date: '25.09.09',
-    ),
-    ReviewModel(
-      author: '문땡땡',
-      content: '성산일출봉은 제주도 여행 중 꼭 들러야 할 명소입니다.',
-      date: '25.09.09',
-    ),
-  ];
+  // ReviewModel reviewList = ReviewModel(rating: 4.5, reviews: [
+  //   Review(authorName: '문땡땡', text: '리뷰 테스트', time: 250909)
+  // ]);
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final state = ref
-        .watch(placeViewModelProvider)
-        .funcPlaceList(kindPlace.toString());
+  void initState() {
+    super.initState();
+    ref.read(reviewViewModelProvider.notifier).loadReview(place: widget.placemodel);
+  }
+
+
+  @override
+  Widget build(BuildContext context) {
+    final state = ref.watch(reviewViewModelProvider);
 
     return Scaffold(
       body: Stack(
@@ -54,7 +49,11 @@ class PlaceDetailPage extends ConsumerWidget {
             height: 490,
             child: Opacity(
               opacity: 0.9,
-              child: Image.network(state[index].firstimage, fit: BoxFit.cover)),
+              child: Image.network(
+                widget.placemodel.firstimage,
+                fit: BoxFit.cover,
+              ),
+            ),
           ),
           Positioned(
             top: 380,
@@ -65,10 +64,10 @@ class PlaceDetailPage extends ConsumerWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(state[index].title, style: AppTxtSt.titleStWtB),
+                  Text(widget.placemodel.title, style: AppTxtSt.titleStWtB),
                   SizedBox(height: 5),
                   Text(
-                    state[index].addr,
+                    widget.placemodel.addr,
                     style: AppTxtSt.txtStRWt,
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
@@ -99,11 +98,14 @@ class PlaceDetailPage extends ConsumerWidget {
                           SizedBox(width: 10),
                           Icon(Icons.star, color: colPrimary, size: 18),
                           SizedBox(width: 4),
-                          Text('4.6', style: AppTxtSt.txtPrimary),
+                          Text(
+                            '${state.reviewModel.rating}',
+                            style: AppTxtSt.txtPrimary,
+                          ),
                         ],
                       ),
                     ),
-                    PlaceReviewList(reviewList: reviewList),
+                    PlaceReviewList(reviewList: state.reviewModel.reviews),
                     PlaceMapBtn(),
                     MyReviewDialog(),
                     SizedBox(height: 30),
