@@ -10,6 +10,10 @@ class BasicAppBar extends StatelessWidget implements PreferredSizeWidget {
       backgroundColor: Colors.transparent,
       centerTitle: true,
       title: Image.asset(darkMode ? 'assets/images/logo_s_wt.png' : 'assets/images/logo_s.png', height: 19),
+      leading: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Image.asset(darkMode ? 'assets/images/icon_back_wt.png' : 'assets/images/icon_back.png', height: 24),
+      ),
     );
   }
 

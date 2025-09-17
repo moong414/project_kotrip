@@ -3,11 +3,9 @@ import 'package:project_kotrip/core/theme/colors.dart';
 import 'package:project_kotrip/core/theme/text_style.dart';
 import 'package:project_kotrip/core/widgets/app_button.dart';
 import 'package:project_kotrip/core/widgets/dialog_text_form_field.dart';
-import 'package:project_kotrip/data/model/review_model.dart';
 
 class MyReviewDialog extends StatelessWidget {
-  ReviewModel? myReview;
-  MyReviewDialog({super.key, this.myReview});
+  const MyReviewDialog({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -21,34 +19,34 @@ class MyReviewDialog extends StatelessWidget {
             child: Text('내 리뷰', style: AppTxtSt.txtStL),
           ),
           SizedBox(height: 20),
-          (myReview == null)
-              ? GestureDetector(
-                onTap: (){
-                  //작성
-                  showMyReviewDialog(context);
-                },
-                child: Container(
-                    width: double.infinity,
-                    padding: const EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                      border: BoxBorder.all(color: colGreyBtn),
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text('작성된 리뷰가 없습니다!', style: AppTxtSt.hintStR),
-                        Container(
-                          width: 40,
-                          height: 40,
-                          padding: EdgeInsets.all(10),
-                          child: Image.asset('assets/images/icon_edit_gr.png'),
-                        ),
-                      ],
-                    ),
-                  ),
-              )
-              : Container(
+              //내 리뷰 없을시
+              // ? GestureDetector(
+              //   onTap: (){
+              //     //작성
+              //     showMyReviewDialog(context);
+              //   },
+              //   child: Container(
+              //       width: double.infinity,
+              //       padding: const EdgeInsets.all(16),
+              //       decoration: BoxDecoration(
+              //         border: BoxBorder.all(color: colGreyBtn),
+              //         borderRadius: BorderRadius.circular(10),
+              //       ),
+              //       child: Row(
+              //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //         children: [
+              //           Text('작성된 리뷰가 없습니다!', style: AppTxtSt.hintStR),
+              //           Container(
+              //             width: 40,
+              //             height: 40,
+              //             padding: EdgeInsets.all(10),
+              //             child: Image.asset('assets/images/icon_edit_gr.png'),
+              //           ),
+              //         ],
+              //       ),
+              //     ),
+              // ):
+              Container(
                   width: double.infinity,
                   padding: const EdgeInsets.fromLTRB(16, 16, 10, 8),
                   decoration: BoxDecoration(
@@ -58,12 +56,12 @@ class MyReviewDialog extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(myReview!.content, style: AppTxtSt.txtStR),
+                      Text('컨텐츠', style: AppTxtSt.txtStR),
                       SizedBox(height: 10),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(myReview!.date, style: AppTxtSt.txtStR),
+                          Text('날짜', style: AppTxtSt.txtStR),
                           Row(
                             children: [
                               GestureDetector(

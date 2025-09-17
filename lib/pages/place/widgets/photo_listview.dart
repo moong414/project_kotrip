@@ -27,18 +27,14 @@ class _PhotoListviewState extends ConsumerState<PhotoListview> {
   void initState() {
     super.initState();
     if (widget.code != null) {
-      ref
-          .read(placeViewModelProvider.notifier)
-          .loadPlaces(areaCode: widget.code!);
+      ref.read(placeViewModelProvider.notifier).loadPlaces(areaCode: widget.code!);
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    final state = ref
-        .watch(placeViewModelProvider)
-        .funcPlaceList(widget.kindPlace.toString());
-
+    final state = ref.watch(placeViewModelProvider).funcPlaceList(widget.kindPlace.toString());
+    
     return Padding(
       padding: const EdgeInsets.only(left: 20, bottom: 10),
       child: Column(
@@ -86,7 +82,7 @@ class _PhotoListviewState extends ConsumerState<PhotoListview> {
                     GestureDetector(
                       onTap: (){
                         Navigator.push(context, MaterialPageRoute(builder: (context) {
-                          return PlaceDetailPage(index: index, kindPlace: widget.kindPlace.toString());
+                          return PlaceDetailPage(placemodel: state[index]);
                         },));
                       },
                       child: Container(
@@ -128,15 +124,12 @@ class _PhotoListviewState extends ConsumerState<PhotoListview> {
                         children: [
                           Text(
                             state[index].title,
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w600,
-                            ),
+                            style: AppTxtSt.txtStRBWt,
                           ),
                           SizedBox(height: 6),
                           Text(
                             state[index].addr,
-                            style: TextStyle(color: Colors.white, fontSize: 12),
+                            style: AppTxtSt.txtStSWt,
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,
                           ),

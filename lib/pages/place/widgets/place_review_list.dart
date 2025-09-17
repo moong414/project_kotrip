@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:project_kotrip/core/theme/colors.dart';
 import 'package:project_kotrip/core/theme/text_style.dart';
 import 'package:project_kotrip/data/model/review_model.dart';
 
 class PlaceReviewList extends StatelessWidget {
-  List<ReviewModel> reviewList;
+  List<Review> reviewList;
   PlaceReviewList({super.key, required this.reviewList});
 
   @override
@@ -27,7 +28,7 @@ class PlaceReviewList extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  reviewList[index].content,
+                  reviewList[index].text,
                   maxLines: 4,
                   overflow: TextOverflow.ellipsis,
                   style: AppTxtSt.txtStR,
@@ -36,13 +37,13 @@ class PlaceReviewList extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    Text(reviewList[index].author, maxLines: 1, overflow: TextOverflow.ellipsis),
+                    Text(reviewList[index].authorName, maxLines: 1, overflow: TextOverflow.ellipsis),
                   ],
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    Text(reviewList[index].date, maxLines: 1, overflow: TextOverflow.ellipsis),
+                    Text(DateFormat('yy-MM-dd').format(reviewList[index].time), maxLines: 1, overflow: TextOverflow.ellipsis),
                   ],
                 ),
               ],
