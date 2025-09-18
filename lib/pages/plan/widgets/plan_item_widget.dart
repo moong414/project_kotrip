@@ -6,11 +6,9 @@ class PlanItemWidget extends StatelessWidget {
   PlanItemWidget({
     super.key,
     required this.index,
-    required this.listLen,
     required this.item,
   });
   int index;
-  int listLen;
   PlanModel item;
 
   @override

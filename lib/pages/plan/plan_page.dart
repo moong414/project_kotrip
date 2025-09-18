@@ -7,7 +7,7 @@ import 'package:project_kotrip/core/widgets/basic_app_bar.dart';
 import 'package:project_kotrip/core/widgets/app_button.dart';
 import 'package:project_kotrip/pages/plan/view_model/plan_view_model.dart';
 import 'package:project_kotrip/pages/plan/widgets/plan_oneday_list.dart';
-import 'package:project_kotrip/pages/plan/widgets/plan_dialog.dart';
+import 'package:project_kotrip/pages/plan/widgets/plan_dialog_btn.dart';
 
 class PlanPage extends ConsumerStatefulWidget {
   const PlanPage({super.key});
@@ -17,6 +17,8 @@ class PlanPage extends ConsumerStatefulWidget {
 }
 
 class _PlanPageState extends ConsumerState<PlanPage> {
+  int thisPage = 0; //지금 몇페이지인지 확인용
+
   @override
   Widget build(BuildContext context) {
     final planState = ref.watch(planViewModelProvider);
@@ -25,14 +27,14 @@ class _PlanPageState extends ConsumerState<PlanPage> {
 
     return Scaffold(
       appBar: BasicAppBar(),
-      floatingActionButton: PlanDialog(),
+      floatingActionButton: PlanDialogBtn(thisPage: thisPage),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Column(
             children: [
-              SizedBox(height: 20,),
+              SizedBox(height: 20),
               Row(
                 children: [
                   Text(planState.area, style: AppTxtSt.titleStB),
@@ -48,8 +50,18 @@ class _PlanPageState extends ConsumerState<PlanPage> {
                 child: PageView.builder(
                   itemCount: totalDays,
                   itemBuilder: (context, index) {
-                    return PlanOnedayList(planState: planState, index: index, totalDays: totalDays);
-                },),
+                    return PlanOnedayList(
+                      planState: planState,
+                      today: index,
+                      totalDays: totalDays,
+                    );
+                  },
+                  onPageChanged: (index) {
+                    setState(() {
+                      thisPage = index;
+                    });
+                  },
+                ),
               ),
               Container(
                 height: 72,

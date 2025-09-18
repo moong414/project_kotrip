@@ -8,11 +8,11 @@ class PlanOnedayList extends StatelessWidget {
   PlanOnedayList({
     super.key,
     required this.planState,
-    required this.index,
+    required this.today,
     required this.totalDays,
   });
   PlanState planState;
-  int index;
+  int today;
   int totalDays;
 
   @override
@@ -29,7 +29,7 @@ class PlanOnedayList extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              (index > 0 && totalDays!=0)
+              (today > 0 && totalDays != 0)
                   ? GestureDetector(
                       onTap: () {
                         print('클릭!');
@@ -43,15 +43,14 @@ class PlanOnedayList extends StatelessWidget {
                       ),
                     )
                   : SizedBox(width: 56, height: 56),
-
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text('Day ${index+1} ', style: AppTxtSt.txtStLB),
+                  Text('Day ${today + 1} ', style: AppTxtSt.txtStLB),
                   Text('25.09.18', style: AppTxtSt.txtStR),
                 ],
               ),
-              (index < totalDays && index != totalDays-1)
+              (today < totalDays && today != totalDays - 1)
                   ? GestureDetector(
                       onTap: () {
                         print('클릭!');
@@ -68,7 +67,8 @@ class PlanOnedayList extends StatelessWidget {
             ],
           ),
         ),
-        (planState.planList.isEmpty)
+        SizedBox(height: 20,),
+        (planState.planList[today].isEmpty)
             ? Expanded(
                 child: Center(
                   child: Text(
@@ -80,13 +80,12 @@ class PlanOnedayList extends StatelessWidget {
             : Expanded(
                 child: ReorderableListView.builder(
                   padding: const EdgeInsets.only(bottom: 100),
-                  itemCount: planState.planList.length,
+                  itemCount: planState.planList[today].length,
                   itemBuilder: (context, index) {
                     return PlanItemWidget(
                       key: ValueKey(planState.planList[index]),
                       index: index,
-                      listLen: planState.planList.length,
-                      item: planState.planList[index],
+                      item: planState.planList[today][index], 
                     );
                   },
                   onReorder: (int oldIndex, int newIndex) {
