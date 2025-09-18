@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:project_kotrip/core/theme/colors.dart';
 import 'package:project_kotrip/core/theme/text_style.dart';
-import 'package:project_kotrip/data/model/plan_item.dart';
+import 'package:project_kotrip/data/model/plan_model.dart';
 
 class PlanFinishItemWidget extends StatelessWidget {
   PlanFinishItemWidget({
@@ -12,7 +12,7 @@ class PlanFinishItemWidget extends StatelessWidget {
   });
   int index;
   int listLen;
-  PlanItem item;
+  PlanModel item;
 
   @override
   Widget build(BuildContext context) {
@@ -52,13 +52,13 @@ class PlanFinishItemWidget extends StatelessWidget {
                     Row(
                       children: [
                         Text(
-                          item.time ?? '',
+                          item.time,
                           style: AppTxtSt.txtStR.copyWith(
                             fontWeight: FontWeight.w700,
                           ),
                         ),
                         SizedBox(width: 4),
-                        Text(item.loca ?? '', style: AppTxtSt.txtStR),
+                        Text(item.place ?? '', style: AppTxtSt.txtStR),
                       ],
                     ),
                     SizedBox(height: 4),

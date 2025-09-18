@@ -3,6 +3,8 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:project_kotrip/core/theme/colors.dart';
 import 'package:project_kotrip/core/widgets/app_bt_navi.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
@@ -16,6 +18,16 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      locale: const Locale('ko'),
+      supportedLocales: const [
+        Locale('en'), // 영어
+        Locale('ko'), // 한국어
+      ],
+      localizationsDelegates: const [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
       theme: ThemeData(
         colorScheme: ColorScheme.light(
           primary: colPrimary,

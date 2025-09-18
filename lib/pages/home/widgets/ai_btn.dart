@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:project_kotrip/core/theme/colors.dart';
 import 'package:project_kotrip/core/theme/text_style.dart';
+import 'package:project_kotrip/core/widgets/app_bt_navi.dart';
 
 class AiBtn extends StatefulWidget {
   const AiBtn({super.key});
@@ -55,6 +56,9 @@ class _AiBtnState extends State<AiBtn> {
                   child: TextButton(
                     onPressed: () {
                       //Ai에게 부탁하기
+                      Navigator.push(context, MaterialPageRoute(builder: (context) {
+                        return AppBtNavi(initialIndex: 1);
+                      },));
                     },
                     style: TextButton.styleFrom(
                       backgroundColor: Colors.white,
