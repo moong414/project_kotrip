@@ -5,9 +5,34 @@ import 'package:project_kotrip/core/widgets/app_button.dart';
 import 'package:project_kotrip/pages/plan/plan_page.dart';
 import 'package:project_kotrip/pages/plan/widgets/plan_text_form.dart';
 
-class PlanIntroPage extends StatelessWidget {
-  PlanIntroPage({super.key});
-  final TextEditingController controller = TextEditingController();
+class PlanIntroPage extends StatefulWidget {
+  String? title;
+  PlanIntroPage({super.key, this.title});
+
+  @override
+  State<PlanIntroPage> createState() => _PlanIntroPageState();
+}
+
+class _PlanIntroPageState extends State<PlanIntroPage> {
+  late final TextEditingController regionController;
+  late final TextEditingController startDateController;
+  late final TextEditingController endDateController;
+
+  @override
+  void initState() {
+    super.initState();
+    regionController = TextEditingController(text: widget.title ?? '');
+    startDateController = TextEditingController();
+    endDateController = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    regionController.dispose();
+    startDateController.dispose();
+    endDateController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -18,20 +43,20 @@ class PlanIntroPage extends StatelessWidget {
         children: [
           Text('이번엔 어디로 갈까요?', style: AppTxtSt.titleSt),
           SizedBox(height: 20),
-          PlanTextForm(hintText: '지역을 입력하세요', controller: controller),
+          PlanTextForm(hintText: '지역을 입력하세요', controller: regionController),
           SizedBox(height: 20),
           Text('언제 떠나시나요?', style: AppTxtSt.titleSt),
           SizedBox(height: 20),
           PlanTextForm(
             hintText: '시작일을 입력하세요',
-            controller: controller,
+            controller: startDateController,
             isLabel: true,
             labelText: '시작일',
           ),
           SizedBox(height: 10),
           PlanTextForm(
             hintText: '도착일을 입력하세요',
-            controller: controller,
+            controller: endDateController,
             isLabel: true,
             labelText: '도착일',
           ),

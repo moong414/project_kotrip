@@ -8,7 +8,8 @@ import 'package:project_kotrip/pages/plan/plan_intro_page.dart';
 
 class AppBtNavi extends StatefulWidget {
   final int initialIndex;
-  const AppBtNavi({super.key, this.initialIndex = 0});
+  final String? title;
+  const AppBtNavi({super.key, this.initialIndex = 0, this.title});
 
   @override
   State<AppBtNavi> createState() => _AppBtNaviState();
@@ -16,16 +17,8 @@ class AppBtNavi extends StatefulWidget {
 
 class _AppBtNaviState extends State<AppBtNavi> {
   late int thisIndex;
+  late final List<Widget> pages;
   
-
-  // 페이지 리스트
-  static final List<Widget> pages = <Widget>[
-    HomePage(),
-    PlanIntroPage(),
-    PlacePage(),
-    MyPage(),
-  ];
-
   //탭을 눌렀을때 호출되는 함수
   void btnTap(int index) {
     setState(() {
@@ -37,6 +30,13 @@ class _AppBtNaviState extends State<AppBtNavi> {
   void initState() {
     super.initState();
     thisIndex = widget.initialIndex;
+    // 페이지 리스트
+    pages = [
+        HomePage(),
+        PlanIntroPage(title: widget.title),
+        PlacePage(),
+        MyPage(),
+      ];
   }
 
 

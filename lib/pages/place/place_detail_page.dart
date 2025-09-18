@@ -24,21 +24,18 @@ class _PlaceDetailPageState extends ConsumerState<PlaceDetailPage> {
     borderRadius: BorderRadius.circular(10),
   );
 
-  //리뷰리스트
-  // ReviewModel reviewList = ReviewModel(rating: 4.5, reviews: [
-  //   Review(authorName: '문땡땡', text: '리뷰 테스트', time: 250909)
-  // ]);
-
   @override
   void initState() {
     super.initState();
-    ref.read(reviewViewModelProvider.notifier).loadReview(place: widget.placemodel);
+    ref
+        .read(reviewViewModelProvider.notifier)
+        .loadReview(place: widget.placemodel);
   }
-
 
   @override
   Widget build(BuildContext context) {
     final state = ref.watch(reviewViewModelProvider);
+    print(state.reviewModel.reviews);
 
     return Scaffold(
       body: Stack(
@@ -105,7 +102,25 @@ class _PlaceDetailPageState extends ConsumerState<PlaceDetailPage> {
                         ],
                       ),
                     ),
-                    PlaceReviewList(reviewList: state.reviewModel.reviews),
+                    (state.reviewModel.reviews.isEmpty)
+                        ? Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 20),
+                            child: Container(
+                              width: double.infinity,
+                              padding: const EdgeInsets.all(20),
+                              decoration: BoxDecoration(
+                                border: BoxBorder.all(color: colGreyBtn),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: Text(
+                                '장소리뷰가 없습니다.',
+                                style: AppTxtSt.hintStR,
+                              ),
+                            ),
+                          )
+                        : PlaceReviewList(
+                            reviewList: state.reviewModel.reviews,
+                          ),
                     PlaceMapBtn(),
                     MyReviewDialog(),
                     SizedBox(height: 30),
