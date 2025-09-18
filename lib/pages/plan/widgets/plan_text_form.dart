@@ -17,6 +17,11 @@ class PlanTextForm extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextFormField(
       controller: controller,
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return '지역을 입력하세요';
+        }
+      },
       cursorColor: colPrimary,
       decoration: InputDecoration(
         contentPadding: EdgeInsets.all(16),

@@ -22,7 +22,6 @@ class _PlanPageState extends ConsumerState<PlanPage> {
     final planState = ref.watch(planViewModelProvider);
     //총여행 날짜 구하기
     final totalDays = planState.endDate.difference(planState.startDate).inDays + 1;
-    
 
     return Scaffold(
       appBar: BasicAppBar(),
