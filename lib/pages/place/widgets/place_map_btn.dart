@@ -1,18 +1,26 @@
 
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:project_kotrip/core/theme/colors.dart';
 import 'package:project_kotrip/core/theme/text_style.dart';
+import 'package:project_kotrip/pages/place/view_model/review_view_model.dart';
 
-class PlaceMapBtn extends StatelessWidget {
+class PlaceMapBtn extends ConsumerWidget {
   const PlaceMapBtn({
     super.key,
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final state = ref.watch(reviewViewModelProvider.notifier);
+    final id = ref.read(reviewViewModelProvider).placeId;
+
     return GestureDetector(
       onTap: () {
-        print('클릭!');
+        //지도로 열기
+        // Navigator.push(context, MaterialPageRoute(builder: (context) {
+          
+        // },));
       },
       child: Padding(
         padding: const EdgeInsets.all(20),

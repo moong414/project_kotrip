@@ -38,6 +38,15 @@ class AppTxtSt {
     fontSize: 16,
     fontWeight: FontWeight.w700,
   );
+  //본문스타일 16폰트-화이트
+  static const TextStyle txtStLWt = TextStyle(
+    color: Colors.white,
+    fontSize: 16,
+    fontWeight: FontWeight.w500,
+    shadows: [
+      Shadow(offset: Offset(1, 1), blurRadius: 4, color: Colors.black38),
+    ],
+  );
 
   //본문스타일 14폰트==================================================
   static const TextStyle txtStR = TextStyle(

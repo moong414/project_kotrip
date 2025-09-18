@@ -1,3 +1,13 @@
+import java.util.Properties
+
+val localProperties = Properties()
+val localPropertiesFile = rootProject.file("local.properties")
+if (localPropertiesFile.exists()) {
+    localPropertiesFile.reader(Charsets.UTF_8).use { reader ->
+        localProperties.load(reader)
+    }
+}
+
 plugins {
     id("com.android.application")
     id("kotlin-android")
@@ -8,7 +18,7 @@ plugins {
 android {
     namespace = "com.example.project_kotrip"
     compileSdk = flutter.compileSdkVersion
-    ndkVersion = flutter.ndkVersion
+    ndkVersion = "27.0.12077973"
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
@@ -28,6 +38,10 @@ android {
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName
+        
+        manifestPlaceholders.putAll(
+        mapOf("GOOGLE_MAPS_API_KEY" to (localProperties.getProperty("GOOGLE_MAPS_API_KEY") ?: ""))
+    )
     }
 
     buildTypes {
