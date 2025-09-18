@@ -54,6 +54,7 @@ class _PlanIntroPageState extends ConsumerState<PlanIntroPage> {
           PlanDateWidget(
             hintText: '도착일을 입력하세요',
             labelText: '도착일',
+            isStartDate: false,
           ),
           SizedBox(height: 20),
           AppButton(

@@ -1,19 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:project_kotrip/core/theme/colors.dart';
 import 'package:project_kotrip/core/theme/text_style.dart';
+import 'package:project_kotrip/pages/plan/view_model/plan_view_model.dart';
 
-class PlanDateWidget extends StatefulWidget {
+class PlanDateWidget extends ConsumerStatefulWidget {
   final String? hintText;
   final String? labelText;
+  final bool isStartDate;
 
-  const PlanDateWidget({super.key, this.hintText, this.labelText});
+  const PlanDateWidget({super.key, this.hintText, this.labelText, this.isStartDate = true});
 
   @override
-  State<PlanDateWidget> createState() => _PlanDateWidgetState();
+  ConsumerState<PlanDateWidget> createState() => _PlanDateWidgetState();
 }
 
-class _PlanDateWidgetState extends State<PlanDateWidget> {
+class _PlanDateWidgetState extends ConsumerState<PlanDateWidget> {
   DateTime? selectedDate;
+  late final PlanViewModel planState;
+
 
   Future<void> _selectDate() async {
     final DateTime? pickedDate = await showDatePicker(
@@ -24,17 +29,35 @@ class _PlanDateWidgetState extends State<PlanDateWidget> {
       lastDate: DateTime(2035),
     );
 
-    setState(() {
-      selectedDate = pickedDate;
-    });
+    if(pickedDate != null){
+      setState(() {
+        selectedDate = pickedDate;
+
+        //뷰모델에 전달
+        if(widget.isStartDate){
+          planState.updateStartDate(selectedDate!);
+        }else{
+          planState.updateEndDate(selectedDate!);
+        }
+      });
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    planState = ref.read(planViewModelProvider.notifier);
   }
 
   @override
   Widget build(BuildContext context) {
+
     return Stack(
       children: [
         GestureDetector(
-          onTap: _selectDate,
+          onTap: (){
+            _selectDate();
+          },
           child: Container(
             width: double.infinity,
             height: 56,

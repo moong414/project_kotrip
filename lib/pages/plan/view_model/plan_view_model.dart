@@ -40,8 +40,16 @@ class PlanViewModel extends Notifier<PlanState> {
     );
   }
 
+  //장소업데이트
   void updatePlace(String text) {
     state = state.copyWith(area: text);
+  }
+  //날짜업데이트
+  void updateStartDate(DateTime date){
+    state = state.copyWith(startDate: date);
+  }
+  void updateEndDate(DateTime date){
+    state = state.copyWith(endDate: date);
   }
 }
 
