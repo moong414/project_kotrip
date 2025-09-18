@@ -1,41 +1,40 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:project_kotrip/core/theme/colors.dart';
 import 'package:project_kotrip/core/theme/text_style.dart';
 import 'package:project_kotrip/core/widgets/app_button.dart';
 import 'package:project_kotrip/pages/plan/plan_page.dart';
+import 'package:project_kotrip/pages/plan/view_model/plan_view_model.dart';
+import 'package:project_kotrip/pages/plan/widgets/plan_date_widget.dart';
 import 'package:project_kotrip/pages/plan/widgets/plan_text_form.dart';
 
-class PlanIntroPage extends StatefulWidget {
+class PlanIntroPage extends ConsumerStatefulWidget {
   String? title;
   PlanIntroPage({super.key, this.title});
 
   @override
-  State<PlanIntroPage> createState() => _PlanIntroPageState();
+  ConsumerState<PlanIntroPage> createState() => _PlanIntroPageState();
 }
 
-class _PlanIntroPageState extends State<PlanIntroPage> {
+class _PlanIntroPageState extends ConsumerState<PlanIntroPage> {
   late final TextEditingController regionController;
-  late final TextEditingController startDateController;
-  late final TextEditingController endDateController;
 
   @override
   void initState() {
     super.initState();
     regionController = TextEditingController(text: widget.title ?? '');
-    startDateController = TextEditingController();
-    endDateController = TextEditingController();
   }
 
   @override
   void dispose() {
     regionController.dispose();
-    startDateController.dispose();
-    endDateController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    final planState = ref.read(planViewModelProvider.notifier);
+
     return Padding(
       padding: EdgeInsetsGeometry.all(20),
       child: Column(
@@ -47,23 +46,22 @@ class _PlanIntroPageState extends State<PlanIntroPage> {
           SizedBox(height: 20),
           Text('언제 떠나시나요?', style: AppTxtSt.titleSt),
           SizedBox(height: 20),
-          PlanTextForm(
+          PlanDateWidget(
             hintText: '시작일을 입력하세요',
-            controller: startDateController,
-            isLabel: true,
             labelText: '시작일',
           ),
           SizedBox(height: 10),
-          PlanTextForm(
+          PlanDateWidget(
             hintText: '도착일을 입력하세요',
-            controller: endDateController,
-            isLabel: true,
             labelText: '도착일',
           ),
           SizedBox(height: 20),
           AppButton(
             text: '직접 여행 계획 세우기',
             onPressed: () {
+              //뷰모델에 전달
+              planState.updatePlace(regionController.text);
+              //페이지 이동
               Navigator.push(
                 context,
                 MaterialPageRoute(

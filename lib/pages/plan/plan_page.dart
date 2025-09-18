@@ -1,20 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:project_kotrip/core/theme/colors.dart';
 import 'package:project_kotrip/core/theme/text_style.dart';
 import 'package:project_kotrip/core/widgets/basic_app_bar.dart';
 import 'package:project_kotrip/core/widgets/app_button.dart';
 import 'package:project_kotrip/data/model/plan_model.dart';
+import 'package:project_kotrip/pages/plan/view_model/plan_view_model.dart';
 import 'package:project_kotrip/pages/plan/widgets/plan_dialog.dart';
 import 'package:project_kotrip/pages/plan/widgets/plan_item_widget.dart';
 
-class PlanPage extends StatefulWidget {
+class PlanPage extends ConsumerStatefulWidget {
   const PlanPage({super.key});
 
   @override
-  State<PlanPage> createState() => _PlanPageState();
+  ConsumerState<PlanPage> createState() => _PlanPageState();
 }
 
-class _PlanPageState extends State<PlanPage> {
+class _PlanPageState extends ConsumerState<PlanPage> {
   // 임시 리스트
   List<PlanModel> planItems = [
     PlanModel(time: '08:15', place: '제주공항', todo: '서울 출발 → 제주 도착. 렌터카 수령'),
@@ -28,6 +30,8 @@ class _PlanPageState extends State<PlanPage> {
 
   @override
   Widget build(BuildContext context) {
+    final planState = ref.watch(planViewModelProvider);
+
     return Scaffold(
       appBar: BasicAppBar(),
       floatingActionButton: PlanDialog(),
@@ -44,12 +48,12 @@ class _PlanPageState extends State<PlanPage> {
                     Row(
                       children: [
                         Text(
-                          '제주도',
+                          planState.area,
                           style: AppTxtSt.titleStB
                         ),
                         SizedBox(width: 8),
                         Text('25.09.27 - 25.09.28', style: AppTxtSt.txtStL),
-                      ],
+                      ]
                     ),
                     Container(
                       margin: EdgeInsets.only(top: 20),

@@ -13,6 +13,20 @@ class PlanState {
     required this.endDate,
     required this.planList,
   });
+
+  PlanState copyWith({
+    String? area,
+    DateTime? startDate,
+    DateTime? endDate,
+    List<PlanModel>? planList,
+  }) {
+    return PlanState(
+      area: area ?? this.area,
+      startDate: startDate ?? this.startDate,
+      endDate: endDate ?? this.endDate,
+      planList: planList ?? this.planList,
+    );
+  }
 }
 
 class PlanViewModel extends Notifier<PlanState> {
@@ -24,6 +38,10 @@ class PlanViewModel extends Notifier<PlanState> {
       endDate: DateTime(00),
       planList: [],
     );
+  }
+
+  void updatePlace(String text) {
+    state = state.copyWith(area: text);
   }
 }
 
