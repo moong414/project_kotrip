@@ -1,4 +1,4 @@
-package com.example.project_kotrip
+package com.kotrip
 
 import io.flutter.embedding.android.FlutterActivity
 
