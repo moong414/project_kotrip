@@ -3,8 +3,8 @@ import 'package:project_kotrip/core/theme/colors.dart';
 import 'package:project_kotrip/core/theme/text_style.dart';
 import 'package:project_kotrip/pages/plan/data/plan_model.dart';
 
-class PlanFinishItemWidget extends StatelessWidget {
-  PlanFinishItemWidget({
+class FinishItemWidget extends StatelessWidget {
+  FinishItemWidget({
     super.key,
     required this.index,
     required this.listLen,

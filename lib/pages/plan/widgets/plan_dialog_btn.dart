@@ -3,9 +3,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:project_kotrip/core/theme/colors.dart';
 import 'package:project_kotrip/core/theme/text_style.dart';
 import 'package:project_kotrip/core/widgets/app_button.dart';
-import 'package:project_kotrip/core/widgets/dialog_text_form_field.dart';
 import 'package:project_kotrip/pages/plan/data/plan_model.dart';
 import 'package:project_kotrip/pages/plan/view_model/plan_view_model.dart';
+import 'package:project_kotrip/core/widgets/dialog_text_form_field.dart';
 
 class PlanDialogBtn extends ConsumerWidget {
   PlanDialogBtn({super.key, required this.thisPage});
@@ -15,7 +15,7 @@ class PlanDialogBtn extends ConsumerWidget {
   void showPlanDialog(BuildContext context, WidgetRef ref) {
     final timeCon = TextEditingController();
     final placeCon = TextEditingController();
-    final contentCon = TextEditingController();
+    final todoCon = TextEditingController();
 
     showDialog(
       context: context,
@@ -54,11 +54,7 @@ class PlanDialogBtn extends ConsumerWidget {
                           children: [
                             SizedBox(width: 80, child: Text('시간')),
                             Expanded(
-                              child: DialogTextFormField(
-                                title: '시간',
-                                controller: timeCon,
-                                hintText: '시간을 입력하세요',
-                              ),
+                              child: DialogTextFormField(controller: timeCon, hintText: '시간을 입력하세요', autoFocus: true,)
                             ),
                           ],
                         ),
@@ -67,11 +63,7 @@ class PlanDialogBtn extends ConsumerWidget {
                           children: [
                             SizedBox(width: 80, child: Text('장소')),
                             Expanded(
-                              child: DialogTextFormField(
-                                title: '장소',
-                                controller: placeCon,
-                                hintText: '장소를 입력하세요',
-                              ),
+                              child: DialogTextFormField(controller: placeCon, hintText: '장소를 입력하세요',)
                             ),
                           ],
                         ),
@@ -85,12 +77,7 @@ class PlanDialogBtn extends ConsumerWidget {
                               child: Text('할 일'),
                             ),
                             Expanded(
-                              child: DialogTextFormField(
-                                title: '할 일',
-                                controller: contentCon,
-                                hintText: '할 일을 입력하세요',
-                                maxLines: 3,
-                              ),
+                              child: DialogTextFormField(controller: todoCon, hintText: '할 일을 입력하세요', maxLines: 3,)
                             ),
                           ],
                         ),
@@ -105,7 +92,7 @@ class PlanDialogBtn extends ConsumerWidget {
                                   PlanModel(
                                     time: timeCon.text,
                                     place: placeCon.text,
-                                    todo: contentCon.text,
+                                    todo: todoCon.text,
                                   ),
                                 );
                             Navigator.pop(context);

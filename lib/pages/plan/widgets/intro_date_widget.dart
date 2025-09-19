@@ -4,12 +4,12 @@ import 'package:project_kotrip/core/theme/colors.dart';
 import 'package:project_kotrip/core/theme/text_style.dart';
 import 'package:project_kotrip/pages/plan/view_model/plan_view_model.dart';
 
-class PlanDateWidget extends ConsumerStatefulWidget {
+class IntroDateWidget extends ConsumerStatefulWidget {
   final String? hintText;
   final String? labelText;
   final bool isStartDate;
 
-  const PlanDateWidget({
+  const IntroDateWidget({
     super.key,
     this.hintText,
     this.labelText,
@@ -17,10 +17,10 @@ class PlanDateWidget extends ConsumerStatefulWidget {
   });
 
   @override
-  ConsumerState<PlanDateWidget> createState() => _PlanDateWidgetState();
+  ConsumerState<IntroDateWidget> createState() => _IntroDateWidgetState();
 }
 
-class _PlanDateWidgetState extends ConsumerState<PlanDateWidget> {
+class _IntroDateWidgetState extends ConsumerState<IntroDateWidget> {
   DateTime? selectedDate;
   late final PlanViewModel planState;
 
