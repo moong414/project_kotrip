@@ -3,9 +3,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:project_kotrip/core/theme/colors.dart';
 import 'package:project_kotrip/core/theme/text_style.dart';
 import 'package:project_kotrip/core/widgets/app_button.dart';
-import 'package:project_kotrip/pages/plan/plan_page.dart';
+import 'package:project_kotrip/pages/plan/pages/plan_page.dart';
 import 'package:project_kotrip/pages/plan/view_model/plan_view_model.dart';
-import 'package:project_kotrip/pages/plan/widgets/plan_date_widget.dart';
+import 'package:project_kotrip/pages/plan/widgets/intro_date_widget.dart';
 import 'package:project_kotrip/pages/plan/widgets/plan_text_form.dart';
 
 class PlanIntroPage extends ConsumerStatefulWidget {
@@ -64,9 +64,9 @@ class _PlanIntroPageState extends ConsumerState<PlanIntroPage> {
             SizedBox(height: 20),
             Text('언제 떠나시나요?', style: AppTxtSt.titleSt),
             SizedBox(height: 20),
-            PlanDateWidget(hintText: '시작일을 입력하세요', labelText: '시작일'),
+            IntroDateWidget(hintText: '시작일을 입력하세요', labelText: '시작일'),
             SizedBox(height: 10),
-            PlanDateWidget(
+            IntroDateWidget(
               hintText: '도착일을 입력하세요',
               labelText: '도착일',
               isStartDate: false,

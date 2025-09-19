@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:project_kotrip/data/model/place_model.dart';
-import 'package:project_kotrip/data/repository/tour_place_repository.dart';
+import 'package:project_kotrip/pages/place/data/place_model.dart';
+import 'package:project_kotrip/pages/place/data/tour_place_repository.dart';
 
 class PlaceState {
   String areaCode;

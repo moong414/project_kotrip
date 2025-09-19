@@ -142,7 +142,7 @@ void showMyReviewDialog(BuildContext context) {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       SizedBox(height: 10,),
-                      DialogTextFormField(title: '할 일', controller: reviewCon, hintText: '리뷰 작성', maxLines: 3,),
+                      DialogTextFormField(controller: reviewCon, hintText: '리뷰 작성', maxLines: 3,),
                       SizedBox(height: 10,),
                       AppButton(onPressed: (){}, bgColor: colBkBtn, text: '작성',)
                     ],

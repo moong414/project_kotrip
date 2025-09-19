@@ -3,19 +3,16 @@ import 'package:project_kotrip/core/theme/colors.dart';
 import 'package:project_kotrip/core/theme/text_style.dart';
 
 class DialogTextFormField extends StatelessWidget {
-  String title;
-  String? hintText;
   TextEditingController controller;
-  ValueChanged<String>? onChanged;
-  FormFieldValidator? validator;
+  bool autoFocus;
+  String hintText;
   int maxLines;
+  FormFieldValidator? validator;
   DialogTextFormField({
     super.key,
-    required this.title,
-    this.hintText,
     required this.controller,
-    this.onChanged,
-    this.validator,
+    this.autoFocus = false,
+    this.hintText = '입력하세요',
     this.maxLines = 1,
   });
 
@@ -23,9 +20,9 @@ class DialogTextFormField extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextFormField(
       controller: controller,
-      onChanged: onChanged,
-      validator: validator,
+      autofocus: autoFocus,
       maxLines: maxLines,
+      validator: validator,
       decoration: InputDecoration(
         hintText: hintText,
         hintStyle: AppTxtSt.hintStR,
