@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 
-Future<bool?> showConfirmDialog(BuildContext context, String message) {
+Future<bool?> showConfirmDialog(BuildContext context, String message, {bool justConfirm = false}) {
   return showCupertinoDialog<bool>(
     context: context,
     builder: (context) {
@@ -15,6 +15,7 @@ Future<bool?> showConfirmDialog(BuildContext context, String message) {
             },
             child: const Text('취소'),
           ),
+          if(!justConfirm)
           CupertinoDialogAction(
             isDefaultAction: true,
             onPressed: () {

@@ -90,9 +90,9 @@ class PlanDialogBtn extends ConsumerWidget {
                                 .addTodo(
                                   thisPage,
                                   PlanModel(
-                                    time: timeCon.text,
-                                    place: placeCon.text,
-                                    todo: todoCon.text,
+                                    time: timeCon.text.replaceAll('\n', '').trim(),
+                                    place: placeCon.text.replaceAll('\n', '').trim(),
+                                    todo: todoCon.text.replaceAll('\n', '').trim(),
                                   ),
                                 );
                             Navigator.pop(context);

@@ -7,6 +7,7 @@ import 'package:project_kotrip/core/widgets/app_bt_navi.dart';
 import 'package:project_kotrip/core/widgets/basic_app_bar.dart';
 import 'package:project_kotrip/core/widgets/app_button.dart';
 import 'package:project_kotrip/core/widgets/show_confirm_dialog.dart';
+import 'package:project_kotrip/core/widgets/show_error_action_sheet.dart';
 import 'package:project_kotrip/pages/plan/pages/plan_finish_page.dart';
 import 'package:project_kotrip/pages/plan/view_model/plan_view_model.dart';
 import 'package:project_kotrip/pages/plan/widgets/plan_oneday_list.dart';
@@ -179,9 +180,14 @@ class _PlanPageState extends ConsumerState<PlanPage> {
                         bgColor: colBkBtn,
                         text: '확인',
                         onPressed: () {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) {
+                          if(planState.planList.isEmpty || planState.planList.every((day){return day.isEmpty;})){
+                            showErrorActionSheet(context, '일정을 추가해주세요.');
+                            return;
+                          }else{
+                            Navigator.push(context, MaterialPageRoute(builder: (context) {
                             return PlanFinishPage();
                           },));
+                          }
                         },
                       ),
                     ),

@@ -52,12 +52,12 @@ class _PlanFinishPageState extends ConsumerState<PlanFinishPage> {
   @override
   Widget build(BuildContext context) {
     final planState = ref.read(planViewModelProvider);
+    final planStateFunc = ref.read(planViewModelProvider.notifier);
     //출발날짜
     final startDate = DateFormat('yy.MM.dd').format(planState.startDate);
     //도착날짜
     final endDate = DateFormat('yy.MM.dd').format(planState.endDate);
 
-    
     return Scaffold(
       appBar: BasicAppBar(),
       body: SafeArea(
@@ -67,7 +67,11 @@ class _PlanFinishPageState extends ConsumerState<PlanFinishPage> {
             children: [
               SizedBox(height: 20),
               //상단정보
-              PlanTopInfo(planState: planState, startDate: startDate, endDate: endDate),
+              PlanTopInfo(
+                planState: planState,
+                startDate: startDate,
+                endDate: endDate,
+              ),
               Container(
                 margin: EdgeInsets.symmetric(vertical: 20),
                 height: 52,
@@ -104,35 +108,41 @@ class _PlanFinishPageState extends ConsumerState<PlanFinishPage> {
                 child: ListView.builder(
                   itemCount: planState.planList.length,
                   itemBuilder: (context, dayIndex) {
-                  //페이지별 날짜
-                  final pageDate = DateFormat('yy.MM.dd').format(planState.startDate.add(Duration(days: dayIndex)));
-                  return Column(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 20),
-                        child: Row(
-                          children: [
-                            Text('Day ${dayIndex + 1}', style: AppTxtSt.txtStLB),
-                            SizedBox(width: 4),
-                            Text('($pageDate)'),
-                          ],
+                    //페이지별 날짜
+                    final pageDate = DateFormat(
+                      'yy.MM.dd',
+                    ).format(planState.startDate.add(Duration(days: dayIndex)));
+                    return Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 20),
+                          child: Row(
+                            children: [
+                              Text(
+                                'Day ${dayIndex + 1}',
+                                style: AppTxtSt.txtStLB,
+                              ),
+                              SizedBox(width: 4),
+                              Text('($pageDate)'),
+                            ],
+                          ),
                         ),
-                      ),
-                      ListView.builder(
-                        shrinkWrap: true,
-                        physics: NeverScrollableScrollPhysics(),
-                        itemCount: planState.planList[dayIndex].length,
-                        itemBuilder: (context, itemIndex) {
-                          return FinishItemWidget(
-                            index: itemIndex,
-                            listLen: planState.planList[dayIndex].length,
-                            item: planState.planList[dayIndex][itemIndex],
-                          );
-                        },
-                      ),
-                    ],
-                  );
-                },)
+                        ListView.builder(
+                          shrinkWrap: true,
+                          physics: NeverScrollableScrollPhysics(),
+                          itemCount: planState.planList[dayIndex].length,
+                          itemBuilder: (context, itemIndex) {
+                            return FinishItemWidget(
+                              index: itemIndex,
+                              listLen: planState.planList[dayIndex].length,
+                              item: planState.planList[dayIndex][itemIndex],
+                            );
+                          },
+                        ),
+                      ],
+                    );
+                  },
+                ),
               ),
               Container(
                 height: 72,
@@ -149,7 +159,7 @@ class _PlanFinishPageState extends ConsumerState<PlanFinishPage> {
                             '계획을 삭제하시겠습니까?',
                           );
                           if (result == true) {
-                            ref.read(planViewModelProvider.notifier).planClear();
+                            planStateFunc.planClear();
                             Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -167,7 +177,15 @@ class _PlanFinishPageState extends ConsumerState<PlanFinishPage> {
                       child: AppButton(
                         bgColor: colBkBtn,
                         text: '저장',
-                        onPressed: () {},
+                        onPressed: () async {
+                          final result = await showConfirmDialog(context, '저장되었습니다.\n마이페이지에서 확인 하실수있습니다.', justConfirm: false, );
+                          if (result == true) {
+                            planStateFunc.savePlanToFirestore();
+                            Navigator.push(context, MaterialPageRoute(builder: (context) {
+                              return AppBtNavi(initialIndex: 0,);
+                            },));
+                          }
+                        },
                       ),
                     ),
                   ],

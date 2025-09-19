@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:project_kotrip/pages/plan/data/plan_model.dart';
+import 'package:project_kotrip/pages/plan/data/plan_repository.dart';
 
 class PlanState {
   String area;
@@ -14,23 +15,54 @@ class PlanState {
     required this.planList,
   });
 
+  Map<String, dynamic> toMap() {
+    return {
+      'area': area,
+      'startDate': startDate,
+      'endDate': endDate,
+      'planList': planList.map((list) {
+        return list.map((plan) {
+          return plan.toMap();
+        }).toList();
+      }).toList(),
+    };
+  }
+
+  factory PlanState.fromMap(Map<String, dynamic> map) {
+    return PlanState(
+      area: map['area'] ?? '',
+      startDate: map['startDate'].toDate(),
+      endDate: map['endDate'].toDate(),
+      planList: (map['planList'] as List)
+          .map(
+            (dayList) => (dayList as List)
+                .map((plan) => PlanModel.fromMap(plan))
+                .toList(),
+          )
+          .toList(),
+    );
+  }
+
   PlanState copyWith({
     String? area,
     DateTime? startDate,
     DateTime? endDate,
     List<DateTime>? dateList,
-    List<List<PlanModel>>? planLists,
+    List<List<PlanModel>>? planList,
   }) {
     return PlanState(
       area: area ?? this.area,
       startDate: startDate ?? this.startDate,
       endDate: endDate ?? this.endDate,
-      planList: planLists ?? this.planList,
+      planList: planList ?? this.planList,
     );
   }
 }
 
 class PlanViewModel extends Notifier<PlanState> {
+  final PlanRepository repo = PlanRepository();
+  final String userId = 'test_user';
+
   @override
   PlanState build() {
     return PlanState(
@@ -42,7 +74,7 @@ class PlanViewModel extends Notifier<PlanState> {
   }
 
   //플랜뷰모델 초기화
-  void planClear(){
+  void planClear() {
     state = PlanState(
       area: '',
       startDate: DateTime(1970, 1, 1),
@@ -87,7 +119,7 @@ class PlanViewModel extends Notifier<PlanState> {
       newPlanList.add([]);
     }
     newPlanList[dateIndex] = [...newPlanList[dateIndex], todo];
-    state = state.copyWith(planLists: newPlanList);
+    state = state.copyWith(planList: newPlanList);
   }
 
   //할 일 순서 바꿈
@@ -99,7 +131,7 @@ class PlanViewModel extends Notifier<PlanState> {
     todayPlans.insert(newIndex, item);
 
     newList[dayIndex] = todayPlans;
-    state = state.copyWith(planLists: newList);
+    state = state.copyWith(planList: newList);
   }
 
   //할 일 삭제
@@ -110,8 +142,25 @@ class PlanViewModel extends Notifier<PlanState> {
     todayPlans.removeAt(todoIndex);
 
     newList[dayIndex] = todayPlans;
-    state = state.copyWith(planLists: newList);
+    state = state.copyWith(planList: newList);
   }
+
+  // ---------------- Firestore 연동 ----------------
+  Future<void> savePlanToFirestore({String? planId}) async {
+    await repo.savePlan(userId, state, planId: planId);
+  }
+
+  Future<void> loadPlansFromFirestore() async {
+    final plans = await repo.getPlan(userId);
+    if (plans.isNotEmpty) {
+      state = plans.first;
+    }
+  }
+
+  Future<void> deletePlanFromFirestore(String planId) async {
+    await repo.deletePlan(userId, planId);
+  }
+
 }
 
 final planViewModelProvider = NotifierProvider<PlanViewModel, PlanState>(
