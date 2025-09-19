@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:project_kotrip/core/theme/text_style.dart';
 import 'package:project_kotrip/pages/plan/data/plan_model.dart';
 
-class PlanItemWidget extends StatelessWidget {
-  PlanItemWidget({
+class OnedayPlanItem extends StatelessWidget {
+  OnedayPlanItem({
     super.key,
     required this.index,
     required this.item,
