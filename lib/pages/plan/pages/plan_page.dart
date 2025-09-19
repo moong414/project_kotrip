@@ -7,9 +7,11 @@ import 'package:project_kotrip/core/widgets/app_bt_navi.dart';
 import 'package:project_kotrip/core/widgets/basic_app_bar.dart';
 import 'package:project_kotrip/core/widgets/app_button.dart';
 import 'package:project_kotrip/core/widgets/show_confirm_dialog.dart';
+import 'package:project_kotrip/pages/plan/pages/plan_finish_page.dart';
 import 'package:project_kotrip/pages/plan/view_model/plan_view_model.dart';
 import 'package:project_kotrip/pages/plan/widgets/plan_oneday_list.dart';
 import 'package:project_kotrip/pages/plan/widgets/plan_dialog_btn.dart';
+import 'package:project_kotrip/pages/plan/widgets/plan_top_info.dart';
 
 class PlanPage extends ConsumerStatefulWidget {
   const PlanPage({super.key});
@@ -30,7 +32,7 @@ class _PlanPageState extends ConsumerState<PlanPage> {
 
   @override
   Widget build(BuildContext context) {
-    final planState = ref.watch(planViewModelProvider);
+    final planState = ref.read(planViewModelProvider);
     //출발날짜
     final startDate = DateFormat('yy.MM.dd').format(planState.startDate);
     //도착날짜
@@ -77,17 +79,8 @@ class _PlanPageState extends ConsumerState<PlanPage> {
             children: [
               SizedBox(height: 20),
               //상단정보
-              Row(
-                children: [
-                  Text(planState.area, style: AppTxtSt.titleStB),
-                  SizedBox(width: 8),
-                  Text(
-                    '$startDate - $endDate}',
-                    style: AppTxtSt.txtStL,
-                  ),
-                ],
-              ),
-              //상단 컨트롤러
+              PlanTopInfo(planState: planState, startDate: startDate, endDate: endDate),
+              //상단 날짜 & 페이지 이동 컨트롤러
               Container(
                 height: 56,
                 margin: EdgeInsets.only(top: 20),
@@ -167,6 +160,7 @@ class _PlanPageState extends ConsumerState<PlanPage> {
                             '계획을 취소하시겠습니까?',
                           );
                           if (result == true) {
+                            ref.read(planViewModelProvider.notifier).planClear();
                             Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -183,8 +177,12 @@ class _PlanPageState extends ConsumerState<PlanPage> {
                     Expanded(
                       child: AppButton(
                         bgColor: colBkBtn,
-                        text: '저장',
-                        onPressed: () {},
+                        text: '확인',
+                        onPressed: () {
+                          Navigator.push(context, MaterialPageRoute(builder: (context) {
+                            return PlanFinishPage();
+                          },));
+                        },
                       ),
                     ),
                   ],
@@ -197,3 +195,4 @@ class _PlanPageState extends ConsumerState<PlanPage> {
     );
   }
 }
+

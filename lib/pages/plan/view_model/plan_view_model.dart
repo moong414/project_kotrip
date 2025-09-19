@@ -41,6 +41,16 @@ class PlanViewModel extends Notifier<PlanState> {
     );
   }
 
+  //플랜뷰모델 초기화
+  void planClear(){
+    state = PlanState(
+      area: '',
+      startDate: DateTime(1970, 1, 1),
+      endDate: DateTime(1970, 1, 1),
+      planList: [],
+    );
+  }
+
   // 장소 업데이트
   void updatePlace(String text) {
     state = state.copyWith(area: text);
@@ -82,15 +92,26 @@ class PlanViewModel extends Notifier<PlanState> {
 
   //할 일 순서 바꿈
   void reorderTodo(int dayIndex, int oldIndex, int newIndex) {
-  final newList = List<List<PlanModel>>.from(state.planList);
-  final todayPlans = List<PlanModel>.from(newList[dayIndex]);
+    final newList = List<List<PlanModel>>.from(state.planList);
+    final todayPlans = List<PlanModel>.from(newList[dayIndex]);
 
-  final item = todayPlans.removeAt(oldIndex);
-  todayPlans.insert(newIndex, item);
+    final item = todayPlans.removeAt(oldIndex);
+    todayPlans.insert(newIndex, item);
 
-  newList[dayIndex] = todayPlans;
-  state = state.copyWith(planLists: newList);
-}
+    newList[dayIndex] = todayPlans;
+    state = state.copyWith(planLists: newList);
+  }
+
+  //할 일 삭제
+  void deleteTodo(int dayIndex, int todoIndex) {
+    final newList = List<List<PlanModel>>.from(state.planList);
+    final todayPlans = List<PlanModel>.from(newList[dayIndex]);
+
+    todayPlans.removeAt(todoIndex);
+
+    newList[dayIndex] = todayPlans;
+    state = state.copyWith(planLists: newList);
+  }
 }
 
 final planViewModelProvider = NotifierProvider<PlanViewModel, PlanState>(

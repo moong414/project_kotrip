@@ -66,12 +66,9 @@ class _PlanIntroPageState extends ConsumerState<PlanIntroPage> {
             SizedBox(height: 20),
             IntroDateWidget(hintText: '시작일을 입력하세요', labelText: '시작일'),
             SizedBox(height: 10),
-            IntroDateWidget(
-              hintText: '도착일을 입력하세요',
-              labelText: '도착일',
-              isStartDate: false,
-            ),
+            IntroDateWidget(hintText: '도착일을 입력하세요', labelText: '도착일', isStartDate: false,),
             SizedBox(height: 20),
+            //직접여행계획세우기 버튼
             AppButton(
               text: '직접 여행 계획 세우기',
               onPressed: () {
@@ -81,6 +78,7 @@ class _PlanIntroPageState extends ConsumerState<PlanIntroPage> {
               },
             ),
             SizedBox(height: 10),
+            //AI에게 부탁하기 버튼
             Container(
               decoration: BoxDecoration(
                 gradient: LinearGradient(colors: [colGreenAi, colMintAi]),
@@ -90,17 +88,13 @@ class _PlanIntroPageState extends ConsumerState<PlanIntroPage> {
                 onPressed: () {
                   //AI에게 부탁하기
                 },
-                style: TextButton.styleFrom(
-                  padding: EdgeInsets.fromLTRB(16, 17, 16, 16),
-                ),
+                style: TextButton.styleFrom(padding: EdgeInsets.fromLTRB(16, 17, 16, 16),),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Image.asset('assets/images/icon_ai_wt.png', width: 20),
                     SizedBox(width: 6),
-                    Text(
-                      'AI에게 부탁하기',
-                      style: TextStyle(color: Colors.white, fontSize: 16),
+                    Text('AI에게 부탁하기', style: TextStyle(color: Colors.white, fontSize: 16),
                     ),
                   ],
                 ),
