@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:project_kotrip/core/theme/text_style.dart';
-import 'package:project_kotrip/data/model/plan_model.dart';
+import 'package:project_kotrip/pages/plan/data/plan_model.dart';
 
 class PlanItemWidget extends StatelessWidget {
   PlanItemWidget({

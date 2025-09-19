@@ -2,7 +2,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:project_kotrip/core/theme/text_style.dart';
 import 'package:project_kotrip/core/widgets/app_bt_navi.dart';
-import 'package:project_kotrip/data/service/place_code_map.dart';
+import 'package:project_kotrip/pages/home/data/place_code_map.dart';
 
 class HomePhotoSlide extends StatefulWidget {
   const HomePhotoSlide({super.key});

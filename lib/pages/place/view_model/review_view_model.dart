@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:project_kotrip/data/model/place_model.dart';
-import 'package:project_kotrip/data/model/review_model.dart';
-import 'package:project_kotrip/data/repository/google_review_repository.dart';
+import 'package:project_kotrip/pages/place/data/place_model.dart';
+import 'package:project_kotrip/pages/place/data/review_model.dart';
+import 'package:project_kotrip/pages/place/data/google_review_repository.dart';
 
 class ReviewState {
   String placeId;

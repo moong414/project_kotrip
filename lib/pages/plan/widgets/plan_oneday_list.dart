@@ -1,22 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:project_kotrip/core/theme/colors.dart';
 import 'package:project_kotrip/core/theme/text_style.dart';
 import 'package:project_kotrip/pages/plan/view_model/plan_view_model.dart';
 import 'package:project_kotrip/pages/plan/widgets/plan_item_widget.dart';
 
-class PlanOnedayList extends StatelessWidget {
+class PlanOnedayList extends ConsumerWidget {
   PlanOnedayList({
     super.key,
-    required this.planState,
     required this.today,
     required this.totalDays,
   });
-  PlanState planState;
   int today;
   int totalDays;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final planState = ref.watch(planViewModelProvider);
+    final planViewModel = ref.read(planViewModelProvider.notifier);
+    final hasPlans = planState.planList.length > today && planState.planList[today].isNotEmpty;
+
     return Column(
       children: [
         Container(
@@ -68,7 +71,7 @@ class PlanOnedayList extends StatelessWidget {
           ),
         ),
         SizedBox(height: 20,),
-        (planState.planList[today].isEmpty)
+        (!hasPlans)
             ? Expanded(
                 child: Center(
                   child: Text(
@@ -83,15 +86,14 @@ class PlanOnedayList extends StatelessWidget {
                   itemCount: planState.planList[today].length,
                   itemBuilder: (context, index) {
                     return PlanItemWidget(
-                      key: ValueKey(planState.planList[index]),
+                      key: ValueKey('${today}_$index'),
                       index: index,
                       item: planState.planList[today][index], 
                     );
                   },
                   onReorder: (int oldIndex, int newIndex) {
                     if (newIndex > oldIndex) newIndex -= 1;
-                    final item = planState.planList.removeAt(oldIndex);
-                    planState.planList.insert(newIndex, item);
+                    planViewModel.reorderTodo(today, oldIndex, newIndex);
                   },
                 ),
               ),

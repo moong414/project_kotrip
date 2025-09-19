@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:project_kotrip/core/theme/colors.dart';
 import 'package:project_kotrip/core/theme/text_style.dart';
 import 'package:project_kotrip/pages/place/widgets/photo_listview.dart';
-import 'package:project_kotrip/data/service/place_code_map.dart';
+import 'package:project_kotrip/pages/home/data/place_code_map.dart';
 import 'package:project_kotrip/pages/place/view_model/place_view_model.dart';
 import 'package:project_kotrip/pages/place/widgets/place_filter_item.dart';
 

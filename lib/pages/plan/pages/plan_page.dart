@@ -51,7 +51,6 @@ class _PlanPageState extends ConsumerState<PlanPage> {
                   itemCount: totalDays,
                   itemBuilder: (context, index) {
                     return PlanOnedayList(
-                      planState: planState,
                       today: index,
                       totalDays: totalDays,
                     );

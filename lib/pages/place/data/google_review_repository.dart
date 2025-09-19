@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:project_kotrip/data/model/place_model.dart';
-import 'package:project_kotrip/data/model/review_model.dart';
+import 'package:project_kotrip/pages/place/data/place_model.dart';
+import 'package:project_kotrip/pages/place/data/review_model.dart';
 
 class GoogleReviewRepository {
   final dio = Dio();
