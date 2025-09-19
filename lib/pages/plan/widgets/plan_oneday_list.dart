@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:project_kotrip/core/theme/colors.dart';
 import 'package:project_kotrip/core/theme/text_style.dart';
 import 'package:project_kotrip/core/widgets/show_confirm_dialog.dart';
 import 'package:project_kotrip/pages/plan/view_model/plan_view_model.dart';
@@ -51,7 +52,7 @@ class PlanOnedayList extends ConsumerWidget {
                           planViewModel.deleteTodo(today, index);
                         }
                       },
-                      icon: Icon(Icons.close),
+                      icon: Icon(Icons.close, color: colBkTxt,),
                     ),
                   ],
                 );

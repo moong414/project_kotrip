@@ -3,11 +3,7 @@ import 'package:project_kotrip/core/theme/text_style.dart';
 import 'package:project_kotrip/pages/plan/data/plan_model.dart';
 
 class OnedayPlanItem extends StatelessWidget {
-  OnedayPlanItem({
-    super.key,
-    required this.index,
-    required this.item,
-  });
+  OnedayPlanItem({super.key, required this.index, required this.item});
   int index;
   PlanModel item;
 
@@ -22,7 +18,7 @@ class OnedayPlanItem extends StatelessWidget {
             width: 18,
             height: 22,
             margin: EdgeInsets.only(right: 9),
-            child: Image.asset('assets/images/icon_plan_list.png',)
+            child: Image.asset('assets/images/icon_plan_list.png'),
           ),
           Expanded(
             child: Column(
@@ -37,7 +33,13 @@ class OnedayPlanItem extends StatelessWidget {
                       ),
                     ),
                     SizedBox(width: 4),
-                    Text(item.place ?? '', style: AppTxtSt.txtStR),
+                    Expanded(
+                      child: Text(
+                        item.place ?? '',
+                        style: AppTxtSt.txtStR,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
                   ],
                 ),
                 SizedBox(height: 4),

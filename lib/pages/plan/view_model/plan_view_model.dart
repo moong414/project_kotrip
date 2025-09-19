@@ -41,6 +41,16 @@ class PlanViewModel extends Notifier<PlanState> {
     );
   }
 
+  //플랜뷰모델 초기화
+  void planClear(){
+    state = PlanState(
+      area: '',
+      startDate: DateTime(1970, 1, 1),
+      endDate: DateTime(1970, 1, 1),
+      planList: [],
+    );
+  }
+
   // 장소 업데이트
   void updatePlace(String text) {
     state = state.copyWith(area: text);
@@ -92,7 +102,8 @@ class PlanViewModel extends Notifier<PlanState> {
     state = state.copyWith(planLists: newList);
   }
 
-  void deleteTodo(int dayIndex, int todoIndex){
+  //할 일 삭제
+  void deleteTodo(int dayIndex, int todoIndex) {
     final newList = List<List<PlanModel>>.from(state.planList);
     final todayPlans = List<PlanModel>.from(newList[dayIndex]);
 
@@ -101,7 +112,6 @@ class PlanViewModel extends Notifier<PlanState> {
     newList[dayIndex] = todayPlans;
     state = state.copyWith(planLists: newList);
   }
-
 }
 
 final planViewModelProvider = NotifierProvider<PlanViewModel, PlanState>(

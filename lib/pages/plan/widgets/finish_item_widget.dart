@@ -58,7 +58,7 @@ class FinishItemWidget extends StatelessWidget {
                           ),
                         ),
                         SizedBox(width: 4),
-                        Text(item.place ?? '', style: AppTxtSt.txtStR),
+                        Expanded(child: Text(item.place ?? '', style: AppTxtSt.txtStR, overflow: TextOverflow.ellipsis,)),
                       ],
                     ),
                     SizedBox(height: 4),
