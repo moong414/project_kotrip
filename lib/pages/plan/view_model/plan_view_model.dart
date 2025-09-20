@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:project_kotrip/pages/plan/data/plan_model.dart';
 import 'package:project_kotrip/pages/plan/data/plan_repository.dart';
+import 'dart:convert';
 
 class PlanState {
   String area;
@@ -20,11 +21,10 @@ class PlanState {
       'area': area,
       'startDate': startDate,
       'endDate': endDate,
-      'planList': planList.map((list) {
-        return list.map((plan) {
-          return plan.toMap();
-        }).toList();
-      }).toList(),
+      //중첩된리스트는 파이어스토어에서 지원하지않아서 문자열로 바꿔서 저장하기
+      'planList': jsonEncode(
+        planList.map((list) => list.map((plan) => plan.toMap()).toList()).toList(),
+      ),
     };
   }
 
@@ -33,13 +33,14 @@ class PlanState {
       area: map['area'] ?? '',
       startDate: map['startDate'].toDate(),
       endDate: map['endDate'].toDate(),
-      planList: (map['planList'] as List)
-          .map(
-            (dayList) => (dayList as List)
-                .map((plan) => PlanModel.fromMap(plan))
-                .toList(),
-          )
-          .toList(),
+      //문자열로 저장한 데이터를 역으로 변환
+      planList: (jsonDecode(map['planList']) as List)
+        .map(
+          (dayList) => (dayList as List)
+              .map((plan) => PlanModel.fromMap(plan))
+              .toList(),
+        )
+        .toList(),
     );
   }
 

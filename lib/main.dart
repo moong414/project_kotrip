@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:project_kotrip/core/theme/colors.dart';
-import 'package:project_kotrip/core/widgets/app_bt_navi.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:project_kotrip/pages/splash/splash_page.dart';
 
 
 void main() async{
@@ -42,7 +42,7 @@ class MyApp extends StatelessWidget {
         ),
         fontFamily: 'SCDream',
       ),
-      home: AppBtNavi(),
+      home: SplashPage(),
     );
   }
 }
