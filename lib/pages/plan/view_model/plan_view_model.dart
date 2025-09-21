@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:project_kotrip/pages/plan/data/plan_model.dart';
-import 'package:project_kotrip/pages/plan/data/plan_repository.dart';
+import 'package:project_kotrip/pages/plan/data/fire_plan_repository.dart';
 import 'dart:convert';
 
 class PlanState {
@@ -61,7 +61,7 @@ class PlanState {
 }
 
 class PlanViewModel extends Notifier<PlanState> {
-  final PlanRepository repo = PlanRepository();
+  final FirePlanRepository repo = FirePlanRepository();
   final String userId = 'test_user';
 
   @override

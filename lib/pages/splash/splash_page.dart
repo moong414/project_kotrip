@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:project_kotrip/core/theme/colors.dart';
+import 'package:project_kotrip/core/theme/text_style.dart';
 import 'package:project_kotrip/pages/splash/widget/splash_btn.dart';
 
 class SplashPage extends StatefulWidget {
@@ -35,7 +36,6 @@ class _SplashPageState extends State<SplashPage> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 mainAxisSize: MainAxisSize.min,
-              
                 children: [
                   Image.asset('assets/images/logo.png', height: 45),
                   SizedBox(height: 15),
@@ -47,9 +47,11 @@ class _SplashPageState extends State<SplashPage> {
                       fontSize: 14,
                     ),
                   ),
-                  SizedBox(height: 120),
+                  SizedBox(height: 100),
                   SplashBtn(imgSrc: 'assets/images/icon_google.png', title: '구글로 로그인',),
                   SplashBtn(imgSrc: 'assets/images/icon_apple.png', title: '애플로 로그인', bgColor: colSecond, upSideDown: true,),
+                  SizedBox(height: 20),
+                  TextButton(onPressed: (){}, child: Text('로그인 없이 시작하기', style: AppTxtSt.hintStR,))
                 ],
               ),
             ),

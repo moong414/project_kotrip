@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:project_kotrip/pages/plan/view_model/plan_view_model.dart';
 
-class PlanRepository {
+class FirePlanRepository {
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
   // 유저별 plans 컬렉션 가져오기
   CollectionReference getUserPlan(String userId) {
