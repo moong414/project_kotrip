@@ -8,7 +8,7 @@ import 'package:project_kotrip/core/widgets/basic_app_bar.dart';
 import 'package:project_kotrip/core/widgets/app_button.dart';
 import 'package:project_kotrip/core/widgets/show_confirm_dialog.dart';
 import 'package:project_kotrip/core/widgets/show_error_action_sheet.dart';
-import 'package:project_kotrip/pages/plan/pages/plan_finish_page.dart';
+import 'package:project_kotrip/pages/plan/plan_finish_page.dart';
 import 'package:project_kotrip/pages/plan/view_model/plan_view_model.dart';
 import 'package:project_kotrip/pages/plan/widgets/plan_oneday_list.dart';
 import 'package:project_kotrip/pages/plan/widgets/plan_dialog_btn.dart';

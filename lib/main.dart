@@ -4,7 +4,9 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:project_kotrip/core/theme/colors.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:project_kotrip/core/widgets/app_bt_navi.dart';
 import 'package:project_kotrip/pages/splash/splash_page.dart';
+import 'package:project_kotrip/pages/splash/view_model/auth_view_model.dart';
 
 
 void main() async{
@@ -14,11 +16,14 @@ void main() async{
   runApp(ProviderScope(child: MyApp()));
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends ConsumerWidget {
   const MyApp({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    //로그인상태 확인
+    final isSignedIn = ref.read(authViewModelProvider).isSignedIn;
+
     return MaterialApp(
       locale: const Locale('ko'),
       supportedLocales: const [
@@ -42,7 +47,9 @@ class MyApp extends StatelessWidget {
         ),
         fontFamily: 'SCDream',
       ),
-      home: SplashPage(),
+      home: isSignedIn ?
+      AppBtNavi()
+      :SplashPage(),
     );
   }
 }

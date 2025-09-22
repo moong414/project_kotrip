@@ -1,14 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:project_kotrip/core/theme/colors.dart';
 import 'package:project_kotrip/core/theme/text_style.dart';
 import 'package:project_kotrip/pages/my/widgets/my_plan_link.dart';
 import 'package:project_kotrip/pages/my/widgets/my_review_link.dart';
+import 'package:project_kotrip/pages/splash/view_model/auth_view_model.dart';
 
-class MyPage extends StatelessWidget {
+class MyPage extends ConsumerWidget {
   const MyPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final authState = ref.read(authViewModelProvider);
+    final user = authState.user;
+
     return ListView(
       padding: EdgeInsets.all(20),
       children: [
@@ -20,9 +25,9 @@ class MyPage extends StatelessWidget {
           ),
           child: Row(
             children: [
-              Text('안녕하세요!', style: AppTxtSt.txtStL),
-              Text('김땡땡', style: AppTxtSt.txtStLB),
-              Text('님', style: AppTxtSt.txtStL),
+              Text('안녕하세요! ', style: AppTxtSt.txtStL),
+              Text('${user?.displayName}', style: AppTxtSt.txtStLB, overflow: TextOverflow.ellipsis,),
+              Text(' 님', style: AppTxtSt.txtStL),
             ],
           ),
         ),

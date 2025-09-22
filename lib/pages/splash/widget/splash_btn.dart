@@ -1,19 +1,23 @@
 
 import 'package:flutter/material.dart';
 import 'package:project_kotrip/core/theme/colors.dart';
+import 'package:project_kotrip/core/widgets/app_bt_navi.dart';
+import 'package:project_kotrip/core/widgets/show_error_action_sheet.dart';
 
 class SplashBtn extends StatelessWidget {
   String imgSrc;
   String title;
   Color? bgColor;
   bool upSideDown;
+  Future<bool> Function() loginFunc;
   
   SplashBtn({
     super.key,
     required this.imgSrc,
     required this.title,
     this.bgColor,
-    this.upSideDown = false
+    this.upSideDown = false,
+    required this.loginFunc
   });
 
   @override
@@ -22,7 +26,12 @@ class SplashBtn extends StatelessWidget {
       width: double.infinity,
       height: 56,
       child: ElevatedButton(
-        onPressed: () {},
+        onPressed: () async{
+          final result = await loginFunc();
+          if(result){Navigator.push(context, MaterialPageRoute(builder: (context) {return AppBtNavi(initialIndex: 0);},),);}else{
+            showErrorActionSheet(context, '로그인 실패');
+          }
+        },
         style: ElevatedButton.styleFrom(
           shape: RoundedRectangleBorder(
             borderRadius: 

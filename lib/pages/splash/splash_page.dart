@@ -1,15 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:project_kotrip/core/theme/colors.dart';
+import 'package:project_kotrip/core/theme/text_style.dart';
+import 'package:project_kotrip/core/widgets/app_bt_navi.dart';
+import 'package:project_kotrip/core/widgets/show_error_action_sheet.dart';
+import 'package:project_kotrip/pages/splash/view_model/auth_view_model.dart';
 import 'package:project_kotrip/pages/splash/widget/splash_btn.dart';
 
-class SplashPage extends StatefulWidget {
+class SplashPage extends ConsumerStatefulWidget {
   const SplashPage({super.key});
 
   @override
-  State<SplashPage> createState() => _SplashPageState();
+  ConsumerState<SplashPage> createState() => _SplashPageState();
 }
 
-class _SplashPageState extends State<SplashPage> {
+class _SplashPageState extends ConsumerState<SplashPage> {
   double aniOpacity = 0.0;
 
   @override
@@ -24,6 +29,8 @@ class _SplashPageState extends State<SplashPage> {
 
   @override
   Widget build(BuildContext context) {
+    final authState = ref.watch(authViewModelProvider.notifier);
+
     return Scaffold(
       body: SafeArea(
         child: Padding(
@@ -35,7 +42,6 @@ class _SplashPageState extends State<SplashPage> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 mainAxisSize: MainAxisSize.min,
-              
                 children: [
                   Image.asset('assets/images/logo.png', height: 45),
                   SizedBox(height: 15),
@@ -47,9 +53,16 @@ class _SplashPageState extends State<SplashPage> {
                       fontSize: 14,
                     ),
                   ),
-                  SizedBox(height: 120),
-                  SplashBtn(imgSrc: 'assets/images/icon_google.png', title: '구글로 로그인',),
-                  SplashBtn(imgSrc: 'assets/images/icon_apple.png', title: '애플로 로그인', bgColor: colSecond, upSideDown: true,),
+                  SizedBox(height: 100),
+                  SplashBtn(imgSrc: 'assets/images/icon_google.png', title: '구글로 로그인', loginFunc: authState.signInWithGoogle),
+                  SplashBtn(imgSrc: 'assets/images/icon_apple.png', title: '애플로 로그인', bgColor: colSecond, upSideDown: true, loginFunc: authState.signInWithApple),
+                  SizedBox(height: 20),
+                  TextButton(onPressed: () async{
+                    final result = await authState.signInAnonymously();
+                    if(result){Navigator.push(context, MaterialPageRoute(builder: (context) {return AppBtNavi(initialIndex: 0);},),);}else{
+                      showErrorActionSheet(context, '로그인 실패');
+                    }
+                  }, child: Text('로그인 없이 시작하기', style: AppTxtSt.hintStR, ))
                 ],
               ),
             ),
