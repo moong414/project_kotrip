@@ -9,7 +9,7 @@ class PlanState {
   DateTime endDate;
   List<List<PlanModel>> planList; // 날짜별 할일 리스트
   String? planId;
-  
+
   PlanState({
     required this.area,
     required this.startDate,
@@ -31,20 +31,20 @@ class PlanState {
     };
   }
 
-  factory PlanState.fromMap(Map<String, dynamic> map, {String? planId}) {
+  factory PlanState.fromMap(Map<String, dynamic> map) {
     return PlanState(
       area: map['area'] ?? '',
       startDate: map['startDate'].toDate(),
       endDate: map['endDate'].toDate(),
       //문자열로 저장한 데이터를 역으로 변환
       planList: (jsonDecode(map['planList']) as List)
-        .map(
-          (dayList) => (dayList as List)
-              .map((plan) => PlanModel.fromMap(plan))
-              .toList(),
-        )
-        .toList(),
-        planId: planId,
+          .map(
+            (dayList) => (dayList as List)
+                .map((plan) => PlanModel.fromMap(plan))
+                .toList(),
+          )
+          .toList(),
+      planId: map['planId'], 
     );
   }
 
@@ -77,6 +77,7 @@ class PlanViewModel extends Notifier<PlanState> {
       startDate: DateTime(1970, 1, 1),
       endDate: DateTime(1970, 1, 1),
       planList: [],
+      planId: ''
     );
   }
 
@@ -87,6 +88,7 @@ class PlanViewModel extends Notifier<PlanState> {
       startDate: DateTime(1970, 1, 1),
       endDate: DateTime(1970, 1, 1),
       planList: [],
+      planId: ''
     );
   }
 
@@ -154,17 +156,22 @@ class PlanViewModel extends Notifier<PlanState> {
 
   // ---------------- Firestore 연동 ----------------
   //현재스테이트만 파이어베이스에 저장
-  Future<void> savePlanFirestore({String? planId, required String userId}) async {
-    await repo.savePlan(userId, state, planId: planId);
+  Future<void> savePlan(String userId) async {
+    final result = await repo.savePlan(userId, state);
+    if (result != null) state = state.copyWith(planId: result);
   }
-  //계획1개만 불러와서 상태 업데이트
-  Future<void> loadPlanById({required String userId, required String planId}) async {
-  final plan = await repo.getPlanById(userId, planId);
-  if (plan != null) {
-    state = plan;
-  }
-}
 
+  //파이어베이스 현재계획 삭제
+  Future<void> deletePlan(String userId, String planId) async {
+    await repo.deletePlan(userId, planId);
+    if (state.planId == planId) state = PlanState(area: '', startDate: DateTime(1970,1,1), endDate: DateTime(1970,1,1), planList: []);
+  }
+
+  //계획1개만 불러와서 상태 업데이트
+  Future<void> getPlanById(String userId, String planId) async {
+    final plan = await repo.getPlanById(userId, planId);
+    if (plan != null) state = plan;
+  }
 }
 
 final planViewModelProvider = NotifierProvider<PlanViewModel, PlanState>(

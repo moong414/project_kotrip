@@ -49,7 +49,8 @@ class _PlanIntroPageState extends ConsumerState<PlanIntroPage> {
 
   @override
   Widget build(BuildContext context) {
-    final planState = ref.read(planViewModelProvider.notifier);
+    final planState = ref.watch(planViewModelProvider.notifier);
+    print('인트로페이지!! $planState ${planState}======================================');
 
     return Padding(
       padding: EdgeInsetsGeometry.all(20),

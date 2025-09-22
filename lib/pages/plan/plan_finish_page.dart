@@ -20,10 +20,11 @@ class PlanFinishPage extends ConsumerStatefulWidget {
 }
 
 class _PlanFinishPageState extends ConsumerState<PlanFinishPage> {
+  
   @override
   Widget build(BuildContext context) {
-    final planState = ref.read(planViewModelProvider);
-    final planStateFunc = ref.read(planViewModelProvider.notifier);
+    final planState = ref.watch(planViewModelProvider);
+    final planFunc = ref.watch(planViewModelProvider.notifier);
     //출발날짜
     final startDate = DateFormat('yy.MM.dd').format(planState.startDate);
     //도착날짜
@@ -132,7 +133,15 @@ class _PlanFinishPageState extends ConsumerState<PlanFinishPage> {
                             '계획을 삭제하시겠습니까?',
                           );
                           if (result == true) {
-                            planStateFunc.planClear();
+                            if(planState.planId == null){
+                              //planId가 없으면-firebase에 안올린 계획
+                              planFunc.planClear();
+                              print('고냥 삭제');
+                            }else{
+                              planFunc.deletePlan(authState.user!.uid, planState.planId!);
+                              print('파이어베이스에서 삭제');
+                            }
+                            
                             Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -153,7 +162,7 @@ class _PlanFinishPageState extends ConsumerState<PlanFinishPage> {
                         onPressed: () async {
                           final result = await showConfirmDialog(context, '저장되었습니다.\n마이페이지에서 확인 하실수있습니다.', justConfirm: false, );
                           if (result == true) {
-                            planStateFunc.savePlanFirestore(userId: authState.user!.uid);
+                            planFunc.savePlan(authState.user!.uid);
                             Navigator.push(context, MaterialPageRoute(builder: (context) {
                               return AppBtNavi(initialIndex: 0,);
                             },));

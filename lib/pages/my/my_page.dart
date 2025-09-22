@@ -15,22 +15,20 @@ class MyPage extends ConsumerStatefulWidget {
 }
 
 class _MyPageState extends ConsumerState<MyPage> {
-  late final authState = ref.read(authViewModelProvider);
+  late final authState = ref.watch(authViewModelProvider);
 
   @override
   void initState() {
     super.initState();
     Future.microtask(() {
-      ref
-          .read(myPlanViewModelProvider.notifier)
-          .loadPlanList(authState.user!.uid);
+      ref.read(myPlanViewModelProvider.notifier).loadPlanList(authState.user!.uid);
     });
   }
 
   @override
   Widget build(BuildContext context) {
     final myPlans = ref.watch(myPlanViewModelProvider);
-
+    
     return ListView(
       padding: EdgeInsets.all(20),
       children: [
