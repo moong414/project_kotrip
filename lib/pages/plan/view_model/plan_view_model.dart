@@ -8,12 +8,14 @@ class PlanState {
   DateTime startDate;
   DateTime endDate;
   List<List<PlanModel>> planList; // 날짜별 할일 리스트
+  String? planId;
 
   PlanState({
     required this.area,
     required this.startDate,
     required this.endDate,
     required this.planList,
+    this.planId,
   });
 
   Map<String, dynamic> toMap() {
@@ -25,6 +27,7 @@ class PlanState {
       'planList': jsonEncode(
         planList.map((list) => list.map((plan) => plan.toMap()).toList()).toList(),
       ),
+      'planId': planId,
     };
   }
 
@@ -35,12 +38,13 @@ class PlanState {
       endDate: map['endDate'].toDate(),
       //문자열로 저장한 데이터를 역으로 변환
       planList: (jsonDecode(map['planList']) as List)
-        .map(
-          (dayList) => (dayList as List)
-              .map((plan) => PlanModel.fromMap(plan))
-              .toList(),
-        )
-        .toList(),
+          .map(
+            (dayList) => (dayList as List)
+                .map((plan) => PlanModel.fromMap(plan))
+                .toList(),
+          )
+          .toList(),
+      planId: map['planId'], 
     );
   }
 
@@ -50,19 +54,21 @@ class PlanState {
     DateTime? endDate,
     List<DateTime>? dateList,
     List<List<PlanModel>>? planList,
+    String? planId,
   }) {
     return PlanState(
       area: area ?? this.area,
       startDate: startDate ?? this.startDate,
       endDate: endDate ?? this.endDate,
       planList: planList ?? this.planList,
+      planId: planId ?? this.planId,
     );
   }
 }
 
 class PlanViewModel extends Notifier<PlanState> {
   final FirePlanRepository repo = FirePlanRepository();
-  final String userId = 'test_user';
+  // final String userId = 'test_user';s
 
   @override
   PlanState build() {
@@ -71,6 +77,7 @@ class PlanViewModel extends Notifier<PlanState> {
       startDate: DateTime(1970, 1, 1),
       endDate: DateTime(1970, 1, 1),
       planList: [],
+      planId: ''
     );
   }
 
@@ -81,6 +88,7 @@ class PlanViewModel extends Notifier<PlanState> {
       startDate: DateTime(1970, 1, 1),
       endDate: DateTime(1970, 1, 1),
       planList: [],
+      planId: ''
     );
   }
 
@@ -147,21 +155,23 @@ class PlanViewModel extends Notifier<PlanState> {
   }
 
   // ---------------- Firestore 연동 ----------------
-  Future<void> savePlanToFirestore({String? planId}) async {
-    await repo.savePlan(userId, state, planId: planId);
+  //현재스테이트만 파이어베이스에 저장
+  Future<void> savePlan(String userId) async {
+    final result = await repo.savePlan(userId, state);
+    if (result != null) state = state.copyWith(planId: result);
   }
 
-  Future<void> loadPlansFromFirestore() async {
-    final plans = await repo.getPlan(userId);
-    if (plans.isNotEmpty) {
-      state = plans.first;
-    }
-  }
-
-  Future<void> deletePlanFromFirestore(String planId) async {
+  //파이어베이스 현재계획 삭제
+  Future<void> deletePlan(String userId, String planId) async {
     await repo.deletePlan(userId, planId);
+    if (state.planId == planId) state = PlanState(area: '', startDate: DateTime(1970,1,1), endDate: DateTime(1970,1,1), planList: []);
   }
 
+  //계획1개만 불러와서 상태 업데이트
+  Future<void> getPlanById(String userId, String planId) async {
+    final plan = await repo.getPlanById(userId, planId);
+    if (plan != null) state = plan;
+  }
 }
 
 final planViewModelProvider = NotifierProvider<PlanViewModel, PlanState>(

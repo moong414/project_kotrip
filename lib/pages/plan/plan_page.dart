@@ -33,7 +33,7 @@ class _PlanPageState extends ConsumerState<PlanPage> {
 
   @override
   Widget build(BuildContext context) {
-    final planState = ref.read(planViewModelProvider);
+    final planState = ref.watch(planViewModelProvider);
     //출발날짜
     final startDate = DateFormat('yy.MM.dd').format(planState.startDate);
     //도착날짜
@@ -68,6 +68,8 @@ class _PlanPageState extends ConsumerState<PlanPage> {
         });
       }
     }
+
+    print('플랜페이지!! $planState ${planState.planId}======================================');
 
     return Scaffold(
       appBar: BasicAppBar(),
@@ -180,8 +182,10 @@ class _PlanPageState extends ConsumerState<PlanPage> {
                         bgColor: colBkBtn,
                         text: '확인',
                         onPressed: () {
-                          if(planState.planList.isEmpty || planState.planList.every((day){return day.isEmpty;})){
+                          bool hasPlan = planState.planList.any((day) => day.isNotEmpty);
+                          if(!hasPlan){
                             showErrorActionSheet(context, '일정을 추가해주세요.');
+                            print('planState.planList ${planState.planList}');
                             return;
                           }else{
                             Navigator.push(context, MaterialPageRoute(builder: (context) {

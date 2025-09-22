@@ -10,6 +10,7 @@ import 'package:project_kotrip/core/widgets/show_confirm_dialog.dart';
 import 'package:project_kotrip/pages/plan/view_model/plan_view_model.dart';
 import 'package:project_kotrip/pages/plan/widgets/finish_item_widget.dart';
 import 'package:project_kotrip/pages/plan/widgets/plan_top_info.dart';
+import 'package:project_kotrip/pages/splash/view_model/auth_view_model.dart';
 
 class PlanFinishPage extends ConsumerStatefulWidget {
   const PlanFinishPage({super.key});
@@ -19,44 +20,17 @@ class PlanFinishPage extends ConsumerStatefulWidget {
 }
 
 class _PlanFinishPageState extends ConsumerState<PlanFinishPage> {
-  // 임시 리스트
-  // List<PlanModel> PlanModels = [
-  //   PlanModel(time: '08:15', place: '제주공항', todo: '서울 출발 → 제주 도착. 렌터카 수령'),
-  //   PlanModel(time: '08:30', place: '제주공항', todo: '제주 공항 근처에서 아침식사 (고기국수)'),
-  //   PlanModel(time: '12:00', todo: '점심: 흑돼지 근고기 구이'),
-  //   PlanModel(time: '14:00', place: '한림공원', todo: '한림공원 (사진 포인트 + 산책)'),
-  //   PlanModel(time: '16:00', place: '오설록 티뮤지엄', todo: '오설록 티뮤지엄 & 인근 녹차밭'),
-  //   PlanModel(time: '18:00', todo: '저녁: 해산물 뷔페나 회정식'),
-  //   PlanModel(time: '20:00', place: '제주가고싶다호텔', todo: '숙소 체크인'),
-  // ];
-  // List<PlanModel> PlanModels2 = [
-  //   PlanModel(
-  //     time: '07:30',
-  //     place: '숙소근처 카페',
-  //     todo: '숙소 근처 카페에서 아침 (바다 뷰 카페 강추)',
-  //   ),
-  //   PlanModel(
-  //     time: '09:00',
-  //     place: '한라산',
-  //     todo: '한라산 어리목 코스 (가볍게 2~3시간 트래킹) → 힘들면 대신 에코랜드 산책 코스로 변경 가능',
-  //   ),
-  //   PlanModel(time: '12:00', todo: '점심: 갈치조림 or 전복돌솥밥'),
-  //   PlanModel(time: '14:00', todo: '성산일출봉 근처 → 우도 뷰 즐기기'),
-  //   PlanModel(time: '16:00', place: '섭지코지', todo: '섭지코지 드라이브 & 산책'),
-  //   PlanModel(time: '18:00', place: '제주공항', todo: '저녁: 공항 근처 고기국수 / 김밥 간단히'),
-  //   PlanModel(time: '20:00', place: '제주공항', todo: '제주 출발 → 서울 도착'),
-  // ];
-
-  // List get planlist => [PlanModels, PlanModels2];
-
+  
   @override
   Widget build(BuildContext context) {
-    final planState = ref.read(planViewModelProvider);
-    final planStateFunc = ref.read(planViewModelProvider.notifier);
+    final planState = ref.watch(planViewModelProvider);
+    final planFunc = ref.watch(planViewModelProvider.notifier);
     //출발날짜
     final startDate = DateFormat('yy.MM.dd').format(planState.startDate);
     //도착날짜
     final endDate = DateFormat('yy.MM.dd').format(planState.endDate);
+    //로그인상태
+    final authState = ref.read(authViewModelProvider);
 
     return Scaffold(
       appBar: BasicAppBar(),
@@ -159,7 +133,15 @@ class _PlanFinishPageState extends ConsumerState<PlanFinishPage> {
                             '계획을 삭제하시겠습니까?',
                           );
                           if (result == true) {
-                            planStateFunc.planClear();
+                            if(planState.planId == null){
+                              //planId가 없으면-firebase에 안올린 계획
+                              planFunc.planClear();
+                              print('고냥 삭제');
+                            }else{
+                              planFunc.deletePlan(authState.user!.uid, planState.planId!);
+                              print('파이어베이스에서 삭제');
+                            }
+                            
                             Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -180,7 +162,7 @@ class _PlanFinishPageState extends ConsumerState<PlanFinishPage> {
                         onPressed: () async {
                           final result = await showConfirmDialog(context, '저장되었습니다.\n마이페이지에서 확인 하실수있습니다.', justConfirm: false, );
                           if (result == true) {
-                            planStateFunc.savePlanToFirestore();
+                            planFunc.savePlan(authState.user!.uid);
                             Navigator.push(context, MaterialPageRoute(builder: (context) {
                               return AppBtNavi(initialIndex: 0,);
                             },));

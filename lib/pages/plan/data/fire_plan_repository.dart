@@ -9,21 +9,40 @@ class FirePlanRepository {
   }
 
   // PlanState 저장
-  Future<void> savePlan(String userId, PlanState plan, {String? planId}) async {
-    final collection = getUserPlan(userId);
-    if (planId == null) {
-      await collection.add(plan.toMap()); // 새 플랜 추가
+  Future<String?> savePlan(String userId, PlanState plan) async {
+    final plansRef = getUserPlan(userId);
+
+    if (plan.planId == null) {
+      final docRef = await plansRef.add(plan.toMap());
+      await docRef.update({'planId': docRef.id});
+      return docRef.id;
     } else {
-      await collection.doc(planId).set(plan.toMap()); // 기존 플랜 업데이트
+      await plansRef.doc(plan.planId).update(plan.toMap());
+      return plan.planId;
     }
   }
 
-  // PlanState 불러오기
+  // Plan 리스트 불러오기
   Future<List<PlanState>> getPlan(String userId) async {
     final plan = await getUserPlan(userId).get();
-    return plan.docs
-        .map((doc) => PlanState.fromMap(doc.data() as Map<String, dynamic>))
-        .toList();
+    return plan.docs.map((doc) {
+      final data = doc.data() as Map<String, dynamic>;
+      return PlanState.fromMap({...data, 'planId': doc.id});
+    }).toList();
+  }
+
+  //Plan id로 1개만 찾기
+  Future<PlanState?> getPlanById(String userId, String planId) async {
+    final doc = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(userId)
+        .collection('plans')
+        .doc(planId)
+        .get();
+
+    if (!doc.exists) return null;
+
+    return PlanState.fromMap(doc.data()!);
   }
 
   // PlanState 삭제
