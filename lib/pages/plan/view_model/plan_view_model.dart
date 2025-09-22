@@ -8,12 +8,14 @@ class PlanState {
   DateTime startDate;
   DateTime endDate;
   List<List<PlanModel>> planList; // 날짜별 할일 리스트
-
+  String? planId;
+  
   PlanState({
     required this.area,
     required this.startDate,
     required this.endDate,
     required this.planList,
+    this.planId,
   });
 
   Map<String, dynamic> toMap() {
@@ -25,10 +27,11 @@ class PlanState {
       'planList': jsonEncode(
         planList.map((list) => list.map((plan) => plan.toMap()).toList()).toList(),
       ),
+      'planId': planId,
     };
   }
 
-  factory PlanState.fromMap(Map<String, dynamic> map) {
+  factory PlanState.fromMap(Map<String, dynamic> map, {String? planId}) {
     return PlanState(
       area: map['area'] ?? '',
       startDate: map['startDate'].toDate(),
@@ -41,6 +44,7 @@ class PlanState {
               .toList(),
         )
         .toList(),
+        planId: planId,
     );
   }
 
@@ -50,19 +54,21 @@ class PlanState {
     DateTime? endDate,
     List<DateTime>? dateList,
     List<List<PlanModel>>? planList,
+    String? planId,
   }) {
     return PlanState(
       area: area ?? this.area,
       startDate: startDate ?? this.startDate,
       endDate: endDate ?? this.endDate,
       planList: planList ?? this.planList,
+      planId: planId ?? this.planId,
     );
   }
 }
 
 class PlanViewModel extends Notifier<PlanState> {
   final FirePlanRepository repo = FirePlanRepository();
-  final String userId = 'test_user';
+  // final String userId = 'test_user';s
 
   @override
   PlanState build() {
@@ -147,20 +153,17 @@ class PlanViewModel extends Notifier<PlanState> {
   }
 
   // ---------------- Firestore 연동 ----------------
-  Future<void> savePlanToFirestore({String? planId}) async {
+  //현재스테이트만 파이어베이스에 저장
+  Future<void> savePlanFirestore({String? planId, required String userId}) async {
     await repo.savePlan(userId, state, planId: planId);
   }
-
-  Future<void> loadPlansFromFirestore() async {
-    final plans = await repo.getPlan(userId);
-    if (plans.isNotEmpty) {
-      state = plans.first;
-    }
+  //계획1개만 불러와서 상태 업데이트
+  Future<void> loadPlanById({required String userId, required String planId}) async {
+  final plan = await repo.getPlanById(userId, planId);
+  if (plan != null) {
+    state = plan;
   }
-
-  Future<void> deletePlanFromFirestore(String planId) async {
-    await repo.deletePlan(userId, planId);
-  }
+}
 
 }
 

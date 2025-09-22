@@ -18,13 +18,28 @@ class FirePlanRepository {
     }
   }
 
-  // PlanState 불러오기
+  // Plan 리스트 불러오기
   Future<List<PlanState>> getPlan(String userId) async {
     final plan = await getUserPlan(userId).get();
     return plan.docs
         .map((doc) => PlanState.fromMap(doc.data() as Map<String, dynamic>))
         .toList();
   }
+
+  //Plan id로 1개만 찾기
+  Future<PlanState?> getPlanById(String userId, String planId) async {
+  final doc = await FirebaseFirestore.instance
+      .collection('users')
+      .doc(userId)
+      .collection('plans')
+      .doc(planId)
+      .get();
+
+  if (!doc.exists) return null;
+
+  return PlanState.fromMap(doc.data()!);
+}
+
 
   // PlanState 삭제
   Future<void> deletePlan(String userId, String planId) async {

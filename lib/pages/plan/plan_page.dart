@@ -180,7 +180,7 @@ class _PlanPageState extends ConsumerState<PlanPage> {
                         bgColor: colBkBtn,
                         text: '확인',
                         onPressed: () {
-                          if(planState.planList.isEmpty || planState.planList.every((day){return day.isEmpty;})){
+                          if(planState.planList.any((day){return day.isEmpty;})){
                             showErrorActionSheet(context, '일정을 추가해주세요.');
                             return;
                           }else{

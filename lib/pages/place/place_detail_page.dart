@@ -35,7 +35,6 @@ class _PlaceDetailPageState extends ConsumerState<PlaceDetailPage> {
   @override
   Widget build(BuildContext context) {
     final state = ref.watch(reviewViewModelProvider);
-    print(state.reviewModel.reviews);
 
     return Scaffold(
       body: Stack(
