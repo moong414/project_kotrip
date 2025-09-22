@@ -10,14 +10,6 @@ class FirebaseAuthRepository {
   User? get currentUser => auth.currentUser;
   bool get isSignedIn => currentUser != null;
 
-//   authRepo.authStateChanges.listen((user) {
-//   if (user != null) {
-//     print('로그인됨: ${user.email}');
-//   } else {
-//     print('로그아웃됨');
-//   }
-// });
-
   /// 구글 로그인
   Future<User?> signInWithGoogle() async {
     try {
