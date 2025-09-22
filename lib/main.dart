@@ -16,13 +16,27 @@ void main() async{
   runApp(ProviderScope(child: MyApp()));
 }
 
-class MyApp extends ConsumerWidget {
+class MyApp extends ConsumerStatefulWidget {
   const MyApp({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    //로그인상태 확인
-    final isSignedIn = ref.read(authViewModelProvider).isSignedIn;
+  ConsumerState<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends ConsumerState<MyApp> {
+  late final isSignedIn;
+
+  @override
+  void initState() {
+    super.initState();
+    Future.microtask(() {
+      ref.read(authViewModelProvider.notifier).authState();
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final authState = ref.watch(authViewModelProvider);
 
     return MaterialApp(
       locale: const Locale('ko'),
@@ -47,7 +61,7 @@ class MyApp extends ConsumerWidget {
         ),
         fontFamily: 'SCDream',
       ),
-      home: isSignedIn ?
+      home: authState.isSignedIn ?
       AppBtNavi()
       :SplashPage(),
     );
