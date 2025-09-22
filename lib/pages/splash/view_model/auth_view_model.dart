@@ -33,36 +33,33 @@ class AuthViewModel extends Notifier<AuthState> {
   }
 
   //구글로그인
-  Future<void> signInWithGoogle() async {
+  Future<bool> signInWithGoogle() async {
     final currentUser = await auth.signInWithGoogle();
     if (currentUser != null) {
-      state = state.copyWith(
-        user: currentUser,
-        isSignedIn: currentUser != null,
-      );
+      state = state.copyWith(user: currentUser, isSignedIn: true);
+      return true;
     }
+    return false;
   }
 
   //애플로그인
-  Future<void> signInWithApple() async {
+  Future<bool> signInWithApple() async {
     final currentUser = await auth.signInWithApple();
     if (currentUser != null) {
-      state = state.copyWith(
-        user: currentUser,
-        isSignedIn: currentUser != null,
-      );
+      state = state.copyWith(user: currentUser, isSignedIn: true);
+      return true;
     }
+    return false;
   }
 
   //익명 로그인
-  Future<void> signInAnonymously() async {
+  Future<bool> signInAnonymously() async {
     final currentUser = await auth.signInAnonymously();
     if (currentUser != null) {
-      state = state.copyWith(
-        user: currentUser,
-        isSignedIn: currentUser != null,
-      );
+      state = state.copyWith(user: currentUser, isSignedIn: true);
+      return true;
     }
+    return false;
   }
 
   //로그아웃
@@ -71,3 +68,7 @@ class AuthViewModel extends Notifier<AuthState> {
     state = state.copyWith(user: null, isSignedIn: false);
   }
 }
+
+final authViewModelProvider = NotifierProvider<AuthViewModel, AuthState>(() {
+  return AuthViewModel();
+});
