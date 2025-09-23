@@ -7,18 +7,31 @@ import 'package:project_kotrip/pages/home/widgets/ai_btn.dart';
 import 'package:project_kotrip/pages/home/widgets/home_photo_slide.dart';
 import 'package:project_kotrip/pages/home/widgets/weather.dart';
 
-class HomePage extends StatelessWidget{
+class HomePage extends StatefulWidget{
   const HomePage({super.key});
 
   @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  //페이지 접속할때마다 랜덤한 관광지 표출
+  late final Random random;
+  late final List<String> keys;
+  late final String randomKey;
+  late final String code;
+
+  @override
+  void initState() {
+    super.initState();
+    random = Random();
+    keys = placeCodeMap.keys.toList();
+    randomKey = keys[random.nextInt(keys.length)];
+    code = placeCodeMap[randomKey]!;
+  }
+
+  @override
   Widget build(BuildContext context) {
-
-    //페이지 접속할때마다 랜덤한 관광지 표출
-    final random = Random();
-    final keys = placeCodeMap.keys.toList();
-    final randomKey = keys[random.nextInt(keys.length)];
-    final code = placeCodeMap[randomKey]!;
-
     return ListView(
       children: [
         Padding(

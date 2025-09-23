@@ -25,13 +25,12 @@ class MyPlanLink extends ConsumerWidget {
         } else {
           showErrorActionSheet(context, '정보가 올바르지 않습니다.');
         }
-        print('authState ${authState}, myPlans id ${myPlans.planId}, user ${authState.user}========================================');
       },
       child: Container(
-        padding: EdgeInsets.fromLTRB(16, 16, 0, 16),
+        padding: EdgeInsets.all(16),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
-          border: BoxBorder.all(color: colGreyBtn),
+          border: Border.all(color: colGreyBtn),
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -42,15 +41,12 @@ class MyPlanLink extends ConsumerWidget {
                 Text(myPlans.area, style: AppTxtSt.txtStL),
                 SizedBox(height: 4),
                 Text(
-                  '${DateFormat('yy.MM.dd').format(myPlans.startDate)} - ${DateFormat('yy.MM.dd').format(myPlans.endDate)}',
+                  '${myPlans.startFormat} - ${myPlans.endFormat}',
                   style: AppTxtSt.txtStR,
                 ),
               ],
             ),
-            Padding(
-              padding: const EdgeInsets.only(right: 15),
-              child: Image.asset('assets/images/icon_go_arrow.png', width: 24),
-            ),
+            Image.asset('assets/images/icon_go_arrow.png', width: 24),
           ],
         ),
       ),

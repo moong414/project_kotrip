@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:project_kotrip/core/theme/text_style.dart';
 import 'package:project_kotrip/core/widgets/app_bt_navi.dart';
+import 'package:project_kotrip/core/widgets/loading_widget.dart';
 import 'package:project_kotrip/pages/place/place_detail_page.dart';
 import 'package:project_kotrip/pages/place/view_model/place_view_model.dart';
 
@@ -23,32 +24,23 @@ class PhotoListview extends ConsumerStatefulWidget {
 }
 
 class _PhotoListviewState extends ConsumerState<PhotoListview> {
-  bool isLoading = true;
-
   @override
   void initState() {
     super.initState();
     if (widget.code != null) {
       ref.read(placeViewModelProvider.notifier).loadPlaces(areaCode: widget.code!);
     }
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      setState(() {
-        isLoading = false;
-      });
-    });
   }
 
   @override
   Widget build(BuildContext context) {
-    final state = ref
-        .watch(placeViewModelProvider)
-        .funcPlaceList(widget.kindPlace.toString());
-
-    return Padding(
-      padding: const EdgeInsets.only(left: 20, bottom: 10),
-      child: Column(
-        children: [
-          Row(
+    final state = ref.watch(placeViewModelProvider).funcPlaceList(widget.kindPlace.toString());
+    
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(left: 20),
+          child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Row(
@@ -69,7 +61,8 @@ class _PhotoListviewState extends ConsumerState<PhotoListview> {
                           ),
                         );
                       },
-                      child: Padding(
+                      child: Container(
+                        color: Colors.transparent,
                         padding: const EdgeInsets.all(20),
                         child: Image.asset(
                           'assets/images/icon_go_arrow.png',
@@ -79,73 +72,76 @@ class _PhotoListviewState extends ConsumerState<PhotoListview> {
                     ),
             ],
           ),
-          SizedBox(height: 5),
-          SizedBox(
-            height: 190,
-            child: ListView.separated(
-              scrollDirection: Axis.horizontal,
-              itemCount: state.length,
-              itemBuilder: (context, index) {
-                return Stack(
-                  children: [
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) {
-                              return PlaceDetailPage(placemodel: state[index]);
-                            },
-                          ),
-                        );
-                      },
-                      child: Container(
-                        width: 160,
-                        height: 190,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: Colors.black,
+        ),
+        SizedBox(height: 5),
+        state.isEmpty
+        ? SizedBox(height: 190, child: LoadingWidget(isPart: true,))
+        : Container(
+          padding: const EdgeInsets.only(left: 20),
+          height: 190,
+          child: ListView.separated(
+            scrollDirection: Axis.horizontal,
+            itemCount: state.length,
+            itemBuilder: (context, index) {
+              return Stack(
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) {
+                            return PlaceDetailPage(placemodel: state[index]);
+                          },
                         ),
-                        child: ClipRRect(
-                          borderRadius: BorderRadiusGeometry.circular(10),
-                          child: Opacity(
-                            opacity: 0.9,
-                            child: Image.network(
-                              state[index].firstimage,
-                              fit: BoxFit.cover,
-                            ),
+                      );
+                    },
+                    child: Container(
+                      width: 160,
+                      height: 190,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: Colors.black,
+                      ),
+                      child: ClipRRect(
+                        borderRadius: BorderRadiusGeometry.circular(10),
+                        child: Opacity(
+                          opacity: 0.9,
+                          child: Image.network(
+                            state[index].firstimage,
+                            fit: BoxFit.cover,
                           ),
                         ),
                       ),
                     ),
-                    Positioned(
-                      left: 14,
-                      bottom: 12,
-                      right: 10,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(state[index].title, style: AppTxtSt.txtStRBWt),
-                          SizedBox(height: 6),
-                          Text(
-                            state[index].addr,
-                            style: AppTxtSt.txtStSWt,
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ],
-                      ),
+                  ),
+                  Positioned(
+                    left: 14,
+                    bottom: 12,
+                    right: 10,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(state[index].title, style: AppTxtSt.txtStRBWt),
+                        SizedBox(height: 6),
+                        Text(
+                          state[index].addr,
+                          style: AppTxtSt.txtStSWt,
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ],
                     ),
-                  ],
-                );
-              },
-              separatorBuilder: (context, index) {
-                return SizedBox(width: 15);
-              },
-            ),
+                  ),
+                ],
+              );
+            },
+            separatorBuilder: (context, index) {
+              return SizedBox(width: 15);
+            },
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }
