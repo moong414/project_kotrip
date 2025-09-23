@@ -27,10 +27,6 @@ class _PlanFinishPageState extends ConsumerState<PlanFinishPage> {
   Widget build(BuildContext context) {
     final planState = ref.watch(planViewModelProvider);
     final planFunc = ref.watch(planViewModelProvider.notifier);
-    //출발날짜
-    final startDate = DateFormat('yy.MM.dd').format(planState.startDate);
-    //도착날짜
-    final endDate = DateFormat('yy.MM.dd').format(planState.endDate);
     //로그인상태
     final authState = ref.read(authViewModelProvider);
 
@@ -47,8 +43,8 @@ class _PlanFinishPageState extends ConsumerState<PlanFinishPage> {
                   //상단정보
                   PlanTopInfo(
                     planState: planState,
-                    startDate: startDate,
-                    endDate: endDate,
+                    startDate: planState.startFormat,
+                    endDate: planState.endFormat,
                   ),
                   Container(
                     margin: EdgeInsets.symmetric(vertical: 20),
@@ -138,7 +134,6 @@ class _PlanFinishPageState extends ConsumerState<PlanFinishPage> {
                               );
                               if (result == true) {
                                 if (planState.planId == null) {
-                                  //planId가 없으면-firebase에 안올린 계획
                                   planFunc.planClear();
                                   print('고냥 삭제');
                                 } else {
@@ -146,14 +141,13 @@ class _PlanFinishPageState extends ConsumerState<PlanFinishPage> {
                                     authState.user!.uid,
                                     planState.planId!,
                                   );
-                                  print('파이어베이스에서 삭제');
                                 }
 
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) {
-                                      return AppBtNavi(initialIndex: 1);
+                                      return AppBtNavi(initialIndex: 0);
                                     },
                                   ),
                                 );

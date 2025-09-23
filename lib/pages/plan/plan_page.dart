@@ -34,10 +34,6 @@ class _PlanPageState extends ConsumerState<PlanPage> {
   @override
   Widget build(BuildContext context) {
     final planState = ref.watch(planViewModelProvider);
-    //출발날짜
-    final startDate = DateFormat('yy.MM.dd').format(planState.startDate);
-    //도착날짜
-    final endDate = DateFormat('yy.MM.dd').format(planState.endDate);
     //총여행날짜
     final totalDays = planState.endDate.difference(planState.startDate).inDays + 1;
     //페이지별 날짜 표시
@@ -69,8 +65,6 @@ class _PlanPageState extends ConsumerState<PlanPage> {
       }
     }
 
-    print('플랜페이지!! $planState ${planState.planId}======================================');
-
     return Scaffold(
       appBar: BasicAppBar(),
       floatingActionButton: PlanDialogBtn(thisPage: thisPage),
@@ -82,7 +76,7 @@ class _PlanPageState extends ConsumerState<PlanPage> {
             children: [
               SizedBox(height: 20),
               //상단정보
-              PlanTopInfo(planState: planState, startDate: startDate, endDate: endDate),
+              PlanTopInfo(planState: planState, startDate: planState.startFormat, endDate: planState.endFormat),
               //상단 날짜 & 페이지 이동 컨트롤러
               Container(
                 height: 56,

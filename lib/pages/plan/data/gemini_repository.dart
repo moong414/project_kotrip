@@ -1,14 +1,14 @@
 import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:intl/intl.dart';
 import 'package:project_kotrip/pages/plan/data/plan_model.dart';
 import 'package:project_kotrip/pages/plan/view_model/plan_view_model.dart';
 
 class GeminiRepository {
   final dio = Dio();
   final key = Uri.decodeFull(dotenv.env['GEMINI_API_KEY'] ?? '');
-  final url =
-      'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent';
+  final url = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent';
 
   Future<PlanState> geminiCreatePlan(
     String area,
@@ -59,15 +59,13 @@ class GeminiRepository {
       );
 
       final resultTxt = response.data['candidates'][0]['content']['parts'][0]['text'];
-      print('AI raw response: $resultTxt');
-
       final cleanJson = resultTxt.replaceAll(RegExp(r'```json|```'), '').trim();
       final decodedTxt = jsonDecode(cleanJson);
-      final days = decodedTxt['days'] as List;
+      final daysList = decodedTxt['days'] as List;
 
-      final planList = days.map((day) {
-        final rawPlans = day['plans'] as List? ?? [];
-        final plans = rawPlans.map((p) {
+      final planList = daysList.map((day) {
+        final rawData = day['plans'] as List? ?? [];
+        final plans = rawData.map((p) {
           return PlanModel(
             time: p['time'] ?? '',
             place: p['place'] ?? '',
@@ -77,8 +75,10 @@ class GeminiRepository {
         return plans;
       }).toList();
 
-      final startDate = DateTime.tryParse(days.first['date'] ?? '') ?? DateTime.now();
-      final endDate = DateTime.tryParse(days.last['date'] ?? '') ?? startDate;
+      final startDate = DateTime.tryParse(daysList.first['date'] ?? '') ?? DateTime.now();
+      final endDate = DateTime.tryParse(daysList.last['date'] ?? '') ?? startDate;
+      final startFormat = DateFormat('yy.MM.dd').format(startDate);
+      final endFormat = DateFormat('yy.MM.dd').format(endDate);
 
       print('AI 계획 변환 결과: $planList');
 
@@ -87,6 +87,8 @@ class GeminiRepository {
         startDate: startDate,
         endDate: endDate,
         planList: planList,
+        startFormat: startFormat,
+        endFormat: endFormat,
       );
     } catch (e) {
       print('AI 계획 생성 에러: $e');
@@ -95,6 +97,8 @@ class GeminiRepository {
         startDate: DateTime.now(),
         endDate: DateTime.now(),
         planList: [],
+        startFormat: '',
+        endFormat: ''
       );
     }
   }

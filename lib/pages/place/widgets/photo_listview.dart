@@ -23,18 +23,27 @@ class PhotoListview extends ConsumerStatefulWidget {
 }
 
 class _PhotoListviewState extends ConsumerState<PhotoListview> {
+  bool isLoading = true;
+
   @override
   void initState() {
     super.initState();
     if (widget.code != null) {
       ref.read(placeViewModelProvider.notifier).loadPlaces(areaCode: widget.code!);
     }
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      setState(() {
+        isLoading = false;
+      });
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    final state = ref.watch(placeViewModelProvider).funcPlaceList(widget.kindPlace.toString());
-    
+    final state = ref
+        .watch(placeViewModelProvider)
+        .funcPlaceList(widget.kindPlace.toString());
+
     return Padding(
       padding: const EdgeInsets.only(left: 20, bottom: 10),
       child: Column(
@@ -80,10 +89,15 @@ class _PhotoListviewState extends ConsumerState<PhotoListview> {
                 return Stack(
                   children: [
                     GestureDetector(
-                      onTap: (){
-                        Navigator.push(context, MaterialPageRoute(builder: (context) {
-                          return PlaceDetailPage(placemodel: state[index]);
-                        },));
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) {
+                              return PlaceDetailPage(placemodel: state[index]);
+                            },
+                          ),
+                        );
                       },
                       child: Container(
                         width: 160,
@@ -104,17 +118,6 @@ class _PhotoListviewState extends ConsumerState<PhotoListview> {
                         ),
                       ),
                     ),
-                    // Positioned(
-                    //   top: 12,
-                    //   right: 14,
-                    //   child: Row(
-                    //     children: [
-                    //       Icon(Icons.star, color: Colors.white, size: 14),
-                    //       SizedBox(width: 3),
-                    //       Text('4.6', style: TextStyle(color: Colors.white)),
-                    //     ],
-                    //   ),
-                    // ),
                     Positioned(
                       left: 14,
                       bottom: 12,
@@ -122,10 +125,7 @@ class _PhotoListviewState extends ConsumerState<PhotoListview> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            state[index].title,
-                            style: AppTxtSt.txtStRBWt,
-                          ),
+                          Text(state[index].title, style: AppTxtSt.txtStRBWt),
                           SizedBox(height: 6),
                           Text(
                             state[index].addr,
