@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:project_kotrip/core/theme/colors.dart';
 import 'package:project_kotrip/core/theme/text_style.dart';
 import 'package:project_kotrip/core/widgets/basic_app_bar.dart';
+import 'package:project_kotrip/core/widgets/loading_widget.dart';
 import 'package:project_kotrip/pages/plan/plan_finish_page.dart';
 import 'package:project_kotrip/pages/plan/view_model/plan_view_model.dart';
 import 'package:project_kotrip/pages/plan/widgets/plan_text_form.dart';
@@ -17,6 +18,7 @@ class PlanAiPage extends ConsumerStatefulWidget {
 }
 
 class _PlanAiPageState extends ConsumerState<PlanAiPage> {
+  bool isLoading = false;
   List<String> themeList = [
     '뚜벅이',
     '나홀로',
@@ -51,110 +53,138 @@ class _PlanAiPageState extends ConsumerState<PlanAiPage> {
     // planState.geminiCreatePlan({'도시/건축','쇼핑'});
     final TextEditingController themeController = TextEditingController();
 
-    return Scaffold(
-      appBar: BasicAppBar(),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.all(20),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              //상단정보
-              PlanTopInfo(
-                planState: planState,
-                startDate: startDate,
-                endDate: endDate,
-              ),
-              Container(
-                width: double.infinity,
-                margin: EdgeInsets.symmetric(vertical: 20),
-                padding: EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                  color: colGrBg,
-                ),
-                child: Text(
-                  '어떤 여행을 선호하세요?',
-                  style: AppTxtSt.txtStL,
-                  textAlign: TextAlign.center,
-                ),
-              ),
-              Text('여행 테마', style: AppTxtSt.titleSt),
-              SizedBox(height: 20),
-              PlanTextForm(hintText: '자유롭게 입력하세요', controller: themeController),
-              SizedBox(height: 20),
-              Text('여행 키워드', style: AppTxtSt.titleSt),
-              Container(
-                padding: EdgeInsets.only(top: 20, bottom: 30),
-                child: Wrap(
-                  spacing: 8,
-                  runSpacing: 8,
-                  children: List.generate(themeList.length, (index) {
-                    final item = themeList[index];
-                    final isSelected = themeSet.contains(item);
-                    return GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          if (isSelected) {
-                            themeSet.remove(item);
-                          } else {
-                            themeSet.add(item);
-                          }
-                        });
-                        print(themeSet);
-                      },
-                      child: Container(
-                        width: ((MediaQuery.of(context).size.width) / 4) - 16,
-                        padding: EdgeInsets.all(10),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(30),
-                          color: isSelected ? colGreenAi : colGreyBg,
-                        ),
-                        child: Center(
-                          child: Text(
-                            themeList[index],
-                            style: isSelected
-                                ? AppTxtSt.txtStRB.copyWith(color: Colors.white)
-                                : AppTxtSt.txtStR,
+    return Stack(
+      children: [
+        Scaffold(
+          appBar: BasicAppBar(),
+          body: SafeArea(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.all(20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  //상단정보
+                  PlanTopInfo(
+                    planState: planState,
+                    startDate: startDate,
+                    endDate: endDate,
+                  ),
+                  Container(
+                    width: double.infinity,
+                    margin: EdgeInsets.symmetric(vertical: 20),
+                    padding: EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: colGrBg,
+                    ),
+                    child: Text(
+                      '어떤 여행을 선호하세요?',
+                      style: AppTxtSt.txtStL,
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                  Text('여행 테마', style: AppTxtSt.titleSt),
+                  SizedBox(height: 20),
+                  PlanTextForm(
+                    hintText: '자유롭게 입력하세요',
+                    controller: themeController,
+                  ),
+                  SizedBox(height: 20),
+                  Text('여행 키워드', style: AppTxtSt.titleSt),
+                  Container(
+                    padding: EdgeInsets.only(top: 20, bottom: 30),
+                    child: Wrap(
+                      spacing: 8,
+                      runSpacing: 8,
+                      children: List.generate(themeList.length, (index) {
+                        final item = themeList[index];
+                        final isSelected = themeSet.contains(item);
+                        return GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              if (isSelected) {
+                                themeSet.remove(item);
+                              } else {
+                                themeSet.add(item);
+                              }
+                            });
+                            print(themeSet);
+                          },
+                          child: Container(
+                            width:
+                                ((MediaQuery.of(context).size.width) / 4) - 16,
+                            padding: EdgeInsets.all(10),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(30),
+                              color: isSelected ? colGreenAi : colGreyBg,
+                            ),
+                            child: Center(
+                              child: Text(
+                                themeList[index],
+                                style: isSelected
+                                    ? AppTxtSt.txtStRB.copyWith(
+                                        color: Colors.white,
+                                      )
+                                    : AppTxtSt.txtStR,
+                              ),
+                            ),
                           ),
-                        ),
-                      ),
-                    );
-                  }),
-                ),
-              ),
-              Container(
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(colors: [colGreenAi, colMintAi]),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: TextButton(
-                  onPressed: () async{
-                    await planFunc.geminiCreatePlan(themeController.text, themeSet);
-                    Navigator.push(context, MaterialPageRoute(builder: (context) {
-                            return PlanFinishPage();
-                          },));
-                  },
-                  style: TextButton.styleFrom(
-                    padding: EdgeInsets.fromLTRB(16, 17, 16, 16),
+                        );
+                      }),
+                    ),
                   ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Image.asset('assets/images/icon_ai_wt.png', width: 20),
-                      SizedBox(width: 6),
-                      Text(
-                        'AI에게 부탁하기',
-                        style: TextStyle(color: Colors.white, fontSize: 16),
+                  Container(
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(colors: [colGreenAi, colMintAi]),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: TextButton(
+                      onPressed: () async {
+                        setState(() {
+                          isLoading = true;
+                        });
+                        await planFunc.geminiCreatePlan(
+                          themeController.text,
+                          themeSet,
+                        );
+                        setState(() {
+                          isLoading = false; // 로딩 끝
+                        });
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) {
+                              return PlanFinishPage();
+                            },
+                          ),
+                        );
+                      },
+                      style: TextButton.styleFrom(
+                        padding: EdgeInsets.fromLTRB(16, 17, 16, 16),
                       ),
-                    ],
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Image.asset(
+                            'assets/images/icon_ai_wt.png',
+                            width: 20,
+                          ),
+                          SizedBox(width: 6),
+                          Text(
+                            'AI에게 부탁하기',
+                            style: TextStyle(color: Colors.white, fontSize: 16),
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
-                ),
+                ],
               ),
-            ],
+            ),
           ),
         ),
-      ),
+        if (isLoading) LoadingWidget(),
+      ],
     );
   }
 }
