@@ -121,7 +121,8 @@ class _PlaceDetailPageState extends ConsumerState<PlaceDetailPage> {
                             reviewList: state.reviewModel.reviews,
                           ),
                     PlaceMapBtn(),
-                    MyReviewDialog(),
+                    //Todo 리뷰
+                    // MyReviewDialog(),
                     SizedBox(height: 30),
                   ],
                 ),

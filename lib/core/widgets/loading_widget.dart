@@ -1,5 +1,4 @@
 import 'dart:math';
-
 import 'package:flutter/material.dart';
 
 class LoadingWidget extends StatefulWidget {
@@ -56,7 +55,12 @@ class _LoadingWidgetState extends State<LoadingWidget>
                 child: LinearProgressIndicator(color: Colors.white),
               ),
               SizedBox(height: 20),
-              Text(widget.message, style: TextStyle(color: Colors.white)),
+              Text(
+                widget.message,
+                style: Theme.of(
+                  context,
+                ).textTheme.bodyMedium?.copyWith(color: Colors.white),
+              ),
             ],
           ),
         ),

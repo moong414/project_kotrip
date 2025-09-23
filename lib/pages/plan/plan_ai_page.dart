@@ -19,6 +19,8 @@ class PlanAiPage extends ConsumerStatefulWidget {
 
 class _PlanAiPageState extends ConsumerState<PlanAiPage> {
   bool isLoading = false;
+  late TextEditingController themeController;
+
   List<String> themeList = [
     '뚜벅이',
     '나홀로',
@@ -40,6 +42,7 @@ class _PlanAiPageState extends ConsumerState<PlanAiPage> {
   void initState() {
     super.initState();
     themeSet = {}; //테마목록초기화
+    themeController = TextEditingController();
   }
 
   @override
@@ -50,8 +53,6 @@ class _PlanAiPageState extends ConsumerState<PlanAiPage> {
     final startDate = DateFormat('yy.MM.dd').format(planState.startDate);
     //도착날짜
     final endDate = DateFormat('yy.MM.dd').format(planState.endDate);
-    // planState.geminiCreatePlan({'도시/건축','쇼핑'});
-    final TextEditingController themeController = TextEditingController();
 
     return Stack(
       children: [
@@ -108,7 +109,6 @@ class _PlanAiPageState extends ConsumerState<PlanAiPage> {
                                 themeSet.add(item);
                               }
                             });
-                            print(themeSet);
                           },
                           child: Container(
                             width:
@@ -183,7 +183,7 @@ class _PlanAiPageState extends ConsumerState<PlanAiPage> {
             ),
           ),
         ),
-        if (isLoading) LoadingWidget(),
+        if (isLoading) LoadingWidget(message: 'AI가 여행계획을 완성하는중...'),
       ],
     );
   }
