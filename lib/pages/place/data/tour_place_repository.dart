@@ -24,6 +24,7 @@ class TourPlaceRepository {
           'arrange': 'R'
           //O=제목순, Q=수정일순, R=생성일순
         },
+        options: Options(responseType: ResponseType.json)
       );
 
       if (response.statusCode == 200) {

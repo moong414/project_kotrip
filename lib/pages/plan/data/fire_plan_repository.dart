@@ -24,11 +24,17 @@ class FirePlanRepository {
 
   // Plan 리스트 불러오기
   Future<List<PlanState>> getPlan(String userId) async {
-    final plan = await getUserPlan(userId).get();
-    return plan.docs.map((doc) {
-      final data = doc.data() as Map<String, dynamic>;
-      return PlanState.fromMap({...data, 'planId': doc.id});
-    }).toList();
+    try {
+      final plan = await getUserPlan(userId).get();
+      final planList = plan.docs.map((doc) {
+        final data = doc.data() as Map<String, dynamic>;
+        return PlanState.fromMap({...data, 'planId': doc.id});
+      }).toList();
+      return planList;
+    } catch (e) {
+      print('Plan 리스트 불러오기에서 error발생!! $e');
+      return [];
+    }
   }
 
   //Plan id로 1개만 찾기
