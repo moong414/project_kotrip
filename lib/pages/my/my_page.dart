@@ -81,16 +81,15 @@ class _MyPageState extends ConsumerState<MyPage> {
                   return SizedBox(height: 10);
                 },
               ),
-        Padding(
-          padding: EdgeInsetsGeometry.only(top: 20, bottom: 10),
-          child: Text('내 리뷰 보기', style: AppTxtSt.titleSt),
-        ),
-        MyReviewLink(),
-        MyReviewLink(),
-        MyReviewLink(),
+        //Todo: 내 리뷰 기능
+        // Padding(
+        //   padding: EdgeInsetsGeometry.only(top: 20, bottom: 10),
+        //   child: Text('내 리뷰 보기', style: AppTxtSt.titleSt),
+        // ),
+        // MyReviewLink(),
         GestureDetector(
           onTap: () {
-            //탈퇴
+            //Todo 탈퇴기능
           },
           child: Container(
             padding: EdgeInsets.symmetric(horizontal: 10, vertical: 20),
