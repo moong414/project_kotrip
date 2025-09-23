@@ -186,11 +186,11 @@ class PlanViewModel extends Notifier<PlanState> {
 
   // ---------------- Gemini AI 연동 ----------------
   //Ai에게 맡기기
-  Future<void> geminiCreatePlan(Set<String> themes) async {
+  Future<void> geminiCreatePlan(String style, Set<String> themes) async {
     final date = '${state.startDate} - ${state.endDate}';
     final area = state.area; 
 
-    final result = await gemini.geminiCreatePlan(area, date, themes);
+    final result = await gemini.geminiCreatePlan(area, date, style, themes);
     state = result;
     }
 }

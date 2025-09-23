@@ -13,6 +13,7 @@ class GeminiRepository {
   Future<PlanState> geminiCreatePlan(
     String area,
     String date,
+    String style, // 여행 스타일
     Set<String> themes, // 여행 테마
   ) async {
     final prompt =
@@ -22,6 +23,7 @@ class GeminiRepository {
 조건:
 - 여행지: $area
 - 여행 기간: $date
+- 여행 스타일: $style
 - 여행 테마: ${themes.join(", ")}
 
 결과는 반드시 아래 JSON 형식으로만 응답해:
