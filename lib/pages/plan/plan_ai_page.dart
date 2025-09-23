@@ -49,10 +49,6 @@ class _PlanAiPageState extends ConsumerState<PlanAiPage> {
   Widget build(BuildContext context) {
     final planState = ref.watch(planViewModelProvider);
     final planFunc = ref.read(planViewModelProvider.notifier);
-    //출발날짜
-    final startDate = DateFormat('yy.MM.dd').format(planState.startDate);
-    //도착날짜
-    final endDate = DateFormat('yy.MM.dd').format(planState.endDate);
 
     return Stack(
       children: [
@@ -67,8 +63,8 @@ class _PlanAiPageState extends ConsumerState<PlanAiPage> {
                   //상단정보
                   PlanTopInfo(
                     planState: planState,
-                    startDate: startDate,
-                    endDate: endDate,
+                    startDate: planState.startFormat,
+                    endDate: planState.endFormat,
                   ),
                   Container(
                     width: double.infinity,

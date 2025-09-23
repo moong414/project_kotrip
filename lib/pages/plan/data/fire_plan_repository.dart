@@ -28,9 +28,11 @@ class FirePlanRepository {
       final plan = await getUserPlan(userId).get();
       final planList = plan.docs.map((doc) {
         final data = doc.data() as Map<String, dynamic>;
-        return PlanState.fromMap({...data, 'planId': doc.id});
+        return PlanState.fromMap(data);
       }).toList();
+      
       return planList;
+
     } catch (e) {
       print('Plan 리스트 불러오기에서 error발생!! $e');
       return [];
