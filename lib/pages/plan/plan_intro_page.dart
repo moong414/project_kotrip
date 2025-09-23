@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:project_kotrip/core/theme/colors.dart';
 import 'package:project_kotrip/core/theme/text_style.dart';
 import 'package:project_kotrip/core/widgets/app_button.dart';
+import 'package:project_kotrip/pages/plan/plan_ai_page.dart';
 import 'package:project_kotrip/pages/plan/plan_page.dart';
 import 'package:project_kotrip/pages/plan/view_model/plan_view_model.dart';
 import 'package:project_kotrip/pages/plan/widgets/intro_date_widget.dart';
@@ -33,14 +34,14 @@ class _PlanIntroPageState extends ConsumerState<PlanIntroPage> {
   }
 
   //검증
-  void onTapNextBtn() {
+  void onTapNextBtn(Widget widget) {
     if (formKey.currentState!.validate()) {
       //페이지 이동
       Navigator.push(
         context,
         MaterialPageRoute(
           builder: (context) {
-            return PlanPage();
+            return widget;
           },
         ),
       );
@@ -75,7 +76,7 @@ class _PlanIntroPageState extends ConsumerState<PlanIntroPage> {
               onPressed: () {
                 //뷰모델에 전달
                 planState.updatePlace(regionController.text);
-                onTapNextBtn();
+                onTapNextBtn(PlanPage());
               },
             ),
             SizedBox(height: 10),
@@ -87,7 +88,10 @@ class _PlanIntroPageState extends ConsumerState<PlanIntroPage> {
               ),
               child: TextButton(
                 onPressed: () {
+                  //뷰모델에 전달
+                  planState.updatePlace(regionController.text);
                   //AI에게 부탁하기
+                  onTapNextBtn(PlanAiPage());
                 },
                 style: TextButton.styleFrom(padding: EdgeInsets.fromLTRB(16, 17, 16, 16),),
                 child: Row(

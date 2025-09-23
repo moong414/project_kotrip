@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:project_kotrip/pages/plan/data/gemini_repository.dart';
 import 'package:project_kotrip/pages/plan/data/plan_model.dart';
 import 'package:project_kotrip/pages/plan/data/fire_plan_repository.dart';
 import 'dart:convert';
@@ -25,7 +26,9 @@ class PlanState {
       'endDate': endDate,
       //중첩된리스트는 파이어스토어에서 지원하지않아서 문자열로 바꿔서 저장하기
       'planList': jsonEncode(
-        planList.map((list) => list.map((plan) => plan.toMap()).toList()).toList(),
+        planList
+            .map((list) => list.map((plan) => plan.toMap()).toList())
+            .toList(),
       ),
       'planId': planId,
     };
@@ -44,7 +47,7 @@ class PlanState {
                 .toList(),
           )
           .toList(),
-      planId: map['planId'], 
+      planId: map['planId'],
     );
   }
 
@@ -64,11 +67,13 @@ class PlanState {
       planId: planId ?? this.planId,
     );
   }
+
+  void geminiCreatePlan() {}
 }
 
 class PlanViewModel extends Notifier<PlanState> {
   final FirePlanRepository repo = FirePlanRepository();
-  // final String userId = 'test_user';s
+  final GeminiRepository gemini = GeminiRepository();
 
   @override
   PlanState build() {
@@ -77,7 +82,7 @@ class PlanViewModel extends Notifier<PlanState> {
       startDate: DateTime(1970, 1, 1),
       endDate: DateTime(1970, 1, 1),
       planList: [],
-      planId: ''
+      planId: '',
     );
   }
 
@@ -88,7 +93,7 @@ class PlanViewModel extends Notifier<PlanState> {
       startDate: DateTime(1970, 1, 1),
       endDate: DateTime(1970, 1, 1),
       planList: [],
-      planId: ''
+      planId: '',
     );
   }
 
@@ -164,7 +169,13 @@ class PlanViewModel extends Notifier<PlanState> {
   //파이어베이스 현재계획 삭제
   Future<void> deletePlan(String userId, String planId) async {
     await repo.deletePlan(userId, planId);
-    if (state.planId == planId) state = PlanState(area: '', startDate: DateTime(1970,1,1), endDate: DateTime(1970,1,1), planList: []);
+    if (state.planId == planId)
+      state = PlanState(
+        area: '',
+        startDate: DateTime(1970, 1, 1),
+        endDate: DateTime(1970, 1, 1),
+        planList: [],
+      );
   }
 
   //계획1개만 불러와서 상태 업데이트
@@ -172,6 +183,16 @@ class PlanViewModel extends Notifier<PlanState> {
     final plan = await repo.getPlanById(userId, planId);
     if (plan != null) state = plan;
   }
+
+  // ---------------- Gemini AI 연동 ----------------
+  //Ai에게 맡기기
+  Future<void> geminiCreatePlan(String style, Set<String> themes) async {
+    final date = '${state.startDate} - ${state.endDate}';
+    final area = state.area; 
+
+    final result = await gemini.geminiCreatePlan(area, date, style, themes);
+    state = result;
+    }
 }
 
 final planViewModelProvider = NotifierProvider<PlanViewModel, PlanState>(

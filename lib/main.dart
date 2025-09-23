@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:project_kotrip/core/theme/colors.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:project_kotrip/core/widgets/app_bt_navi.dart';
+import 'package:project_kotrip/core/widgets/loading_widget.dart';
 import 'package:project_kotrip/pages/splash/splash_page.dart';
 import 'package:project_kotrip/pages/splash/view_model/auth_view_model.dart';
 
@@ -61,8 +62,8 @@ class _MyAppState extends ConsumerState<MyApp> {
         ),
         fontFamily: 'SCDream',
       ),
-      home: authState.isSignedIn ?
-      AppBtNavi()
+      home: authState.isSignedIn 
+      ?AppBtNavi()
       :SplashPage(),
     );
   }
