@@ -25,7 +25,7 @@ class PlanFinishPage extends ConsumerStatefulWidget {
 class _PlanFinishPageState extends ConsumerState<PlanFinishPage> {
   bool isLoading = false;
   final ItemScrollController itemScrollController = ItemScrollController();
-  int? btnIndex = 0;
+  int? btnIndex = 0;  //스크롤버튼용
 
   // 클릭시 날짜로 이동
   void scrollToPlan(int index) {
@@ -169,7 +169,6 @@ class _PlanFinishPageState extends ConsumerState<PlanFinishPage> {
                                     planState.planId!,
                                   );
                                 }
-
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(

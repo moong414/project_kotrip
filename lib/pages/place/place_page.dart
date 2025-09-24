@@ -6,7 +6,7 @@ import 'package:project_kotrip/core/theme/text_style.dart';
 import 'package:project_kotrip/pages/place/widgets/photo_listview.dart';
 import 'package:project_kotrip/pages/home/data/place_code_map.dart';
 import 'package:project_kotrip/pages/place/view_model/place_view_model.dart';
-import 'package:project_kotrip/pages/place/widgets/place_filter_item.dart';
+import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 class PlacePage extends ConsumerStatefulWidget {
   const PlacePage({super.key});
@@ -21,13 +21,10 @@ class _PlacePageState extends ConsumerState<PlacePage> {
     borderRadius: BorderRadius.circular(10),
   );
   final TextEditingController controller = TextEditingController();
+  final ItemScrollController itemScrollController = ItemScrollController();
+  int? btnIndex = 0; //스크롤버튼용
 
-  @override
-  void dispose() {
-    controller.dispose();
-    super.dispose();
-  }
-
+  //장소변경버튼
   void showPlacePicker() {
     String pickedCode = placeCodeMap.values.first;
     List<String> placeList = placeCodeMap.keys.toList();
@@ -80,6 +77,31 @@ class _PlacePageState extends ConsumerState<PlacePage> {
     );
   }
 
+  //리스트
+  List<String> placeTitList = ['관광지', '문화시설', '음식', '쇼핑'];
+  List<String> kindList = [
+    'tourPlaceList',
+    'culturePlaceList',
+    'foodPlaceList',
+    'etcPlaceList',
+  ];
+  //클릭시 이동
+  void scrollToPlan(int index) {
+    if (itemScrollController.isAttached) {
+      itemScrollController.scrollTo(
+        index: index,
+        duration: Duration(milliseconds: 300),
+        curve: Curves.easeInOut,
+      );
+    }
+  }
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     final state = ref.watch(placeViewModelProvider);
@@ -89,10 +111,10 @@ class _PlacePageState extends ConsumerState<PlacePage> {
     }).key;
 
     return SafeArea(
-      child: ListView(
+      child: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
+            padding: const EdgeInsets.fromLTRB(20, 20, 20, 10),
             child: Column(
               children: [
                 Row(
@@ -102,6 +124,7 @@ class _PlacePageState extends ConsumerState<PlacePage> {
                   ],
                 ),
                 SizedBox(height: 20),
+                //장소변경버튼
                 Stack(
                   children: [
                     TextFormField(
@@ -134,24 +157,55 @@ class _PlacePageState extends ConsumerState<PlacePage> {
                   ],
                 ),
                 SizedBox(height: 16),
-                //Todo: 필터 만들것!!
                 Row(
                   children: [
-                    PlaceFilterItem(title: '전체', isSelectd: true),
-                    SizedBox(width: 10),
-                    PlaceFilterItem(title: '관광지'),
-                    SizedBox(width: 10),
-                    PlaceFilterItem(title: '문화시설'),
-                    SizedBox(width: 10),
-                    PlaceFilterItem(title: '음식'),
+                    for (int i = 0; i < placeTitList.length; i++)
+                      Expanded(
+                        child: GestureDetector(
+                          onTap: () {
+                            //클릭시 이동
+                            scrollToPlan(i);
+                            setState(() {
+                              btnIndex = i;
+                            });
+                          },
+                          child: Container(
+                            margin: EdgeInsets.symmetric(horizontal: 1),
+                            padding: EdgeInsets.all(10),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(30),
+                              color: btnIndex == i ? colBkTxt : colGreyBg,
+                            ),
+                            child: Center(
+                              child: Text(
+                                placeTitList[i],
+                                style: btnIndex == i
+                                    ? AppTxtSt.txtStRB.copyWith(
+                                        color: Colors.white,
+                                      )
+                                    : AppTxtSt.txtStR,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
                   ],
                 ),
               ],
             ),
           ),
-          PhotoListview(title: '관광지', kindPlace: 'tourPlaceList'),
-          PhotoListview(title: '문화시설', kindPlace: 'culturePlaceList'),
-          PhotoListview(title: '음식', kindPlace: 'foodPlaceList'),
+          Expanded(
+            child: ScrollablePositionedList.builder(
+              itemScrollController: itemScrollController,
+                itemCount: 4,
+                itemBuilder: (context, index) {
+                  return PhotoListview(
+                    title: placeTitList[index],
+                    kindPlace: kindList[index],
+                  );
+                },
+              ),
+          ),
         ],
       ),
     );

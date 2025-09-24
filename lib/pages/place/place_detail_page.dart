@@ -32,7 +32,6 @@ class _PlaceDetailPageState extends ConsumerState<PlaceDetailPage> {
 
   @override
   Widget build(BuildContext context) {
-    print('이 장소의 이름은!! ${widget.placeName}');
     final state = ref.watch(reviewViewModelProvider);
 
     return Scaffold(
@@ -71,7 +70,6 @@ class _PlaceDetailPageState extends ConsumerState<PlaceDetailPage> {
               ),
             ),
           ),
-          
           ListView(
             padding: EdgeInsets.zero,
             children: [
@@ -125,8 +123,6 @@ class _PlaceDetailPageState extends ConsumerState<PlaceDetailPage> {
                     // MyReviewDialog(),
                     SizedBox(height: 30),
                   ], 
-
-                  
                 ),
               ),
             ],
