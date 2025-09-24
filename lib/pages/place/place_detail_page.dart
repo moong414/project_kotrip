@@ -4,6 +4,7 @@ import 'package:project_kotrip/core/theme/colors.dart';
 import 'package:project_kotrip/core/theme/text_style.dart';
 import 'package:project_kotrip/core/widgets/basic_app_bar.dart';
 import 'package:project_kotrip/pages/place/data/place_model.dart';
+import 'package:project_kotrip/pages/place/view_model/place_view_model.dart';
 import 'package:project_kotrip/pages/place/view_model/review_view_model.dart';
 import 'package:project_kotrip/pages/place/widgets/place_map_btn.dart';
 import 'package:project_kotrip/pages/place/widgets/my_review_dialog.dart';
@@ -11,8 +12,9 @@ import 'package:project_kotrip/pages/place/widgets/place_review_list.dart';
 
 class PlaceDetailPage extends ConsumerStatefulWidget {
   PlaceModel placemodel;
+  String placeName;
 
-  PlaceDetailPage({super.key, required this.placemodel});
+  PlaceDetailPage({super.key, required this.placemodel, required this.placeName});
 
   @override
   ConsumerState<PlaceDetailPage> createState() => _PlaceDetailPageState();
@@ -27,13 +29,12 @@ class _PlaceDetailPageState extends ConsumerState<PlaceDetailPage> {
   @override
   void initState() {
     super.initState();
-    ref
-        .read(reviewViewModelProvider.notifier)
-        .loadReview(place: widget.placemodel);
+    ref.read(reviewViewModelProvider.notifier).loadReview(place: widget.placemodel);
   }
 
   @override
   Widget build(BuildContext context) {
+    print('이 장소의 이름은!! ${widget.placeName}');
     final state = ref.watch(reviewViewModelProvider);
 
     return Scaffold(
@@ -72,6 +73,7 @@ class _PlaceDetailPageState extends ConsumerState<PlaceDetailPage> {
               ),
             ),
           ),
+          
           ListView(
             padding: EdgeInsets.zero,
             children: [
@@ -120,11 +122,13 @@ class _PlaceDetailPageState extends ConsumerState<PlaceDetailPage> {
                         : PlaceReviewList(
                             reviewList: state.reviewModel.reviews,
                           ),
-                    PlaceMapBtn(),
+                    PlaceMapBtn(placeId: state.placeId, placeName: widget.placeName,),
                     //Todo 리뷰
                     // MyReviewDialog(),
                     SizedBox(height: 30),
-                  ],
+                  ], 
+
+                  
                 ),
               ),
             ],

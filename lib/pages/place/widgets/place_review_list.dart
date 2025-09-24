@@ -34,17 +34,23 @@ class PlaceReviewList extends StatelessWidget {
                   style: AppTxtSt.txtStR,
                 ),
                 Spacer(),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Text(reviewList[index].authorName, maxLines: 1, overflow: TextOverflow.ellipsis),
-                  ],
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Text(DateFormat('yy-MM-dd').format(reviewList[index].time), maxLines: 1, overflow: TextOverflow.ellipsis),
-                  ],
+                SizedBox(
+                  width: double.infinity,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Text(
+                        reviewList[index].authorName,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      Text(
+                        DateFormat('yy-MM-dd').format(reviewList[index].time),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ],
+                  ),
                 ),
               ],
             ),
