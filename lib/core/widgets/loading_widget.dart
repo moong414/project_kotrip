@@ -3,8 +3,9 @@ import 'package:flutter/material.dart';
 
 class LoadingWidget extends StatefulWidget {
   final String message;
+  final bool isPart;
 
-  const LoadingWidget({super.key, this.message = '로딩중...'});
+  const LoadingWidget({super.key, this.message = '로딩중...', this.isPart = false});
 
   @override
   State<LoadingWidget> createState() => _LoadingWidgetState();
@@ -35,7 +36,7 @@ class _LoadingWidgetState extends State<LoadingWidget>
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.black54,
+      color: widget.isPart ? Colors.white : Colors.black54,
       child: Center(
         child: Padding(
           padding: EdgeInsets.all(24),
@@ -59,7 +60,7 @@ class _LoadingWidgetState extends State<LoadingWidget>
                 widget.message,
                 style: Theme.of(
                   context,
-                ).textTheme.bodyMedium?.copyWith(color: Colors.white),
+                ).textTheme.bodyMedium?.copyWith(color: widget.isPart ? Colors.black87 :Colors.white),
               ),
             ],
           ),

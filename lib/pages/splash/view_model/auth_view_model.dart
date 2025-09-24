@@ -69,18 +69,18 @@ class AuthViewModel extends Notifier<AuthState> {
   }
 
   //회원 탈퇴
-  Future<bool> deleteAccount() async {
+  Future<void> deleteAccount() async {
     try {
       final user = auth.currentUser;
       if (user != null) {
         await user.delete(); // Firebase에서 계정 삭제
+        await auth.signOut();
         state = state.copyWith(user: null, isSignedIn: false);
-        return true;
       }
-      return false;
+      return;
     } catch (e) {
       print('계정 삭제 실패: $e');
-      return false;
+      return;
     }
   }
 
