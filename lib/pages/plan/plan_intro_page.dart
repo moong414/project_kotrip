@@ -20,13 +20,11 @@ class PlanIntroPage extends ConsumerStatefulWidget {
 class _PlanIntroPageState extends ConsumerState<PlanIntroPage> {
   final formKey = GlobalKey<FormState>();
   late final TextEditingController regionController;
-  late final planState;
 
   @override
   void initState() {
     super.initState();
     regionController = TextEditingController(text: widget.title ?? '');
-    planState = ref.read(planViewModelProvider.notifier);
   }
 
   @override
@@ -52,6 +50,7 @@ class _PlanIntroPageState extends ConsumerState<PlanIntroPage> {
 
   @override
   Widget build(BuildContext context) {
+    final planState = ref.read(planViewModelProvider.notifier);
     return Padding(
       padding: EdgeInsetsGeometry.all(20),
       child: Form(
