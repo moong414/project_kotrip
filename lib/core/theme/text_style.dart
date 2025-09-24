@@ -13,7 +13,7 @@ class AppTxtSt {
   static const TextStyle titleStB = TextStyle(
     color: colBkTxt,
     fontSize: 18,
-    fontWeight: FontWeight.w700,
+    fontWeight: FontWeight.w800,
   );
 
   //제목스타일-화이트-bold
