@@ -12,6 +12,8 @@ import 'package:project_kotrip/pages/plan/view_model/plan_view_model.dart';
 import 'package:project_kotrip/pages/plan/widgets/finish_item_widget.dart';
 import 'package:project_kotrip/pages/plan/widgets/plan_top_info.dart';
 import 'package:project_kotrip/pages/splash/view_model/auth_view_model.dart';
+import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
+
 
 class PlanFinishPage extends ConsumerStatefulWidget {
   const PlanFinishPage({super.key});
@@ -22,14 +24,31 @@ class PlanFinishPage extends ConsumerStatefulWidget {
 
 class _PlanFinishPageState extends ConsumerState<PlanFinishPage> {
   bool isLoading = false;
+  final ItemScrollController itemScrollController = ItemScrollController();
+  int? btnIndex = 0;
+
+  // 클릭시 날짜로 이동
+  void scrollToPlan(int index) {
+    if (itemScrollController.isAttached) {
+      itemScrollController.scrollTo(
+        index: index,
+        duration: Duration(milliseconds: 300),
+        curve: Curves.easeInOut,
+      );
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     final planState = ref.watch(planViewModelProvider);
-    final planFunc = ref.watch(planViewModelProvider.notifier);
-    //로그인상태
-    final authState = ref.read(authViewModelProvider);
-
+    final planFunc = ref.read(planViewModelProvider.notifier);
+    final authState = ref.read(authViewModelProvider); //로그인상태
+    
     return Stack(
       children: [
         Scaffold(
@@ -53,20 +72,29 @@ class _PlanFinishPageState extends ConsumerState<PlanFinishPage> {
                       scrollDirection: Axis.horizontal,
                       itemCount: planState.planList.length,
                       itemBuilder: (context, index) {
+                        final tabBtn = btnIndex == index;
                         return GestureDetector(
-                          onTap: () {},
+                          onTap: () {
+                            //클릭시 이동
+                            scrollToPlan(index);
+                            setState(() {
+                              if(!tabBtn){
+                                btnIndex = index;
+                              }
+                            });
+                          },
                           child: Container(
                             width: 100,
                             height: 50,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10),
-                              color: colPrimary,
+                              color: tabBtn ? colPrimary : colGreyBg,
                             ),
                             child: Center(
                               child: Text(
                                 'Day ${index + 1}',
                                 style: AppTxtSt.txtStL.copyWith(
-                                  color: Colors.white,
+                                  color: tabBtn ? Colors.white : colBkTxt,
                                 ),
                               ),
                             ),
@@ -79,13 +107,12 @@ class _PlanFinishPageState extends ConsumerState<PlanFinishPage> {
                     ),
                   ),
                   Expanded(
-                    child: ListView.builder(
+                    child: ScrollablePositionedList.builder(
+                      itemScrollController: itemScrollController,
                       itemCount: planState.planList.length,
                       itemBuilder: (context, dayIndex) {
                         //페이지별 날짜
-                        final pageDate = DateFormat('yy.MM.dd').format(
-                          planState.startDate.add(Duration(days: dayIndex)),
-                        );
+                        final pageDate = DateFormat('yy.MM.dd').format(planState.startDate.add(Duration(days: dayIndex)),);
                         return Column(
                           children: [
                             Padding(

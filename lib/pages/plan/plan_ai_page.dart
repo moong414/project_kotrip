@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:intl/intl.dart';
 import 'package:project_kotrip/core/theme/colors.dart';
 import 'package:project_kotrip/core/theme/text_style.dart';
 import 'package:project_kotrip/core/widgets/basic_app_bar.dart';
 import 'package:project_kotrip/core/widgets/loading_widget.dart';
-import 'package:project_kotrip/pages/plan/plan_finish_page.dart';
+import 'package:project_kotrip/pages/plan/plan_page.dart';
 import 'package:project_kotrip/pages/plan/view_model/plan_view_model.dart';
 import 'package:project_kotrip/pages/plan/widgets/plan_text_form.dart';
 import 'package:project_kotrip/pages/plan/widgets/plan_top_info.dart';
@@ -150,7 +149,7 @@ class _PlanAiPageState extends ConsumerState<PlanAiPage> {
                           context,
                           MaterialPageRoute(
                             builder: (context) {
-                              return PlanFinishPage();
+                              return PlanPage();
                             },
                           ),
                         );
