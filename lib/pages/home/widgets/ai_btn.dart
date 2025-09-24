@@ -44,7 +44,7 @@ class _AiBtnState extends State<AiBtn> {
               children: [
                 Text(
                   '여행계획 세우기 귀찮을 땐?',
-                  style: AppTxtSt.txtStL.copyWith(fontWeight: FontWeight.w300),
+                  style: AppTxtSt.txtStL,
                 ),
                 SizedBox(height: 16),
                 Container(
