@@ -34,10 +34,11 @@ class PlaceViewModel extends Notifier<PlaceState> {
     return PlaceState(areaCode: '');
   }
 
+  //장소가져오기
   Future<void> loadPlaces({required String areaCode}) async {
-    final tourData = await placeRepository.fetchPlaceList(areaCode: areaCode, contentTypeId: '12');
-    final culData = await placeRepository.fetchPlaceList(areaCode: areaCode, contentTypeId: '14');
-    final foodData = await placeRepository.fetchPlaceList(areaCode: areaCode, contentTypeId: '39');
+    final tourData = await placeRepository.fetchPlaceList(areaCode: areaCode, contentTypeId: '12'); //관광지
+    final culData = await placeRepository.fetchPlaceList(areaCode: areaCode, contentTypeId: '14'); //문화시설
+    final foodData = await placeRepository.fetchPlaceList(areaCode: areaCode, contentTypeId: '39'); //음식점
 
     // 이미지 없는 항목 제거
     final tourList = tourData.where((place) => place.firstimage.isNotEmpty).toList();

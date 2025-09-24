@@ -1,22 +1,27 @@
 
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:project_kotrip/core/theme/colors.dart';
 import 'package:project_kotrip/core/theme/text_style.dart';
+import 'package:project_kotrip/pages/place/view_model/review_view_model.dart';
 
-class PlaceMapBtn extends StatelessWidget {
+class PlaceMapBtn extends ConsumerWidget {
+  final String placeId;
+  final String placeName;
   const PlaceMapBtn({
     super.key,
+    required this.placeId,
+    required this.placeName
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final stateFunc = ref.read(reviewViewModelProvider.notifier);
 
     return GestureDetector(
-      onTap: () {
-        //Todo!지도로 열기
-        // Navigator.push(context, MaterialPageRoute(builder: (context) {
-          
-        // },));
+      onTap: () async{
+        //지도로 열기
+        await stateFunc.openGoogleMap(placeId, placeName);
       },
       child: Padding(
         padding: const EdgeInsets.all(20),

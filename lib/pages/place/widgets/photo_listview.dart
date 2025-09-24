@@ -91,7 +91,7 @@ class _PhotoListviewState extends ConsumerState<PhotoListview> {
                         context,
                         MaterialPageRoute(
                           builder: (context) {
-                            return PlaceDetailPage(placemodel: state[index]);
+                            return PlaceDetailPage(placemodel: state[index], placeName: state[index].title,);
                           },
                         ),
                       );
