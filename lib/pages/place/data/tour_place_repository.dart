@@ -20,7 +20,7 @@ class TourPlaceRepository {
           'serviceKey': key,
           'areaCode': areaCode,
           if (contentTypeId != null) 'contentTypeId': contentTypeId,
-          //12관광지 14문화시설 39음식점
+          //12관광지 14문화시설 39음식점 15행사/공연/축제 38쇼핑
           // 'pageNo': '1',
           'numOfRows': '10',
           '_type': 'json',
@@ -31,7 +31,7 @@ class TourPlaceRepository {
       );
 
       if (response.statusCode == 200) {
-        final items = response.data['response']['body']['items']['item'];
+        final items = response.data['response']?['body']?['items']?['item'];
         List<PlaceModel> placeList = [];
 
         if (items == null) return [];
@@ -45,7 +45,7 @@ class TourPlaceRepository {
         } else if (items is Map) {
           placeList = [
             PlaceModel.fromJson(Map<String, dynamic>.from(items)),
-          ].toList();
+          ];
         } else {
           print('item이 예상치 못한 타입: ${items.runtimeType}');
         }

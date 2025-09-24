@@ -7,12 +7,14 @@ class PlaceState {
   List<PlaceModel> tourPlaceList;
   List<PlaceModel> culturePlaceList;
   List<PlaceModel> foodPlaceList;
+  List<PlaceModel> etcPlaceList;
 
   PlaceState({
     required this.areaCode,
     this.tourPlaceList = const [],
     this.culturePlaceList = const [],
     this.foodPlaceList = const [],
+    this.etcPlaceList = const [],
   });
 
   List<PlaceModel> funcPlaceList(String kindPlace){
@@ -20,8 +22,10 @@ class PlaceState {
       return tourPlaceList;
     }else if(kindPlace == 'culturePlaceList'){
       return culturePlaceList;
-    }else{
+    }else if(kindPlace == 'foodPlaceList'){
       return foodPlaceList;
+    }else{
+      return etcPlaceList;
     }
   }
 }
@@ -39,13 +43,15 @@ class PlaceViewModel extends Notifier<PlaceState> {
     final tourData = await placeRepository.fetchPlaceList(areaCode: areaCode, contentTypeId: '12'); //관광지
     final culData = await placeRepository.fetchPlaceList(areaCode: areaCode, contentTypeId: '14'); //문화시설
     final foodData = await placeRepository.fetchPlaceList(areaCode: areaCode, contentTypeId: '39'); //음식점
+    final etcData = await placeRepository.fetchPlaceList(areaCode: areaCode, contentTypeId: '38'); //쇼핑
 
     // 이미지 없는 항목 제거
-    final tourList = tourData.where((place) => place.firstimage.isNotEmpty).toList();
-    final culList = culData.where((place) => place.firstimage.isNotEmpty).toList();
-    final foodList = foodData.where((place) => place.firstimage.isNotEmpty).toList();
+    // final tourList = tourData.where((place) => place.firstimage.isNotEmpty).toList();
+    // final culList = culData.where((place) => place.firstimage.isNotEmpty).toList();
+    // final foodList = foodData.where((place) => place.firstimage.isNotEmpty).toList();
+    // final etcList = etcData.where((place) => place.firstimage.isNotEmpty).toList();
 
-    state = PlaceState(areaCode: areaCode, tourPlaceList: tourList, culturePlaceList: culList, foodPlaceList: foodList);
+    state = PlaceState(areaCode: areaCode, tourPlaceList: tourData, culturePlaceList: culData, foodPlaceList: foodData, etcPlaceList: etcData);
   }
   
 }

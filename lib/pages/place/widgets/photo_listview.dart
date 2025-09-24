@@ -39,7 +39,7 @@ class _PhotoListviewState extends ConsumerState<PhotoListview> {
     return Column(
       children: [
         Padding(
-          padding: const EdgeInsets.only(left: 20),
+          padding: const EdgeInsets.only(left: 20, top: 10),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -51,7 +51,7 @@ class _PhotoListviewState extends ConsumerState<PhotoListview> {
                 ],
               ),
               widget.code == null
-                  ? Padding(padding: const EdgeInsets.all(32))
+                  ? SizedBox(height: 50,)
                   : GestureDetector(
                       onTap: () {
                         Navigator.push(
@@ -63,7 +63,7 @@ class _PhotoListviewState extends ConsumerState<PhotoListview> {
                       },
                       child: Container(
                         color: Colors.transparent,
-                        padding: const EdgeInsets.all(20),
+                        padding: const EdgeInsets.all(12),
                         child: Image.asset(
                           'assets/images/icon_go_arrow.png',
                           width: 24,
