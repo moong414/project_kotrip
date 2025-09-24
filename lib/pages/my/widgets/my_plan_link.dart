@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:intl/intl.dart';
 import 'package:project_kotrip/core/theme/colors.dart';
 import 'package:project_kotrip/core/theme/text_style.dart';
 import 'package:project_kotrip/core/widgets/show_error_action_sheet.dart';
@@ -21,7 +20,9 @@ class MyPlanLink extends ConsumerWidget {
       onTap: () async {
         if (authState.user != null && myPlans.planId != null) {
           await planState.getPlanById(authState.user!.uid, myPlans.planId!);
-          Navigator.push(context, MaterialPageRoute(builder: (_) => PlanFinishPage()),);
+          Navigator.push(context, MaterialPageRoute(builder: (context) {
+            return PlanFinishPage();
+          },),);
         } else {
           showErrorActionSheet(context, '정보가 올바르지 않습니다.');
         }
