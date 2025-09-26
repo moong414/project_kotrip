@@ -65,6 +65,7 @@ class _IntroDateWidgetState extends ConsumerState<IntroDateWidget> {
         if (!widget.isStartDate && value.isBefore(state.startDate)) {
           return '도착일은 시작일 이후여야 합니다';
       }
+        return null;
       },
       builder: (field) {
         return Column(

@@ -27,7 +27,10 @@ class TourPlaceRepository {
           'arrange': 'R',
           //O=제목순, Q=수정일순, R=생성일순
         },
-        options: Options(responseType: ResponseType.json),
+        options: Options(
+          responseType: ResponseType.json,
+          validateStatus: (_) => true, // 500도 throw 안 하고 response로 받음
+        ),
       );
 
       if (response.statusCode == 200) {
@@ -43,9 +46,7 @@ class TourPlaceRepository {
                   .toList()
                 ..shuffle();
         } else if (items is Map) {
-          placeList = [
-            PlaceModel.fromJson(Map<String, dynamic>.from(items)),
-          ];
+          placeList = [PlaceModel.fromJson(Map<String, dynamic>.from(items))];
         } else {
           print('item이 예상치 못한 타입: ${items.runtimeType}');
         }
