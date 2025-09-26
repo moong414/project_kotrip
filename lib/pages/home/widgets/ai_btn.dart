@@ -15,20 +15,24 @@ class AiBtn extends StatefulWidget {
 class _AiBtnState extends State<AiBtn> {
   double top = 0;
   bool down = true;
+  Timer? timer;
 
   @override
   void initState() {
     super.initState();
-    Timer.periodic(Duration(milliseconds: 1000), (timer) {
+    timer = Timer.periodic(Duration(milliseconds: 1000), (timer) {
+      if (!mounted) return;
       setState(() {
-        if (down) {
-          top = 5;
-        } else {
-          top = 0;
-        }
+        top = down ? 5 : 0;
         down = !down;
       });
     });
+  }
+
+  @override
+  void dispose() {
+    timer?.cancel();
+    super.dispose();
   }
 
   @override
