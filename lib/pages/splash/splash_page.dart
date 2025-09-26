@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:lottie/lottie.dart';
 import 'package:project_kotrip/core/theme/colors.dart';
 import 'package:project_kotrip/core/theme/text_style.dart';
 import 'package:project_kotrip/core/widgets/app_bt_navi.dart';
@@ -15,18 +16,21 @@ class SplashPage extends ConsumerStatefulWidget {
   ConsumerState<SplashPage> createState() => _SplashPageState();
 }
 
-class _SplashPageState extends ConsumerState<SplashPage> {
+class _SplashPageState extends ConsumerState<SplashPage> with TickerProviderStateMixin {
   bool isLoading = false;
-  double aniOpacity = 0.0;
+  bool showBtn = false;
+  late final AnimationController lottieController;
 
   @override
   void initState() {
     super.initState();
-    Future.delayed(Duration(milliseconds: 200), () {
-      setState(() {
-        aniOpacity = 1.0;
-      });
-    });
+    lottieController =  AnimationController(vsync: this);
+  }
+
+  @override
+  void dispose() {
+    lottieController.dispose();
+    super.dispose();
   }
 
   @override
@@ -39,23 +43,36 @@ class _SplashPageState extends ConsumerState<SplashPage> {
           body: SafeArea(
             child: Padding(
               padding: const EdgeInsets.all(30),
-              child: Center(
-                child: AnimatedOpacity(
-                  opacity: aniOpacity,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                SizedBox(
+                  width: 140,
+                  // height: 45,
+                  child: Lottie.asset(
+                        'assets/lottie/logo_animation.json',
+                        controller: lottieController,
+                        onLoaded: (composition) {
+                          lottieController
+                            ..duration = composition.duration
+                            ..forward().whenComplete(() {
+                              setState(() => showBtn = true);
+                            });
+                        },
+                      ),
+                ),
+                AnimatedOpacity(
+                  opacity: showBtn ? 1 : 0,
                   duration: Duration(seconds: 2),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Image.asset('assets/images/logo.png', height: 45),
+                      // Image.asset('assets/images/logo.png', height: 45),
                       SizedBox(height: 15),
                       Text(
                         '손쉽게 만드는 나만의 국내여행 일정',
-                        style: TextStyle(
-                          color: colBkTxt,
-                          fontWeight: FontWeight.w300,
-                          fontSize: 14,
-                        ),
+                        style: AppTxtSt.txtStR
                       ),
                       SizedBox(height: 100),
                       SplashBtn(
@@ -78,7 +95,7 @@ class _SplashPageState extends ConsumerState<SplashPage> {
                           });
                           final result = await authState.signInAnonymously();
                           setState(() {
-                            isLoading = false; // 로딩 끝
+                            isLoading = false;
                           });
                           if (result) {
                             Navigator.push(
@@ -98,7 +115,7 @@ class _SplashPageState extends ConsumerState<SplashPage> {
                     ],
                   ),
                 ),
-              ),
+              ],),
             ),
           ),
         ),
