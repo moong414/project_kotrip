@@ -106,9 +106,12 @@ class _PlacePageState extends ConsumerState<PlacePage> {
   Widget build(BuildContext context) {
     final state = ref.watch(placeViewModelProvider);
 
-    final thisPlace = placeCodeMap.entries.firstWhere((element) {
-      return element.value == state.areaCode;
-    }).key;
+    final thisPlace = placeCodeMap.entries
+    .firstWhere(
+      (element) => element.value == state.areaCode,
+      orElse: () => placeCodeMap.entries.first,
+    )
+    .key;
 
     return SafeArea(
       child: Column(
