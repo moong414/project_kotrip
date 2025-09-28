@@ -97,7 +97,7 @@ class PlanViewModel extends Notifier<PlanState> {
       startDate: DateTime(1970, 1, 1),
       endDate: DateTime(1970, 1, 1),
       planList: [],
-      planId: '',
+      planId: null,
       startFormat: '',
       endFormat: ''
     );

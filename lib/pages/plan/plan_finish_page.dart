@@ -199,7 +199,7 @@ class _PlanFinishPageState extends ConsumerState<PlanFinishPage> {
                                 isLoading = false; // 로딩 끝
                               });
                               if (result == true) {
-                                planFunc.savePlan(authState.user!.uid);
+                                await planFunc.savePlan(authState.user!.uid);
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(

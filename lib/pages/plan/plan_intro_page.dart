@@ -51,6 +51,7 @@ class _PlanIntroPageState extends ConsumerState<PlanIntroPage> {
   @override
   Widget build(BuildContext context) {
     final planState = ref.read(planViewModelProvider.notifier);
+
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: SingleChildScrollView(
