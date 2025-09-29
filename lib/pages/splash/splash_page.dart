@@ -98,13 +98,13 @@ class _SplashPageState extends ConsumerState<SplashPage> with TickerProviderStat
                             isLoading = false;
                           });
                           if (result) {
-                            Navigator.push(
+                            Navigator.pushAndRemoveUntil(
                               context,
                               MaterialPageRoute(
                                 builder: (context) {
                                   return AppBtNavi(initialIndex: 0);
                                 },
-                              ),
+                              ),(route) => false,
                             );
                           } else {
                             showErrorActionSheet(context, '로그인 실패');

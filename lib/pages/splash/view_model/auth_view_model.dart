@@ -17,11 +17,15 @@ class AuthState {
 
 class AuthViewModel extends Notifier<AuthState> {
   late final FirebaseAuthRepository auth;
+  late final Stream<User?> authStateChanges;
 
   @override
   AuthState build() {
     auth = FirebaseAuthRepository();
-    return AuthState(user: null, isSignedIn: false);
+    auth.auth.authStateChanges().listen((user) {
+        state = state.copyWith(user: user, isSignedIn: user != null);
+      });
+    return AuthState(user: auth.currentUser, isSignedIn: auth.currentUser != null);
   }
 
   //현재 로그인 상태갱신&로그인상태반환
