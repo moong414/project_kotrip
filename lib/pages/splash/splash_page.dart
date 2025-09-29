@@ -63,7 +63,7 @@ class _SplashPageState extends ConsumerState<SplashPage> with TickerProviderStat
                 ),
                 AnimatedOpacity(
                   opacity: showBtn ? 1 : 0,
-                  duration: Duration(seconds: 2),
+                  duration: Duration(seconds: 1),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     mainAxisSize: MainAxisSize.min,
