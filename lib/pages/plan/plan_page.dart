@@ -158,13 +158,13 @@ class _PlanPageState extends ConsumerState<PlanPage> {
                           );
                           if (result == true) {
                             ref.read(planViewModelProvider.notifier).planClear();
-                            Navigator.push(
+                            Navigator.pushAndRemoveUntil(
                               context,
                               MaterialPageRoute(
                                 builder: (context) {
                                   return AppBtNavi(initialIndex: 1);
                                 },
-                              ),
+                              ),(route) => false,
                             );
                           }
                         },

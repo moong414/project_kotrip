@@ -169,13 +169,14 @@ class _PlanFinishPageState extends ConsumerState<PlanFinishPage> {
                                     planState.planId!,
                                   );
                                 }
-                                Navigator.push(
+                                Navigator.pushAndRemoveUntil(
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) {
                                       return AppBtNavi(initialIndex: 0);
                                     },
                                   ),
+                                  (route) => false,
                                 );
                               }
                             },
@@ -200,13 +201,14 @@ class _PlanFinishPageState extends ConsumerState<PlanFinishPage> {
                               });
                               if (result == true) {
                                 await planFunc.savePlan(authState.user!.uid);
-                                Navigator.push(
+                                Navigator.pushAndRemoveUntil(
+
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) {
                                       return AppBtNavi(initialIndex: 0);
                                     },
-                                  ),
+                                  ),(route) => false,
                                 );
                               }
                             },
