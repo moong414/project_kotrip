@@ -11,7 +11,7 @@ class GoogleReviewRepository {
   String placeId = '';
 
   //장소 아이디검색&리뷰불러오기
-  Future<ReviewResult?> fetchPlaceReviews({required PlaceModel place}) async {
+  Future<GoogleReviewResult?> fetchPlaceReviews({required PlaceModel place}) async {
     final map = '${place.mapy},${place.mapx}';
     //장소 아이디 검색하기
     try {
@@ -49,9 +49,9 @@ class GoogleReviewRepository {
             ? rawReviews.map((e) => Review.fromJson(e)).toList()
             : <Review>[];
 
-        return ReviewResult(
+        return GoogleReviewResult(
           placeId: placeId,
-          reviewModel: ReviewModel(rating: rating, reviews: reviews),
+          reviewModel: GoogleReviewModel(rating: rating, reviews: reviews),
         );
       }
     } catch (e) {

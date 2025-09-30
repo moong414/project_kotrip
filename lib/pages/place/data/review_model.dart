@@ -1,19 +1,17 @@
-class ReviewResult{
+//구글 리뷰 결과(장소Id, 리뷰 리스트)
+class GoogleReviewResult{
   String placeId;
-  ReviewModel reviewModel;
-
-  ReviewResult({required this.placeId, required this.reviewModel});
+  GoogleReviewModel reviewModel;
+  GoogleReviewResult({required this.placeId, required this.reviewModel});
 }
-
-
-class ReviewModel {
+//구글 리뷰(평점, 리뷰리스트)
+class GoogleReviewModel {
   double rating;
   List<Review> reviews;
+  GoogleReviewModel({required this.rating, required this.reviews});
 
-  ReviewModel({required this.rating, required this.reviews});
-
-  factory ReviewModel.fromJson(Map<String, dynamic> json) {
-    return ReviewModel(
+  factory GoogleReviewModel.fromJson(Map<String, dynamic> json) {
+    return GoogleReviewModel(
       rating: json['rating'].toDouble(),
       reviews: (json['reviews'] as List).map((e) {
         return Review.fromJson(e);
@@ -21,7 +19,7 @@ class ReviewModel {
     );
   }
 }
-
+//리뷰모델(작성자, 리뷰내용, 시간)
 class Review {
   String authorName;
   String text;
