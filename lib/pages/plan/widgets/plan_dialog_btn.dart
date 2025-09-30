@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:project_kotrip/core/theme/colors.dart';
 import 'package:project_kotrip/core/theme/text_style.dart';
 import 'package:project_kotrip/core/widgets/app_button.dart';
-import 'package:project_kotrip/pages/plan/data/plan_model.dart';
+import 'package:project_kotrip/pages/plan/model/plan_model.dart';
 import 'package:project_kotrip/pages/plan/view_model/plan_view_model.dart';
 import 'package:project_kotrip/core/widgets/dialog_text_form_field.dart';
 
@@ -98,6 +98,7 @@ class PlanDialogBtn extends ConsumerWidget {
                             Navigator.pop(context);
                           },
                           bgColor: colBkBtn,
+                          height: 50,
                           text: '작성',
                         ),
                       ],

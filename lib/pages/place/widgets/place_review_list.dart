@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:project_kotrip/core/theme/colors.dart';
 import 'package:project_kotrip/core/theme/text_style.dart';
-import 'package:project_kotrip/pages/place/data/review_model.dart';
+import 'package:project_kotrip/pages/place/model/review_model.dart';
 
 class PlaceReviewList extends StatelessWidget {
   List<Review> reviewList;

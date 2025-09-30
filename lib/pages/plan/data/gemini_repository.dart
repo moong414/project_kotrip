@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:intl/intl.dart';
-import 'package:project_kotrip/pages/plan/data/plan_model.dart';
+import 'package:project_kotrip/pages/plan/model/plan_model.dart';
 import 'package:project_kotrip/pages/plan/view_model/plan_view_model.dart';
 
 class GeminiRepository {

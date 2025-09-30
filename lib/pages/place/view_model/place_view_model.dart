@@ -1,5 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:project_kotrip/pages/place/data/place_model.dart';
+import 'package:project_kotrip/pages/place/model/place_model.dart';
 import 'package:project_kotrip/pages/place/data/tour_place_repository.dart';
 
 class PlaceState {

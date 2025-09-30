@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:project_kotrip/pages/place/data/place_model.dart';
-import 'package:project_kotrip/pages/place/data/review_model.dart';
+import 'package:project_kotrip/pages/place/model/place_model.dart';
+import 'package:project_kotrip/pages/place/model/review_model.dart';
 import 'package:project_kotrip/pages/place/data/google_review_repository.dart';
 import 'package:url_launcher/url_launcher.dart';
 

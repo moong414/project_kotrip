@@ -4,9 +4,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:project_kotrip/core/theme/colors.dart';
 import 'package:project_kotrip/core/theme/text_style.dart';
 import 'package:project_kotrip/core/widgets/show_confirm_dialog.dart';
+import 'package:project_kotrip/pages/my/info_edit_page.dart';
 import 'package:project_kotrip/pages/my/my_plan_list_page.dart';
 import 'package:project_kotrip/pages/my/view_model/my_plan_view_model.dart';
 import 'package:project_kotrip/pages/my/widgets/my_plan_link.dart';
+import 'package:project_kotrip/pages/my/widgets/my_review_link.dart';
 import 'package:project_kotrip/pages/splash/splash_page.dart';
 import 'package:project_kotrip/pages/splash/view_model/auth_view_model.dart';
 
@@ -18,7 +20,6 @@ class MyPage extends ConsumerStatefulWidget {
 }
 
 class _MyPageState extends ConsumerState<MyPage> {
-
   @override
   void initState() {
     super.initState();
@@ -32,7 +33,7 @@ class _MyPageState extends ConsumerState<MyPage> {
 
   @override
   Widget build(BuildContext context) {
-    final authState = ref.watch(authViewModelProvider); 
+    final authState = ref.watch(authViewModelProvider);
     final authFunc = ref.read(authViewModelProvider.notifier);
     final myPlans = ref.watch(myPlanViewModelProvider);
     final myName = authState.user?.displayName;
@@ -43,20 +44,45 @@ class _MyPageState extends ConsumerState<MyPage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            padding: EdgeInsets.all(16),
+            padding: EdgeInsets.fromLTRB(10, 6, 10, 10),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
               color: colGrBg,
             ),
-            child: Row(
+            child: Column(
               children: [
-                Text('안녕하세요! ', style: AppTxtSt.txtStL),
-                Text(
-                  myName ?? '익명',
-                  style: AppTxtSt.txtStLB,
-                  overflow: TextOverflow.ellipsis,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        SizedBox(width: 6,),
+                        Text('안녕하세요! ', style: AppTxtSt.txtStL),
+                        Text(
+                          myName ?? '익명',
+                          style: AppTxtSt.txtStLB,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        Text(' 님', style: AppTxtSt.txtStL),
+                      ],
+                    ),
+                    IconButton(onPressed: (){
+                      Navigator.push(context, MaterialPageRoute(builder: (context) {
+                        return InfoEditPage();
+                      },));
+                    }, icon: Image.asset('assets/images/icon_setting.png', width: 24,))
+                  ],
                 ),
-                Text(' 님', style: AppTxtSt.txtStL),
+                SizedBox(height: 5,),
+                Container(
+                  padding: EdgeInsets.symmetric(vertical: 14, horizontal: 16),
+                  width: double.infinity,
+                  decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(10)),
+                  child: Row(children: [
+                    Image.asset('assets/images/icon_location.png', width: 20,),
+                    SizedBox(width: 6,),
+                    Text('서울특별시 어쩌구구 어쩌구 동', style: AppTxtSt.txtStL,),
+                  ],))
               ],
             ),
           ),
@@ -85,7 +111,7 @@ class _MyPageState extends ConsumerState<MyPage> {
                             vertical: 6,
                           ),
                           color: Colors.transparent,
-                          child: Text('전체보기', style: AppTxtSt.txtPrimary),
+                          child: Text('more', style: AppTxtSt.txtPrimary),
                         ),
                       ),
               ],
@@ -108,7 +134,7 @@ class _MyPageState extends ConsumerState<MyPage> {
               : ListView.separated(
                   shrinkWrap: true,
                   physics: NeverScrollableScrollPhysics(),
-                  itemCount: min(3, myPlans.plans.length),
+                  itemCount: min(1, myPlans.plans.length),
                   itemBuilder: (context, index) {
                     return MyPlanLink(
                       myPlans: myPlans.plans[index],
@@ -120,33 +146,31 @@ class _MyPageState extends ConsumerState<MyPage> {
                   },
                 ),
           //Todo: 내 리뷰 기능
-          // Padding(
-          //   padding: EdgeInsetsGeometry.only(top: 20, bottom: 10),
-          //   child: Text('내 리뷰 보기', style: AppTxtSt.titleSt),
-          // ),
-          // MyReviewLink(),
-          SizedBox(height: 6),
+          Padding(
+            padding: EdgeInsetsGeometry.only(top: 20, bottom: 10),
+            child: Text('내 리뷰 보기', style: AppTxtSt.titleSt),
+          ),
+          MyReviewLink(),
+          SizedBox(height: 10),
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              TextButton(onPressed: () async{
-                final confirm = await showConfirmDialog(context, '로그아웃 하시겠습니까?');
-                if(confirm == true){
-                  authFunc.signOut();
-                  Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(builder: (_) => SplashPage()),
-                );
-                }
-              }, child: Text('로그아웃', style: AppTxtSt.txtStR,)),
-              TextButton(onPressed: () async{
-                final confirm = await showConfirmDialog(context, '탈퇴 하시겠습니까?');
-                if(confirm == true){
-                  authFunc.deleteAccount();
-                  Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(builder: (_) => SplashPage()),
-                );
-                }
-              }, child: Text('탈퇴하기', style: AppTxtSt.txtStR,))
+              TextButton(
+                onPressed: () async {
+                  final confirm = await showConfirmDialog(
+                    context,
+                    '로그아웃 하시겠습니까?',
+                  );
+                  if (confirm == true) {
+                    await authFunc.signOut();
+                    Navigator.of(context).pushReplacement(
+                      MaterialPageRoute(builder: (_) => SplashPage()),
+                    );
+                  }
+                },
+                child: Text('로그아웃', style: AppTxtSt.txtStR),
+              ),
+              
             ],
           ),
         ],
