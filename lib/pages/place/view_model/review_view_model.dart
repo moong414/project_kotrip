@@ -6,7 +6,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 class ReviewState {
   String placeId;
-  ReviewModel reviewModel;
+  GoogleReviewModel reviewModel;
 
   ReviewState({required this.placeId, required this.reviewModel});
 }
@@ -18,7 +18,7 @@ class ReviewViewModel extends Notifier<ReviewState> {
   build() {
     return ReviewState(
       placeId: '',
-      reviewModel: ReviewModel(rating: 0, reviews: []),
+      reviewModel: GoogleReviewModel(rating: 0, reviews: []),
     );
   }
 
