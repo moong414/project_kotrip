@@ -7,6 +7,7 @@ import 'package:project_kotrip/core/widgets/show_confirm_dialog.dart';
 import 'package:project_kotrip/pages/my/info_edit_page.dart';
 import 'package:project_kotrip/pages/my/my_plan_list_page.dart';
 import 'package:project_kotrip/pages/my/view_model/my_plan_view_model.dart';
+import 'package:project_kotrip/pages/my/view_model/user_view_model.dart';
 import 'package:project_kotrip/pages/my/widgets/my_plan_link.dart';
 import 'package:project_kotrip/pages/my/widgets/my_review_link.dart';
 import 'package:project_kotrip/pages/splash/splash_page.dart';
@@ -36,7 +37,7 @@ class _MyPageState extends ConsumerState<MyPage> {
     final authState = ref.watch(authViewModelProvider);
     final authFunc = ref.read(authViewModelProvider.notifier);
     final myPlans = ref.watch(myPlanViewModelProvider);
-    final myName = authState.user?.displayName;
+    final userState = ref.watch(userViewModelProvider).user;
 
     return SingleChildScrollView(
       padding: const EdgeInsets.all(20),
@@ -59,7 +60,7 @@ class _MyPageState extends ConsumerState<MyPage> {
                         SizedBox(width: 6,),
                         Text('안녕하세요! ', style: AppTxtSt.txtStL),
                         Text(
-                          myName ?? '익명',
+                          userState?.nickName ?? userState?.displayName ?? '익명',
                           style: AppTxtSt.txtStLB,
                           overflow: TextOverflow.ellipsis,
                         ),
@@ -81,7 +82,7 @@ class _MyPageState extends ConsumerState<MyPage> {
                   child: Row(children: [
                     Image.asset('assets/images/icon_location.png', width: 20,),
                     SizedBox(width: 6,),
-                    Text('서울특별시 어쩌구구 어쩌구 동', style: AppTxtSt.txtStL,),
+                    Text(userState!.address, style: AppTxtSt.txtStL,),
                   ],))
               ],
             ),
