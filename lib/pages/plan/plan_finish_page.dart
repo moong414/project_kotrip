@@ -202,7 +202,6 @@ class _PlanFinishPageState extends ConsumerState<PlanFinishPage> {
                               if (result == true) {
                                 await planFunc.savePlan(authState.user!.uid);
                                 Navigator.pushAndRemoveUntil(
-
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) {
