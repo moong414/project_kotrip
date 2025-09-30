@@ -25,7 +25,7 @@ class _IntroDateWidgetState extends ConsumerState<IntroDateWidget> {
   late final PlanViewModel planState;
 
   //날짜선택
-  Future<void> _selectDate(FormFieldState<DateTime> field) async {
+  Future<void> selectDate(FormFieldState<DateTime> field) async {
     final DateTime? pickedDate = await showDatePicker(
       locale: const Locale('ko'), //한국어
       context: context,
@@ -75,7 +75,7 @@ class _IntroDateWidgetState extends ConsumerState<IntroDateWidget> {
               children: [
                 GestureDetector(
                   onTap: () {
-                    _selectDate(field);
+                    selectDate(field);
                   },
                   child: Container(
                     width: double.infinity,

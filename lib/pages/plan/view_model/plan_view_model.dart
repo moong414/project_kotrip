@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:project_kotrip/pages/plan/data/gemini_repository.dart';
-import 'package:project_kotrip/pages/plan/data/plan_model.dart';
+import 'package:project_kotrip/pages/plan/model/plan_model.dart';
 import 'package:project_kotrip/pages/plan/data/fire_plan_repository.dart';
 import 'dart:convert';
 

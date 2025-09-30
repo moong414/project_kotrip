@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:project_kotrip/core/theme/colors.dart';
 
 class AppButton extends StatelessWidget {
+  final double? height;
   final Color? bgColor;
   final Color? txtColor;
   final String? text;
@@ -10,6 +11,7 @@ class AppButton extends StatelessWidget {
 
   const AppButton({
     super.key,
+    this.height,
     this.bgColor,
     this.txtColor,
     this.text,
@@ -21,7 +23,7 @@ class AppButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       width: double.infinity,
-      height: 56,
+      height: height ?? 56,
       child: ElevatedButton(
         onPressed: onPressed,
         style: ElevatedButton.styleFrom(

@@ -19,18 +19,21 @@ class MyReviewLink extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    Text('제주도', style: AppTxtSt.txtStL),
-                    Text('25. 09. 07', style: AppTxtSt.txtStR),
-                  ],
-                ),
-                SizedBox(height: 4),
-                Text('교통이 불편하지만 가볼 만 함', style: AppTxtSt.txtStR),
-              ],
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Text('제주도', style: AppTxtSt.txtStL),
+                      SizedBox(width: 4,),
+                      Text('25. 09. 07', style: AppTxtSt.txtStR),
+                    ],
+                  ),
+                  SizedBox(height: 4),
+                  Text('교통이 불편하지만 가볼 만 함 교통이 불편하지만 가볼 만 함', style: AppTxtSt.txtStR, overflow: TextOverflow.ellipsis, ),
+                ],
+              ),
             ),
             IconButton(
               onPressed: () {},
