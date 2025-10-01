@@ -6,10 +6,10 @@ import 'package:project_kotrip/core/theme/text_style.dart';
 import 'package:project_kotrip/core/widgets/app_bt_navi.dart';
 import 'package:project_kotrip/core/widgets/app_button.dart';
 import 'package:project_kotrip/core/widgets/basic_app_bar.dart';
-import 'package:project_kotrip/core/widgets/dialog_text_form_field.dart';
 import 'package:project_kotrip/core/widgets/loading_widget.dart';
 import 'package:project_kotrip/core/widgets/show_confirm_dialog.dart';
 import 'package:project_kotrip/pages/my/view_model/user_view_model.dart';
+import 'package:project_kotrip/pages/my/widgets/show_address_dialog.dart';
 import 'package:project_kotrip/pages/splash/splash_page.dart';
 import 'package:project_kotrip/pages/splash/view_model/auth_view_model.dart';
 
@@ -24,99 +24,13 @@ class _InfoEditPageState extends ConsumerState<InfoEditPage> {
   bool isLoading = false;
   final formKey = GlobalKey<FormState>();
   late final TextEditingController nicknameCon;
-  late final TextEditingController addressCon;
-
-  //주소선택
-  Future<void> showAddressDialog(
-    BuildContext context,
-    TextEditingController addCon,
-  ) async {
-    await showDialog(
-      context: context,
-      builder: (context) {
-        return Dialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10),
-          ),
-          child: Container(
-            padding: EdgeInsets.fromLTRB(20, 5, 10, 20),
-            decoration: BoxDecoration(borderRadius: BorderRadius.circular(10)),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text('주소', style: AppTxtSt.txtStLB),
-                    IconButton(
-                      padding: EdgeInsets.zero,
-                      onPressed: () {
-                        return Navigator.pop(context);
-                      },
-                      icon: Icon(Icons.close, color: Colors.black, size: 24),
-                    ),
-                  ],
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(right: 10),
-                  child: Form(
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Stack(
-                          children: [
-                            DialogTextFormField(
-                              controller: addCon,
-                              hintText: '주소 입력',
-                              autoFocus: true,
-                            ),
-                            Positioned(
-                              top: 1,
-                              right: 4,
-                              child: IconButton(
-                                onPressed: () {},
-                                icon: Image.asset(
-                                  'assets/images/icon_search.png',
-                                  width: 24,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 160,
-                          child: Center(
-                            child: Text('주소를 입력해주세요!', style: AppTxtSt.hintStL),
-                          ),
-                        ),
-                        AppButton(
-                          onPressed: () {
-                            return Navigator.pop(context);
-                          },
-                          height: 50,
-                          bgColor: colBkBtn,
-                          text: '작성',
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        );
-      },
-    );
-  }
+  late final TextEditingController addressCon = TextEditingController();
 
   @override
   void initState() {
     super.initState();
     final state = ref.read(userViewModelProvider).user;
-    nicknameCon = TextEditingController(
-      text: state?.nickName ?? state?.displayName ?? '',
-    );
-    addressCon = TextEditingController(text: state?.address ?? '');
+    nicknameCon = TextEditingController(text: state?.nickName ?? state?.displayName ?? '',);
   }
 
   @override
