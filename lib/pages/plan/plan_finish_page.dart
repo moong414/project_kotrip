@@ -8,6 +8,7 @@ import 'package:project_kotrip/core/widgets/basic_app_bar.dart';
 import 'package:project_kotrip/core/widgets/app_button.dart';
 import 'package:project_kotrip/core/widgets/loading_widget.dart';
 import 'package:project_kotrip/core/widgets/show_confirm_dialog.dart';
+import 'package:project_kotrip/pages/my/view_model/my_plan_view_model.dart';
 import 'package:project_kotrip/pages/plan/view_model/plan_view_model.dart';
 import 'package:project_kotrip/pages/plan/widgets/finish_item_widget.dart';
 import 'package:project_kotrip/pages/plan/widgets/plan_top_info.dart';
@@ -48,6 +49,7 @@ class _PlanFinishPageState extends ConsumerState<PlanFinishPage> {
     final planState = ref.watch(planViewModelProvider);
     final planFunc = ref.read(planViewModelProvider.notifier);
     final authState = ref.read(authViewModelProvider); //로그인상태
+    final myPlans = ref.read(myPlanViewModelProvider.notifier);
     
     return Stack(
       children: [
@@ -200,7 +202,10 @@ class _PlanFinishPageState extends ConsumerState<PlanFinishPage> {
                                 isLoading = false; // 로딩 끝
                               });
                               if (result == true) {
+                                //파이어베이스 저장
                                 await planFunc.savePlan(authState.user!.uid);
+                                //파이어베이스의 플랜리스트 '내 모든 계획 관리'갱신
+                                await myPlans.loadPlanList(authState.user!.uid);
                                 Navigator.pushAndRemoveUntil(
                                   context,
                                   MaterialPageRoute(
