@@ -57,7 +57,7 @@ class _MyPageState extends ConsumerState<MyPage> {
                   children: [
                     Row(
                       children: [
-                        SizedBox(width: 6,),
+                        SizedBox(width: 6),
                         Text('안녕하세요! ', style: AppTxtSt.txtStL),
                         Text(
                           userState?.nickName ?? userState?.displayName ?? '익명',
@@ -67,23 +67,45 @@ class _MyPageState extends ConsumerState<MyPage> {
                         Text(' 님', style: AppTxtSt.txtStL),
                       ],
                     ),
-                    IconButton(onPressed: (){
-                      Navigator.push(context, MaterialPageRoute(builder: (context) {
-                        return InfoEditPage();
-                      },));
-                    }, icon: Image.asset('assets/images/icon_setting.png', width: 24,))
+                    IconButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) {
+                              return InfoEditPage();
+                            },
+                          ),
+                        );
+                      },
+                      icon: Image.asset(
+                        'assets/images/icon_setting.png',
+                        width: 24,
+                      ),
+                    ),
                   ],
                 ),
-                SizedBox(height: 5,),
+                SizedBox(height: 5),
                 Container(
                   padding: EdgeInsets.symmetric(vertical: 14, horizontal: 16),
                   width: double.infinity,
-                  decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(10)),
-                  child: Row(children: [
-                    Image.asset('assets/images/icon_location.png', width: 20,),
-                    SizedBox(width: 6,),
-                    Text(userState!.address, style: AppTxtSt.txtStL,),
-                  ],))
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Row(
+                    children: [
+                      Image.asset('assets/images/icon_location.png', width: 20),
+                      SizedBox(width: 6),
+                      Text(
+                        userState!.address,
+                        style: (userState.address != '주소가 없습니다.')
+                            ? AppTxtSt.txtStL
+                            : AppTxtSt.hintStL,
+                      ),
+                    ],
+                  ),
+                ),
               ],
             ),
           ),
@@ -171,7 +193,6 @@ class _MyPageState extends ConsumerState<MyPage> {
                 },
                 child: Text('로그아웃', style: AppTxtSt.txtStR),
               ),
-              
             ],
           ),
         ],

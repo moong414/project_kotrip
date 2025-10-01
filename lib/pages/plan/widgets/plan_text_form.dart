@@ -21,6 +21,7 @@ class PlanTextForm extends StatelessWidget {
         if (value == null || value.isEmpty) {
           return '지역을 입력하세요';
         }
+        return null;
       },
       cursorColor: colPrimary,
       decoration: InputDecoration(
