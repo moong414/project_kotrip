@@ -1,8 +1,8 @@
 class AddressModel {
   String addressName;
   String placeName;
-  double mapX;
-  double mapY;
+  String mapX;
+  String mapY;
 
   AddressModel({
     required this.addressName,

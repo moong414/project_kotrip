@@ -8,17 +8,20 @@ class DialogTextFormField extends StatelessWidget {
   String hintText;
   int maxLines;
   FormFieldValidator? validator;
+  final ValueChanged<String>? onChanged;
   DialogTextFormField({
     super.key,
     required this.controller,
     this.autoFocus = false,
     this.hintText = '입력하세요',
     this.maxLines = 1,
+    this.onChanged,
   });
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      onChanged: onChanged,
       controller: controller,
       autofocus: autoFocus,
       maxLines: maxLines,
