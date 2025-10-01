@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:project_kotrip/core/theme/colors.dart';
@@ -7,8 +9,8 @@ import 'package:project_kotrip/pages/my/data/kakao_repository.dart';
 import 'package:project_kotrip/pages/my/model/address_model.dart';
 import 'package:project_kotrip/pages/my/view_model/user_view_model.dart';
 
-Future<void> showAddressDialog(BuildContext context, TextEditingController addCon) async {
-  final kakaorepo = KakaoRepository();
+Future<void> showAddressDialog(BuildContext context) async {
+  Timer? debounce; //타이머
 
   await showDialog(
     context: context,
@@ -16,7 +18,7 @@ Future<void> showAddressDialog(BuildContext context, TextEditingController addCo
       return Consumer(
         builder: (context, ref, child) {
           List<AddressModel> searchResultList = [];
-
+          final TextEditingController dialogController = TextEditingController();
           return StatefulBuilder(
             builder: (context, setState) {
               return Dialog(
@@ -29,7 +31,7 @@ Future<void> showAddressDialog(BuildContext context, TextEditingController addCo
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      // --- 헤더 ---
+                      // 헤더
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -48,36 +50,25 @@ Future<void> showAddressDialog(BuildContext context, TextEditingController addCo
                           child: Column(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              Stack(
-                                children: [
-                                  DialogTextFormField(
-                                    controller: addCon,
-                                    hintText: '주소 입력',
-                                    autoFocus: true,
-                                    onChanged: (value) async {
-                                      if (value.isEmpty) {
-                                        setState(() => searchResultList = []);
-                                        return;
-                                      }
-                                      //카카오지도 키워드검색
-                                      final results = await kakaorepo.getAddress(value);
-                                      setState(() => searchResultList = results);
-                                    },
-                                  ),
-                                  Positioned(
-                                    top: 1,
-                                    right: 4,
-                                    child: IconButton(
-                                      onPressed: () {},
-                                      icon: Image.asset(
-                                        'assets/images/icon_search.png',
-                                        width: 24,
-                                      ),
-                                    ),
-                                  ),
-                                ],
+                              DialogTextFormField(
+                                controller: dialogController,
+                                hintText: '주소 입력',
+                                autoFocus: true,
+                                onChanged: (value) async {
+                                  if (debounce?.isActive ?? false) debounce!.cancel();//타이머취소
+                                  // 새 타이머 시작
+                                  debounce = Timer(const Duration(microseconds: 500), () async {
+                                    if (value.isEmpty) {
+                                      setState(() => searchResultList = []);
+                                      return;
+                                    }
+                                    final results = await KakaoRepository().getAddress(value);
+                                    setState(() => searchResultList = results);
+                                  });
+                                },
                               ),
-                              SizedBox(height: 10),
+                              const SizedBox(height: 10),
+                              TextButton(onPressed: (){}, child: Text('검색!')),
                               SizedBox(
                                 height: 160,
                                 child: searchResultList.isEmpty
@@ -85,29 +76,36 @@ Future<void> showAddressDialog(BuildContext context, TextEditingController addCo
                                         child: Text('주소를 입력해주세요!', style: AppTxtSt.hintStL),
                                       )
                                     : Scrollbar(
-                                      thumbVisibility: true,
-                                      thickness: 6, 
-                                      radius: Radius.circular(8),
-                                      child: ListView.separated(itemBuilder: (context, index) {
-                                        final addItem = searchResultList[index];
-                                        return GestureDetector(
-                                          onTap: () {
-                                            addCon.text = addItem.addressName;
-                                            ref.read(userViewModelProvider.notifier).setUser(address: addItem.addressName); // 선택한 주소UserViewModel에 적용
-                                            Navigator.pop(context);
+                                        thumbVisibility: true,
+                                        thickness: 6,
+                                        radius: const Radius.circular(8),
+                                        child: ListView.separated(
+                                          itemBuilder: (context, index) {
+                                            final addItem = searchResultList[index];
+                                            return GestureDetector(
+                                              onTap: () {
+                                                //userViewModel 업데이트
+                                                ref.read(userViewModelProvider.notifier).setUser(address: addItem.addressName);
+                                                Navigator.pop(context);
+                                              },
+                                              child: Padding(
+                                                padding: const EdgeInsets.all(10),
+                                                child: Column(
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text(addItem.addressName, style: AppTxtSt.txtStR),
+                                                    const SizedBox(height: 2),
+                                                    Text(addItem.placeName, style: AppTxtSt.txtStL),
+                                                  ],
+                                                ),
+                                              ),
+                                            );
                                           },
-                                          child: Padding(padding: EdgeInsets.all(10), child: Column(
-                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                            children: [
-                                            Text(addItem.addressName, style: AppTxtSt.txtStR,),
-                                            SizedBox(height: 2,),
-                                            Text(addItem.placeName, style: AppTxtSt.txtStL),
-                                          ],),),
-                                        );
-                                      }, separatorBuilder: (context, index) {
-                                        return Divider(color: colGreyBtn,);
-                                      }, itemCount: searchResultList.length)
-                                    ),
+                                          separatorBuilder: (context, index) =>
+                                              const Divider(color: colGreyBtn),
+                                          itemCount: searchResultList.length,
+                                        ),
+                                      ),
                               ),
                             ],
                           ),

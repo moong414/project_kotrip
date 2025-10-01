@@ -6,7 +6,12 @@ class UserModel {
   final String? nickName;
   final String address;
 
-  UserModel({required this.id, this.displayName, this.nickName, this.address = '주소가 없습니다.'});
+  UserModel({
+    required this.id,
+    this.displayName,
+    this.nickName,
+    this.address = '주소가 없습니다.',
+  });
 
   factory UserModel.fromFirebaseUser(User user) {
     return UserModel(id: user.uid, displayName: user.displayName);
@@ -23,6 +28,24 @@ class UserModel {
       displayName: displayName ?? this.displayName,
       nickName: nickName ?? this.nickName,
       address: address ?? this.address,
+    );
+  }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'displayName': displayName,
+      'nickName': nickName,
+      'address': address,
+    };
+  }
+
+  factory UserModel.fromMap(Map<String, dynamic> map) {
+    return UserModel(
+      id: map['id'],
+      displayName: map['displayName'],
+      nickName: map['nickName'],
+      address: map['address'] ?? '주소가 없습니다.',
     );
   }
 }

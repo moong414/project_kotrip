@@ -5,29 +5,11 @@ import 'package:project_kotrip/pages/my/view_model/my_plan_view_model.dart';
 import 'package:project_kotrip/pages/my/widgets/my_plan_link.dart';
 import 'package:project_kotrip/pages/splash/view_model/auth_view_model.dart';
 
-class MyPlanListPage extends ConsumerStatefulWidget {
+class MyPlanListPage extends ConsumerWidget{
   const MyPlanListPage({super.key});
 
   @override
-  ConsumerState<MyPlanListPage> createState() => _MyPlanListPageState();
-}
-
-class _MyPlanListPageState extends ConsumerState<MyPlanListPage> {
-  @override
-  void initState() {
-    super.initState();
-    Future.microtask(() {
-      final authState = ref.read(authViewModelProvider);
-      if (authState.user != null) {
-        ref
-            .read(myPlanViewModelProvider.notifier)
-            .loadPlanList(authState.user!.uid);
-      }
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final authState = ref.watch(authViewModelProvider);
     final myPlans = ref.watch(myPlanViewModelProvider);
 
