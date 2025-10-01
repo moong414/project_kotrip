@@ -28,6 +28,7 @@ class _MyPageState extends ConsumerState<MyPage> {
     final authFunc = ref.read(authViewModelProvider.notifier);
     final myPlans = ref.watch(myPlanViewModelProvider);
     final userState = ref.watch(userViewModelProvider).user;
+    print('userState Id: ${userState!.id}, displayName: ${userState!.displayName}, address: ${userState!.address}, nickName: ${userState!.nickName}');
 
     return SingleChildScrollView(
       padding: const EdgeInsets.all(20),

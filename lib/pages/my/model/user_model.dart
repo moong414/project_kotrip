@@ -13,10 +13,6 @@ class UserModel {
     this.address = '주소가 없습니다.',
   });
 
-  factory UserModel.fromFirebaseUser(User user) {
-    return UserModel(id: user.uid, displayName: user.displayName);
-  }
-
   UserModel copyWith({
     String? id,
     String? displayName,
@@ -31,6 +27,16 @@ class UserModel {
     );
   }
 
+  /// Firebase User -> UserModel 변환
+  factory UserModel.fromFirebaseUser(User user) {
+    return UserModel(
+      id: user.uid,
+      displayName: user.displayName ?? '이름 없음', 
+      nickName: user.displayName ?? '익명',  
+      address: '주소가 없습니다.',
+    );
+  }
+
   Map<String, dynamic> toMap() {
     return {
       'id': id,
@@ -42,9 +48,9 @@ class UserModel {
 
   factory UserModel.fromMap(Map<String, dynamic> map) {
     return UserModel(
-      id: map['id'],
-      displayName: map['displayName'],
-      nickName: map['nickName'],
+      id: map['id'] ?? '',
+      displayName: map['displayName'] ?? '이름 없음',
+      nickName: map['nickName'] ?? '익명',
       address: map['address'] ?? '주소가 없습니다.',
     );
   }

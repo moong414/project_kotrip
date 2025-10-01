@@ -11,6 +11,7 @@ import 'package:project_kotrip/core/widgets/loading_widget.dart';
 import 'package:project_kotrip/core/widgets/show_confirm_dialog.dart';
 import 'package:project_kotrip/pages/my/data/geolocator_helper.dart';
 import 'package:project_kotrip/pages/my/data/kakao_repository.dart';
+import 'package:project_kotrip/pages/my/model/address_model.dart';
 import 'package:project_kotrip/pages/my/view_model/user_view_model.dart';
 import 'package:project_kotrip/pages/my/widgets/show_address_dialog.dart';
 import 'package:project_kotrip/pages/splash/splash_page.dart';
@@ -95,25 +96,12 @@ class _InfoEditPageState extends ConsumerState<InfoEditPage> {
                             TextButton(
                               onPressed: () async {
                                 setState(() => isLoading = true);
-
-                                Position? position = await GeolocatorHelper.getPositon();
-
-                                if (position != null) {
-                                  final results = await KakaoRepository().getAddressFromGps('${position.longitude}','${position.latitude}',);
-
-                                  if (results != null && results.addressName.isNotEmpty) {
-                                    setState(() {
-                                      userFunc.setUser(address: results.addressName);
-                                    });
-                                  } else {
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      const SnackBar(
-                                        content: Text('주소를 불러올 수 없습니다.'),
-                                      ),
-                                    );
-                                  }
+                                final position = await GeolocatorHelper.getPositon();
+                                AddressModel? address;
+                                if(position != null){
+                                  address = await KakaoRepository().getAddressFromGps('${position.longitude}', '${position.latitude}');
                                 }
-
+                                await userFunc.setUser(address: address?.addressName);
                                 setState(() => isLoading = false);
                               },
                               child: Row(

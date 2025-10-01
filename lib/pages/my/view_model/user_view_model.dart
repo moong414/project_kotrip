@@ -2,16 +2,14 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:project_kotrip/pages/my/data/fire_user_repository.dart';
 import 'package:project_kotrip/pages/my/model/user_model.dart';
 
-//유저정보
+// 유저정보 상태
 class UserState {
   final UserModel? user;
 
   UserState({this.user});
 
-  UserState copyWith({UserModel? user, bool? isLoading}) {
-    return UserState(
-      user: user ?? this.user,
-    );
+  UserState copyWith({UserModel? user}) {
+    return UserState(user: user ?? this.user);
   }
 }
 
@@ -23,38 +21,51 @@ class UserViewModel extends Notifier<UserState> {
     return UserState();
   }
 
-  // Firestore에서 유저정보 가져오기
+  // Firestore에서 유저 정보 불러오기
   Future<void> loadUser(String userId) async {
     final user = await repository.getUser(userId);
     state = state.copyWith(user: user);
   }
 
-  // 유저 세팅 (뷰에서 직접)
+  // 뷰에서 직접 유저 세팅
   void setUserModel(UserModel user) {
     state = state.copyWith(user: user);
   }
 
-  // 닉네임, 주소 변경 후 Firestore에 저장
-  Future<void> setUser({String? nickName, String? address}) async {
-    if (state.user == null) return;
+  // 닉네임, 주소 변경 후 Firestore에 저장 (문서 없으면 생성)
+  Future<bool> setUser({String? nickName, String? address}) async {
+    final currentUser = state.user;
 
-    final updatedUser = state.user!.copyWith(
+    if (currentUser == null || currentUser.id.isEmpty) {
+      print('Firestore 저장 실패: 유효한 id가 없습니다.');
+      return false; // id 없으면 저장 안 함
+    }
+
+    final updatedUser = currentUser.copyWith(
       nickName: nickName,
       address: address,
     );
 
     state = state.copyWith(user: updatedUser);
-    await repository.updateUser(updatedUser.id, {
-      'nickName': updatedUser.nickName,
-      'address': updatedUser.address,
-    });
+
+    try {
+      await repository.updateUser(updatedUser.id, {
+        'nickName': updatedUser.nickName,
+        'address': updatedUser.address,
+      });
+      return true;
+    } catch (e) {
+      print('Firestore 저장 실패: $e');
+      return false;
+    }
   }
 
-  // 로그아웃 시 state 초기화
+  // 로그아웃: 상태 초기화
   void clearUser() {
     state = state.copyWith(user: null);
   }
 }
 
-final userViewModelProvider =
-    NotifierProvider<UserViewModel, UserState>(() => UserViewModel());
+final userViewModelProvider = NotifierProvider<UserViewModel, UserState>(
+  () => UserViewModel(),
+);
