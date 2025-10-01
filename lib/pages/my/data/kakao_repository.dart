@@ -6,13 +6,14 @@ import 'package:project_kotrip/pages/my/model/address_model.dart';
 class KakaoRepository {
   final dio = Dio();
   final key = Uri.decodeFull(dotenv.env['REST_API_KEY'] ?? '');
-  final url = 'https://dapi.kakao.com/v2/local/search/keyword.json?';
+  final searchUrl = 'https://dapi.kakao.com/v2/local/search/keyword.json?';
+  final geoUrl = 'https://dapi.kakao.com/v2/local/geo/coord2address.json?';
 
   //장소검색
   Future<List<AddressModel>> getAddress(String text) async {
     try {
       final response = await dio.post(
-        url,
+        searchUrl,
         options: Options(
           headers: {
             'Authorization': 'KakaoAK $key',
@@ -37,6 +38,38 @@ class KakaoRepository {
     } catch (e) {
       print('KakaoRepository 에러: $e');
       return [];
+    }
+  }
+
+  //GPS연동 좌표 검색
+  Future<AddressModel?> getAddressFromGps(String x, String y) async {
+    try {
+      final response = await dio.post(
+        geoUrl,
+        options: Options(
+          headers: {
+            'Authorization': 'KakaoAK $key',
+          },
+        ),
+        queryParameters: {
+          'x': x,
+          'y': y,
+        }
+      );
+      if (response.statusCode == 200) {
+        final results = response.data['documents'];
+
+        if(results == [] || results.isEmpty) return null;
+        
+        final firstResult = AddressModel.fromJson(Map<String, dynamic>.from(results[0]));
+        return firstResult;
+      } else {
+        print('kakao api의 리턴값이 올바르지 않음');
+        return null;
+      }
+    } catch (e) {
+      print('KakaoRepository 에러: $e');
+      return null;
     }
   }
 }
