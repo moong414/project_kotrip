@@ -21,16 +21,6 @@ class MyPage extends ConsumerStatefulWidget {
 }
 
 class _MyPageState extends ConsumerState<MyPage> {
-  @override
-  void initState() {
-    super.initState();
-    Future.microtask(() {
-      final auth = ref.read(authViewModelProvider);
-      if (auth.user != null) {
-        ref.read(myPlanViewModelProvider.notifier).loadPlanList(auth.user!.uid);
-      }
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -44,6 +34,7 @@ class _MyPageState extends ConsumerState<MyPage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          //--유저 정보--
           Container(
             padding: EdgeInsets.fromLTRB(10, 6, 10, 10),
             decoration: BoxDecoration(
@@ -109,6 +100,7 @@ class _MyPageState extends ConsumerState<MyPage> {
               ],
             ),
           ),
+          //--내 여행 계획--
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 20),
             child: Row(
@@ -175,6 +167,7 @@ class _MyPageState extends ConsumerState<MyPage> {
           ),
           MyReviewLink(),
           SizedBox(height: 10),
+          //-- 로그아웃 버튼 --
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
