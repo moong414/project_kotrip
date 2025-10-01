@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:project_kotrip/pages/my/model/user_model.dart';
 
+//마이페이지 유저정보 수정 파이어스토어 저장
 class FireUserRepository {
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
 
@@ -20,7 +21,15 @@ class FireUserRepository {
     return UserModel.fromMap(data);
   }
 
+  //업데이트
   Future<void> updateUser(String userId, Map<String, dynamic> data) async {
-    await users.doc(userId).update(data);
+  final docRef = users.doc(userId);
+  final doc = await docRef.get();
+
+  if (doc.exists) {
+    await docRef.update(data);
+  } else {
+    await docRef.set(data, SetOptions(merge: true));
   }
+}
 }

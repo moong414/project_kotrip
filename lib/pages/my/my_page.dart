@@ -36,7 +36,7 @@ class _MyPageState extends ConsumerState<MyPage> {
         children: [
           //--유저 정보--
           Container(
-            padding: EdgeInsets.fromLTRB(10, 6, 10, 10),
+            padding: EdgeInsets.fromLTRB(10, 8, 10, 10),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
               color: colGrBg,
@@ -78,7 +78,7 @@ class _MyPageState extends ConsumerState<MyPage> {
                 ),
                 SizedBox(height: 5),
                 Container(
-                  padding: EdgeInsets.symmetric(vertical: 14, horizontal: 16),
+                  padding: EdgeInsets.symmetric(vertical: 13, horizontal: 16),
                   width: double.infinity,
                   decoration: BoxDecoration(
                     color: Colors.white,
