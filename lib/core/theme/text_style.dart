@@ -119,4 +119,11 @@ class AppTxtSt {
     fontSize: 14,
     fontWeight: FontWeight.w400,
   );
+
+  //에러 스타일 14폰트
+  static const TextStyle errorR = TextStyle(
+    color: colRedBtn,
+    fontSize: 14,
+    fontWeight: FontWeight.w400,
+  );
 }

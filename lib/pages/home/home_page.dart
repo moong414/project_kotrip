@@ -5,7 +5,7 @@ import 'package:project_kotrip/pages/place/widgets/photo_listview.dart';
 import 'package:project_kotrip/pages/home/data/place_code_map.dart';
 import 'package:project_kotrip/pages/home/widgets/ai_btn.dart';
 import 'package:project_kotrip/pages/home/widgets/home_photo_slide.dart';
-import 'package:project_kotrip/pages/home/widgets/weather.dart';
+import 'package:project_kotrip/pages/home/widgets/weather_widget.dart';
 
 class HomePage extends StatefulWidget{
   const HomePage({super.key});
@@ -47,7 +47,15 @@ class _HomePageState extends State<HomePage> {
         HomePhotoSlide(),
         AiBtn(),
         PhotoListview(boldTitle: '이런곳', title: '은 어떨까요?', code: code),
-        Weather(),
+        // Padding(
+        //   padding: const EdgeInsets.all(20),
+        //   child: Row(
+        //     children: [
+        //       Text('오늘의 날씨', style: AppTxtSt.titleSt),
+        //     ],
+        //   ),
+        // ),
+        WeatherWidget(),
       ],
     );
   }

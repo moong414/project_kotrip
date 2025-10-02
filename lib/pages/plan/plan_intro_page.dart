@@ -62,7 +62,13 @@ class _PlanIntroPageState extends ConsumerState<PlanIntroPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('이번엔 어디로 갈까요?', style: AppTxtSt.titleSt),
+                Row(
+                  children: [
+                    Text('이번엔', style: AppTxtSt.titleSt),
+                    Text(' 어디로', style: AppTxtSt.titleStB),
+                    Text(' 갈까요?', style: AppTxtSt.titleSt),
+                  ],
+                ),
                 SizedBox(height: 20),
                 PlanTextForm(hintText: '지역을 입력하세요', controller: regionController),
                 SizedBox(height: 20),
