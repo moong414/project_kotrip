@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:project_kotrip/core/theme/text_style.dart';
 import 'package:project_kotrip/core/widgets/basic_app_bar.dart';
 import 'package:project_kotrip/pages/my/view_model/my_plan_view_model.dart';
 import 'package:project_kotrip/pages/my/widgets/my_plan_link.dart';
@@ -18,19 +19,26 @@ class MyPlanListPage extends ConsumerWidget{
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(20),
-          child: ListView.separated(
-            shrinkWrap: true,
-            physics: NeverScrollableScrollPhysics(),
-            itemCount: myPlans.plans.length,
-            itemBuilder: (context, index) {
-              return MyPlanLink(
-                myPlans: myPlans.plans[index],
-                authState: authState,
-              );
-            },
-            separatorBuilder: (context, index) {
-              return SizedBox(height: 10);
-            },
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text('내 여행 계획 보기', style: AppTxtSt.titleSt),
+              SizedBox(height: 20,),
+              ListView.separated(
+              shrinkWrap: true,
+              physics: NeverScrollableScrollPhysics(),
+              itemCount: myPlans.plans.length,
+              itemBuilder: (context, index) {
+                return MyPlanLink(
+                  myPlans: myPlans.plans[index],
+                  authState: authState,
+                );
+              },
+              separatorBuilder: (context, index) {
+                return SizedBox(height: 10);
+              },
+            ),
+            ], 
           ),
         ),
       ),

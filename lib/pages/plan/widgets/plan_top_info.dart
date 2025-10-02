@@ -18,7 +18,7 @@ class PlanTopInfo extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Text(planState.area, style: AppTxtSt.titleStB),
+        Expanded(child: Text(planState.area, style: AppTxtSt.titleStB, overflow: TextOverflow.ellipsis,)),
         SizedBox(width: 8),
         Text(
           '$startDate - $endDate',
