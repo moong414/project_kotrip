@@ -17,8 +17,8 @@ class WeatherRepository {
           'numOfRows': '60',
           'pageNo': '1',
           'dataType': 'JSON',
-          'base_date': baseDate, // YYYYMMDD
-          'base_time': baseTime, // HHMM
+          'base_date': baseDate,
+          'base_time': baseTime,
           'nx': nx,
           'ny': ny,
         },
