@@ -3,25 +3,35 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:project_kotrip/core/theme/colors.dart';
 import 'package:project_kotrip/core/theme/text_style.dart';
 import 'package:project_kotrip/pages/home/view_model/weather_view_model.dart';
-import 'package:project_kotrip/pages/my/view_model/user_view_model.dart';
 
-class Weather extends ConsumerStatefulWidget {
-  const Weather({super.key});
+class WeatherWidget extends ConsumerStatefulWidget {
+  const WeatherWidget({super.key});
 
   @override
-  ConsumerState<Weather> createState() => _WeatherState();
+  ConsumerState<WeatherWidget> createState() => _WeatherState();
 }
 
-class _WeatherState extends ConsumerState<Weather> {
+class _WeatherState extends ConsumerState<WeatherWidget> {
+
+  @override
+  void initState() {
+    super.initState();
+    // fetchInitialData();
+  }
+
+  //날씨정보 불러오기
+  // Future<void> fetchInitialData() async {
+  //   final userState = ref.read(userViewModelProvider);
+  //   if (userState.user?.address != '주소가 없습니다.') {
+  //     final kakaorepo = KakaoRepository();
+  //     final address = await kakaorepo.getAddress(userState.user!.address);
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
-    final userState = ref.watch(userViewModelProvider);
     final weatherState = ref.watch(weatherProvider);
-    if(userState.user?.address != '주소가 없습니다.'){
-
-      // ref.read(weatherProvider.notifier).fetchWeather(lat, lon);
-    }
+    print('weatherState!! $weatherState===========================================');
 
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
