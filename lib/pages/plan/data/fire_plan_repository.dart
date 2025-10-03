@@ -25,7 +25,7 @@ class FirePlanRepository {
   // Plan 리스트 불러오기
   Future<List<PlanState>> getPlan(String userId) async {
     try {
-      final plan = await getUserPlan(userId).get();
+      final plan = await getUserPlan(userId).orderBy('startDate').get();
       final planList = plan.docs.map((doc) {
         final data = doc.data() as Map<String, dynamic>;
         return PlanState.fromMap(data);

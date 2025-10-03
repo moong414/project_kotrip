@@ -19,6 +19,7 @@ class _HomePhotoSlideState extends State<HomePhotoSlide> {
   void initState() {
     super.initState();
     thisPage = 0;
+    placeList.shuffle();
   }
 
   @override

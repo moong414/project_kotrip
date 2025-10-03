@@ -4,7 +4,6 @@ import 'package:intl/intl.dart';
 import 'package:project_kotrip/core/theme/colors.dart';
 import 'package:project_kotrip/core/theme/text_style.dart';
 import 'package:project_kotrip/core/widgets/basic_app_bar.dart';
-import 'package:project_kotrip/core/widgets/app_button.dart';
 import 'package:project_kotrip/core/widgets/show_confirm_dialog.dart';
 import 'package:project_kotrip/pages/my/view_model/my_plan_view_model.dart';
 import 'package:project_kotrip/pages/plan/view_model/plan_view_model.dart';
@@ -44,6 +43,7 @@ class _MyPlanDetailPageState extends ConsumerState<MyPlanDetailViewPage> {
     return Scaffold(
       appBar: BasicAppBar(),
       floatingActionButton: FloatingActionButton(
+        backgroundColor: colRedBtn,
         onPressed: () async{
           final result = await showConfirmDialog(context, '계획을 삭제하시겠습니까?',);
           if (result == true) {
@@ -64,7 +64,6 @@ class _MyPlanDetailPageState extends ConsumerState<MyPlanDetailViewPage> {
         ),
         child: Image.asset('assets/images/icon_delete_wt.png', width: 24,),
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -79,7 +78,7 @@ class _MyPlanDetailPageState extends ConsumerState<MyPlanDetailViewPage> {
               ),
               Container(
                 margin: EdgeInsets.symmetric(vertical: 20),
-                height: 52,
+                height: 50,
                 child: ListView.separated(
                   scrollDirection: Axis.horizontal,
                   itemCount: planState.planList.length,
