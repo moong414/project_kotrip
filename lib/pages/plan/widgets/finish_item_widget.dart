@@ -20,7 +20,7 @@ class FinishItemWidget extends StatelessWidget {
       children: [
         if(index != listLen-1)
         Positioned(
-          left: 20,
+          left: 13,
           top: 0,
           bottom: 0,
           width: 2,
@@ -31,7 +31,7 @@ class FinishItemWidget extends StatelessWidget {
           ),
         ),
         Padding(
-          padding: const EdgeInsets.only(bottom: 16, left: 13),
+          padding: const EdgeInsets.only(bottom: 16, left: 6),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -64,7 +64,7 @@ class FinishItemWidget extends StatelessWidget {
                     SizedBox(height: 4),
                     Text(
                       item.todo,
-                      style: AppTxtSt.txtStL,
+                      style: AppTxtSt.txtStL.copyWith(height: 1.3),
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                     ),

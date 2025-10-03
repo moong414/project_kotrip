@@ -3,9 +3,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:project_kotrip/core/theme/colors.dart';
 import 'package:project_kotrip/core/theme/text_style.dart';
+import 'package:project_kotrip/core/widgets/app_bt_navi.dart';
+import 'package:project_kotrip/core/widgets/app_button.dart';
+import 'package:project_kotrip/core/widgets/app_icon_button.dart';
 import 'package:project_kotrip/core/widgets/basic_app_bar.dart';
 import 'package:project_kotrip/core/widgets/show_confirm_dialog.dart';
 import 'package:project_kotrip/pages/my/view_model/my_plan_view_model.dart';
+import 'package:project_kotrip/pages/plan/plan_page.dart';
 import 'package:project_kotrip/pages/plan/view_model/plan_view_model.dart';
 import 'package:project_kotrip/pages/plan/widgets/finish_item_widget.dart';
 import 'package:project_kotrip/pages/plan/widgets/plan_top_info.dart';
@@ -42,28 +46,6 @@ class _MyPlanDetailPageState extends ConsumerState<MyPlanDetailViewPage> {
 
     return Scaffold(
       appBar: BasicAppBar(),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: colRedBtn,
-        onPressed: () async{
-          final result = await showConfirmDialog(context, '계획을 삭제하시겠습니까?',);
-          if (result == true) {
-            if (planState.planId == null) {
-              planFunc.planClear();
-            } else {
-              await planFunc.deletePlan(authState.user!.uid, planState.planId!);
-              // MyPlanViewModel 갱신
-              await ref.read(myPlanViewModelProvider.notifier).loadPlanList(authState.user!.uid);
-            }
-            Navigator.pop(context);
-          }
-          
-        },
-        elevation: 0,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadiusGeometry.circular(10),
-        ),
-        child: Image.asset('assets/images/icon_delete_wt.png', width: 24,),
-      ),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -158,6 +140,69 @@ class _MyPlanDetailPageState extends ConsumerState<MyPlanDetailViewPage> {
                   },
                 ),
               ),
+              Container(
+                    height: 72,
+                    color: Colors.white,
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: AppButton(
+                            bgColor: colGreyBg,
+                            img: Image.asset('assets/images/icon_photo_gr.png', width: 16,),
+                            txtColor: colBkTxt,
+                            text: '갤러리에 저장',
+                            onPressed: () {}
+                          ),
+                        ),
+                        SizedBox(width: 10),
+                        //수정
+                        AppIconButton(
+                          img: Image.asset('assets/images/icon_edit_wt.png', width: 24,),
+                          bgColor: colBkBtn,
+                          onPressed: () async {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) {
+                              return PlanPage();
+                            },
+                          ),
+                        );
+                      },),
+                        SizedBox(width: 10),
+                        //삭제
+                        AppIconButton(
+                          img: Image.asset('assets/images/icon_delete_wt.png', width: 24,),
+                          bgColor: colRedBtn,
+                          onPressed: () async {
+                              final result = await showConfirmDialog(
+                                context,
+                                '계획을 삭제하시겠습니까?',
+                              );
+                              if (result == true) {
+                                if (planState.planId == null) {
+                                  planFunc.planClear();
+                                  print('고냥 삭제');
+                                } else {
+                                  planFunc.deletePlan(
+                                    authState.user!.uid,
+                                    planState.planId!,
+                                  );
+                                }
+                                Navigator.pushAndRemoveUntil(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) {
+                                      return AppBtNavi(initialIndex: 0);
+                                    },
+                                  ),
+                                  (route) => false,
+                                );
+                              }
+                            },),
+                      ],
+                    ),
+                  ),
             ],
           ),
         ),

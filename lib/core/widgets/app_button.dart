@@ -24,15 +24,22 @@ class AppButton extends StatelessWidget {
     return SizedBox(
       width: double.infinity,
       height: height ?? 56,
-      child: ElevatedButton(
+      child: TextButton(
         onPressed: onPressed,
-        style: ElevatedButton.styleFrom(
-          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-          shadowColor: Colors.transparent,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadiusGeometry.circular(10)),
+        style: TextButton.styleFrom(
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
           backgroundColor: bgColor ?? colPrimary,
         ),
-        child: Text(text ?? '확인', style: TextStyle(color: txtColor ?? Colors.white, fontSize: 16)),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            if (img != null) ...[
+              img!,
+              const SizedBox(width: 6), 
+            ],
+            Text(text ?? '확인', style: TextStyle(color: txtColor ?? Colors.white, fontSize: 16)),
+          ],
+        ),
       ),
     );
   }
