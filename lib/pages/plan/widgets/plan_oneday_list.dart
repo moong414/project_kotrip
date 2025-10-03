@@ -35,6 +35,7 @@ class PlanOnedayList extends ConsumerWidget {
               itemBuilder: (context, index) {
                 return Row(
                   key: ValueKey('${today}_$index'),
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Expanded(
                       child: OnedayPlanItem(

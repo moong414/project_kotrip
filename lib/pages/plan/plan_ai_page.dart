@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:project_kotrip/core/theme/colors.dart';
 import 'package:project_kotrip/core/theme/text_style.dart';
+import 'package:project_kotrip/core/widgets/app_button.dart';
 import 'package:project_kotrip/core/widgets/basic_app_bar.dart';
 import 'package:project_kotrip/core/widgets/loading_widget.dart';
 import 'package:project_kotrip/pages/plan/plan_page.dart';
@@ -133,7 +134,8 @@ class _PlanAiPageState extends ConsumerState<PlanAiPage> {
                       gradient: LinearGradient(colors: [colGreenAi, colMintAi]),
                       borderRadius: BorderRadius.circular(10),
                     ),
-                    child: TextButton(
+                    child: AppButton(
+                      text: 'AI에게 부탁하기',
                       onPressed: () async {
                         setState(() {
                           isLoading = true;
@@ -154,23 +156,11 @@ class _PlanAiPageState extends ConsumerState<PlanAiPage> {
                           ),
                         );
                       },
-                      style: TextButton.styleFrom(
-                        padding: EdgeInsets.fromLTRB(16, 17, 16, 16),
+                      img: Image.asset(
+                        'assets/images/icon_ai_wt.png',
+                        width: 20,
                       ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Image.asset(
-                            'assets/images/icon_ai_wt.png',
-                            width: 20,
-                          ),
-                          SizedBox(width: 6),
-                          Text(
-                            'AI에게 부탁하기',
-                            style: TextStyle(color: Colors.white, fontSize: 16),
-                          ),
-                        ],
-                      ),
+                      bgColor: Colors.transparent,
                     ),
                   ),
                 ],

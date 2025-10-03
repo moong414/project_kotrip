@@ -10,7 +10,7 @@ class OnedayPlanItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 16, left: 11),
+      padding: const EdgeInsets.only(bottom: 16, left: 4),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -45,9 +45,10 @@ class OnedayPlanItem extends StatelessWidget {
                 SizedBox(height: 4),
                 Text(
                   item.todo,
-                  style: AppTxtSt.txtStL,
+                  style: AppTxtSt.txtStL.copyWith(height: 1.3),
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
+                  
                 ),
               ],
             ),

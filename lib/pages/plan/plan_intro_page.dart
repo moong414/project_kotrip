@@ -70,13 +70,20 @@ class _PlanIntroPageState extends ConsumerState<PlanIntroPage> {
                   ],
                 ),
                 SizedBox(height: 20),
-                PlanTextForm(hintText: '지역을 입력하세요', controller: regionController),
+                PlanTextForm(
+                  hintText: '지역을 입력하세요',
+                  controller: regionController,
+                ),
                 SizedBox(height: 20),
                 Text('언제 떠나시나요?', style: AppTxtSt.titleSt),
                 SizedBox(height: 20),
                 IntroDateWidget(hintText: '시작일을 입력하세요', labelText: '시작일'),
                 SizedBox(height: 10),
-                IntroDateWidget(hintText: '도착일을 입력하세요', labelText: '도착일', isStartDate: false,),
+                IntroDateWidget(
+                  hintText: '도착일을 입력하세요',
+                  labelText: '도착일',
+                  isStartDate: false,
+                ),
                 SizedBox(height: 20),
                 //직접여행계획세우기 버튼
                 AppButton(
@@ -94,23 +101,16 @@ class _PlanIntroPageState extends ConsumerState<PlanIntroPage> {
                     gradient: LinearGradient(colors: [colGreenAi, colMintAi]),
                     borderRadius: BorderRadius.circular(10),
                   ),
-                  child: TextButton(
+                  child: AppButton(
+                    text: 'AI에게 부탁하기',
                     onPressed: () {
                       //뷰모델에 전달
                       planState.updatePlace(regionController.text);
                       //AI에게 부탁하기
                       onTapNextBtn(PlanAiPage());
                     },
-                    style: TextButton.styleFrom(padding: EdgeInsets.fromLTRB(16, 17, 16, 16),),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Image.asset('assets/images/icon_ai_wt.png', width: 20),
-                        SizedBox(width: 6),
-                        Text('AI에게 부탁하기', style: TextStyle(color: Colors.white, fontSize: 16),
-                        ),
-                      ],
-                    ),
+                    img: Image.asset('assets/images/icon_ai_wt.png', width: 20),
+                    bgColor: Colors.transparent,
                   ),
                 ),
               ],
