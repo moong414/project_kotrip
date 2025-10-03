@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:project_kotrip/core/theme/colors.dart';
 import 'package:project_kotrip/core/theme/text_style.dart';
+import 'package:project_kotrip/core/widgets/show_confirm_dialog.dart';
 import 'package:project_kotrip/core/widgets/show_error_action_sheet.dart';
 import 'package:project_kotrip/pages/my/my_plan_detail_view_page.dart';
 import 'package:project_kotrip/pages/plan/view_model/plan_view_model.dart';
@@ -15,9 +16,19 @@ class MyPlanLink extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final planFunc = ref.read(planViewModelProvider.notifier);
-    final dday = myPlans.startDate.difference(DateTime.now()).inDays;
+    final today = DateTime.now();
+    final dday = myPlans.startDate.difference(DateTime(today.year, today.month, today.day)).inDays;
 
     return GestureDetector(
+      onLongPress: () async{
+        final result = await showConfirmDialog(context, '계획을 삭제하시겠습니까?',);
+          if (result == true) {
+            await planFunc.getPlanById(authState.user!.uid, myPlans.planId!);
+            Navigator.push(context, MaterialPageRoute(builder: (context) {
+              return MyPlanDetailViewPage();
+            }));
+          }
+      },
       onTap: () async {
         if (authState.user != null && myPlans.planId != null) {
           await planFunc.getPlanById(authState.user!.uid, myPlans.planId!);
@@ -45,11 +56,11 @@ class MyPlanLink extends ConsumerWidget {
                     children: [
                       Flexible(child: Text(myPlans.area, style: AppTxtSt.txtStL, overflow: TextOverflow.ellipsis, maxLines: 1,)),
                       SizedBox(width: 5,),
+                      if(dday >= 0)
                       Container(
                         padding: EdgeInsets.fromLTRB(10, 2, 10, 1),
                         decoration: BoxDecoration(color: dday == 0 ? colPrimary : colHintTxt, borderRadius: BorderRadius.circular(30)),
-                        child: Text(
-                          dday == 0 ? 'D-Day' : 'D-$dday', style: AppTxtSt.txtStS.copyWith(color: Colors.white),),)
+                        child: Text(dday == 0 ? 'D-Day' : 'D-$dday', style: AppTxtSt.txtStS.copyWith(color: Colors.white),),)
                     ],
                   ),
                   SizedBox(height: 6),

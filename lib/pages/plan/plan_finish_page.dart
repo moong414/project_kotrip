@@ -69,7 +69,7 @@ class _PlanFinishPageState extends ConsumerState<PlanFinishPage> {
                   ),
                   Container(
                     margin: EdgeInsets.symmetric(vertical: 20),
-                    height: 52,
+                    height: 50,
                     child: ListView.separated(
                       scrollDirection: Axis.horizontal,
                       itemCount: planState.planList.length,
