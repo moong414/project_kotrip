@@ -28,7 +28,7 @@ class MyApp extends ConsumerStatefulWidget {
 
 class _MyAppState extends ConsumerState<MyApp> {
 
- @override
+  @override
   Widget build(BuildContext context) {
     final authState = ref.watch(authViewModelProvider);
     final userState = ref.watch(userViewModelProvider);

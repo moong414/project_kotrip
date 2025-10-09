@@ -53,6 +53,8 @@ class _TermsPageState extends ConsumerState<TermsPage> {
     setState(() => isLoading = true);
     final userVm = ref.read(userViewModelProvider.notifier);
     await userVm.updateAgreedTerms(true);
+    // 0.5초 딜레이
+    await Future.delayed(const Duration(milliseconds: 500));
     setState(() => isLoading = false);
     Navigator.pushReplacement(
       context,
@@ -70,7 +72,6 @@ class _TermsPageState extends ConsumerState<TermsPage> {
               padding: EdgeInsets.all(20),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -89,6 +90,7 @@ class _TermsPageState extends ConsumerState<TermsPage> {
                       ],
                     ),
                   ),
+                  Spacer(),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [

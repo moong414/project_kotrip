@@ -96,114 +96,120 @@ class _SplashPageState extends ConsumerState<SplashPage> with TickerProviderStat
                   ),
                   AnimatedOpacity(
                     opacity: showBtn ? 1 : 0,
-                    duration: Duration(milliseconds: 500),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        SizedBox(height: 15),
-                        Text('손쉽게 만드는 나만의 국내여행 일정', style: AppTxtSt.txtStR),
-                        SizedBox(height: 100),
-                        //구글로 로그인
-                        SizedBox(
-                          width: double.infinity,
-                          height: 56,
-                          child: ElevatedButton(
+                    duration: Duration(milliseconds: 1000),
+                    curve: Curves.easeOut,
+                    child: AnimatedSlide(
+                      offset: showBtn ? Offset(0, 0) : Offset(0, 0.05),
+                      duration: Duration(milliseconds: 1000),
+                      curve: Curves.easeOut,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          SizedBox(height: 15),
+                          Text('손쉽게 만드는 나만의 국내여행 일정', style: AppTxtSt.txtStR),
+                          SizedBox(height: 100),
+                          //구글로 로그인
+                          SizedBox(
+                            width: double.infinity,
+                            height: 56,
+                            child: ElevatedButton(
+                              onPressed: () async {
+                                setState(() => isLoading = true);
+                                final result = await authState.signInWithGoogle();
+                                setState(() => isLoading = false);
+                                if (result) {
+                                  await handleLoginSuccess(context);
+                                } else {
+                                  showErrorActionSheet(context, '로그인 실패');
+                                }
+                              },
+                              style: ElevatedButton.styleFrom(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadiusDirectional.only(
+                                    topStart: Radius.circular(10),
+                                    topEnd: Radius.circular(10),
+                                  ),
+                                ),
+                                backgroundColor: colPrimary,
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Image.asset(
+                                    'assets/images/icon_google.png',
+                                    width: 20,
+                                  ),
+                                  Text(
+                                    '구글로 로그인',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 16,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          //애플로 로그인
+                          SizedBox(
+                            width: double.infinity,
+                            height: 56,
+                            child: ElevatedButton(
+                              onPressed: () async {
+                                setState(() => isLoading = true);
+                                final result = await authState.signInWithApple();
+                                setState(() => isLoading = false);
+                                if (result) {
+                                  await handleLoginSuccess(context);
+                                } else {
+                                  showErrorActionSheet(context, '로그인 실패');
+                                }
+                              },
+                              style: ElevatedButton.styleFrom(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadiusDirectional.only(
+                                    bottomStart: Radius.circular(10),
+                                    bottomEnd: Radius.circular(10),
+                                  ),
+                                ),
+                                backgroundColor: colSecond,
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Image.asset(
+                                    'assets/images/icon_apple.png',
+                                    width: 20,
+                                  ),
+                                  Text(
+                                    '애플로 로그인',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 16,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          SizedBox(height: 20),
+                          //로그인 없이 시작하기
+                          TextButton(
                             onPressed: () async {
                               setState(() => isLoading = true);
-                              final result = await authState.signInWithGoogle();
-                              setState(() => isLoading = false);
+                              final result = await authState.signInAnonymously();
+                              setState(() => isLoading = true);
                               if (result) {
                                 await handleLoginSuccess(context);
                               } else {
                                 showErrorActionSheet(context, '로그인 실패');
                               }
                             },
-                            style: ElevatedButton.styleFrom(
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadiusDirectional.only(
-                                  topStart: Radius.circular(10),
-                                  topEnd: Radius.circular(10),
-                                ),
-                              ),
-                              backgroundColor: colPrimary,
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Image.asset(
-                                  'assets/images/icon_google.png',
-                                  width: 20,
-                                ),
-                                Text(
-                                  '구글로 로그인',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 16,
-                                  ),
-                                ),
-                              ],
-                            ),
+                            child: Text('로그인 없이 시작하기', style: AppTxtSt.hintStR),
                           ),
-                        ),
-                        //애플로 로그인
-                        SizedBox(
-                          width: double.infinity,
-                          height: 56,
-                          child: ElevatedButton(
-                            onPressed: () async {
-                              setState(() => isLoading = true);
-                              final result = await authState.signInWithApple();
-                              setState(() => isLoading = false);
-                              if (result) {
-                                await handleLoginSuccess(context);
-                              } else {
-                                showErrorActionSheet(context, '로그인 실패');
-                              }
-                            },
-                            style: ElevatedButton.styleFrom(
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadiusDirectional.only(
-                                  bottomStart: Radius.circular(10),
-                                  bottomEnd: Radius.circular(10),
-                                ),
-                              ),
-                              backgroundColor: colSecond,
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Image.asset(
-                                  'assets/images/icon_apple.png',
-                                  width: 20,
-                                ),
-                                Text(
-                                  '애플로 로그인',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 16,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                        SizedBox(height: 20),
-                        //로그인 없이 시작하기
-                        TextButton(
-                          onPressed: () async {
-                            setState(() => isLoading = true);
-                            final result = await authState.signInAnonymously();
-                            setState(() => isLoading = true);
-                            if (result) {
-                              await handleLoginSuccess(context);
-                            } else {
-                              showErrorActionSheet(context, '로그인 실패');
-                            }
-                          },
-                          child: Text('로그인 없이 시작하기', style: AppTxtSt.hintStR),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                 ],
