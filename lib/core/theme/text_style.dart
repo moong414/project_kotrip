@@ -1,7 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:project_kotrip/core/theme/colors.dart';
 
+
 class AppTxtSt {
+  //제목스타일 20폰트
+  static const TextStyle titleStL = TextStyle(
+    color: colBkTxt,
+    fontSize: 20,
+    fontWeight: FontWeight.w400,
+  );
+
   //제목스타일
   static const TextStyle titleSt = TextStyle(
     color: colBkTxt,

@@ -35,10 +35,9 @@ class UserViewModel extends Notifier<UserState> {
   // 닉네임, 주소 변경 후 Firestore에 저장 (문서 없으면 생성)
   Future<bool> setUser({String? nickName, String? address}) async {
     final currentUser = state.user;
-
     if (currentUser == null || currentUser.id.isEmpty) {
       print('Firestore 저장 실패: 유효한 id가 없습니다.');
-      return false; // id 없으면 저장 안 함
+      return false;
     }
 
     final updatedUser = currentUser.copyWith(
@@ -60,12 +59,31 @@ class UserViewModel extends Notifier<UserState> {
     }
   }
 
+  // 약관동의 업데이트
+  Future<void> updateAgreedTerms(bool value) async {
+    final user = state.user;
+    if (user == null) return;
+
+    await repository.updateUserField(user.id, 'hasAgreedTerms', value);
+    state = state.copyWith(user: user.copyWith(hasAgreedTerms: value));
+  }
+
+  // 튜토리얼 완료 업데이트
+  Future<void> updateTutorialDone(bool value) async {
+    final user = state.user;
+    if (user == null) return;
+
+    await repository.updateUserField(user.id, 'hasSeenTutorial', value);
+    state = state.copyWith(user: user.copyWith(hasSeenTutorial: value));
+  }
+
   // 로그아웃: 상태 초기화
   void clearUser() {
     state = state.copyWith(user: null);
   }
 }
 
+// Provider
 final userViewModelProvider = NotifierProvider<UserViewModel, UserState>(
   () => UserViewModel(),
 );
