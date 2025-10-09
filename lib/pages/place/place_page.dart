@@ -50,9 +50,7 @@ class _PlacePageState extends ConsumerState<PlacePage> {
                     controller.text = selectedName;
                   });
 
-                  ref
-                      .read(placeViewModelProvider.notifier)
-                      .loadPlaces(areaCode: selectedCode);
+                  ref.read(placeViewModelProvider.notifier).loadPlaces(areaCode: selectedCode);
 
                   Navigator.of(context).pop();
                 },

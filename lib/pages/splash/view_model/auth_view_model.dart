@@ -29,35 +29,45 @@ class AuthViewModel extends Notifier<AuthState> {
     // Firebase Auth 상태 변화 감지
     auth.auth.authStateChanges().listen((user) async {
       state = state.copyWith(user: user, isSignedIn: user != null);
-
-      print('Firebase Auth 상태 변화 감지 Firebase user: ${user?.uid}, ${user?.displayName}================================');
+      print('Firebase Auth 상태 변화 감지: ${user?.uid}, ${user?.displayName}');
 
       if (user != null) {
         final userVm = ref.read(userViewModelProvider.notifier);
         final planVm = ref.read(myPlanViewModelProvider.notifier);
-        
-
-        // Firestore에서 UserModel 가져오기
+      
+        // Firestore에서 유저 불러오기
         UserModel? userModel = await userVm.repository.getUser(user.uid);
 
         if (userModel != null) {
-          // Firestore 데이터가 있으면 state 반영
+          // 기존유저 그대로 반영
           userVm.setUserModel(userModel);
         } else {
-          // Firestore에 데이터 없으면 새로 생성
-          userModel = UserModel.fromFirebaseUser(user);
-          print('생성된 UserModel ID: ${userModel.id}');
+          // 신규 로그인:로그인 방식에 따라 분기
+          final newUserId = user.providerData.isNotEmpty
+              ? user.providerData.first.providerId
+              : 'anonymous';
+
+          userModel = UserModel.fromFirebaseUser(user).copyWith(
+            hasSeenTutorial: false,
+            hasAgreedTerms: false,
+          );
+
+          if (newUserId == 'google.com') {
+            print('신규 구글 로그인 사용자 생성');
+          } else if (newUserId == 'apple.com') {
+            print('신규 애플 로그인 사용자 생성');
+          } else {
+            print('신규 익명 로그인 사용자 생성');
+          }
+
           userVm.setUserModel(userModel);
           await userVm.repository.saveUser(userModel);
         }
 
         // PlanList 업데이트
         await planVm.loadPlanList(user.uid);
-
-        print('Firebase Auth 상태 변화 감지: ${user.uid}, ${user.displayName}================================');
-        print('userModel이 잘 업데이트 되나??: ${userModel.id}, ${userModel.displayName}================================');
       } else {
-        // 로그아웃 시 초기화
+        // 로그아웃 → 초기화
         ref.read(userViewModelProvider.notifier).clearUser();
         ref.read(myPlanViewModelProvider.notifier).state = PlanListState(plans: []);
       }
@@ -130,18 +140,30 @@ class AuthViewModel extends Notifier<AuthState> {
     final userVm = ref.read(userViewModelProvider.notifier);
     final planVm = ref.read(myPlanViewModelProvider.notifier);
 
-    print('로그인 후 Firebase user: ${currentUser.uid}, ${currentUser.displayName}================================');
-
-    // Firestore에서 UserModel 가져오기
+    // Firestore에서 유저 정보 불러오기
     UserModel? userModel = await userVm.repository.getUser(currentUser.uid);
-
-    print('로그인 후 UserModel과 PlanList 업데이트: ${userModel?.id}, ${userModel?.displayName}================================');
 
     if (userModel != null) {
       userVm.setUserModel(userModel);
     } else {
-      userModel = UserModel.fromFirebaseUser(currentUser);
-      print('생성된 UserModel ID: ${userModel.id}');
+      // 신규 유저 생성
+      final newUserId = currentUser.providerData.isNotEmpty
+          ? currentUser.providerData.first.providerId
+          : 'anonymous';
+
+      userModel = UserModel.fromFirebaseUser(currentUser).copyWith(
+        hasSeenTutorial: false,
+        hasAgreedTerms: false,
+      );
+
+      if (newUserId == 'google.com') {
+        print('신규 구글 로그인 사용자 생성');
+      } else if (newUserId == 'apple.com') {
+        print('신규 애플 로그인 사용자 생성');
+      } else {
+        print('신규 익명 로그인 사용자 생성');
+      }
+
       userVm.setUserModel(userModel);
       await userVm.repository.saveUser(userModel);
     }

@@ -13,12 +13,6 @@ void showErrorActionSheet(BuildContext context, String message) {
             },
             child: const Text('확인'),
           ),
-          // CupertinoActionSheetAction(
-          //   onPressed: () {
-          //     Navigator.pop(context);
-          //   },
-          //   child: const Text('Action'),
-          // ),
         ],
       ),
     );

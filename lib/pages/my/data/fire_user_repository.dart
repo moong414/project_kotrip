@@ -23,13 +23,19 @@ class FireUserRepository {
 
   //업데이트
   Future<void> updateUser(String userId, Map<String, dynamic> data) async {
-  final docRef = users.doc(userId);
-  final doc = await docRef.get();
+    final docRef = users.doc(userId);
+    final doc = await docRef.get();
 
-  if (doc.exists) {
-    await docRef.update(data);
-  } else {
-    await docRef.set(data, SetOptions(merge: true));
+    if (doc.exists) {
+      await docRef.update(data);
+    } else {
+      await docRef.set(data, SetOptions(merge: true));
+    }
   }
-}
+  
+  // 특정 유저의 필드만 업데이트
+  Future<void> updateUserField(String userId, String key, dynamic value) async {
+    final docRef = users.doc(userId);
+    await docRef.update({key: value});
+  }
 }
