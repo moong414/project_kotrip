@@ -43,124 +43,125 @@ class _MyPlanDetailPageState extends ConsumerState<MyPlanDetailViewPage> {
     return Scaffold(
       appBar: BasicAppBar(),
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: Column(
-            children: [
-              SizedBox(height: 10),
-              //상단정보
-              Row(
-                children: [
-                  Expanded(
-                    child: PlanTopInfo(
-                      planState: planState,
-                      startDate: planState.startFormat,
-                      endDate: planState.endFormat,
-                    ),
+        child: Column(
+          children: [
+            SizedBox(height: 10),
+            //상단정보
+            Row(
+              children: [
+                SizedBox(width: 20,),
+                Expanded(
+                  child: PlanTopInfo(
+                    planState: planState,
+                    startDate: planState.startFormat,
+                    endDate: planState.endFormat,
                   ),
-                  PopupMenuButton<String>(
-                    icon: const Icon(Icons.more_vert),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(16)),
-                    ),
-                    color: Colors.white, // 팝업 배경색
-                    onSelected: (value) async {
-                      if (value == 'edit') {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (_) => PlanPage()),
-                        );
-                      } else if (value == 'delete') {
-                        final result = await showConfirmDialog(
-                          context,
-                          '계획을 삭제하시겠습니까?',
-                        );
-                        if (result == true) {
-                          if (planState.planId == null) {
-                            planFunc.planClear();
-                          } else {
-                            planFunc.deletePlan(
-                              authState.user!.uid,
-                              planState.planId!,
-                            );
-                          }
-                          Navigator.pop(context, true);
+                ),
+                PopupMenuButton<String>(
+                  icon: const Icon(Icons.more_vert),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(16)),
+                  ),
+                  color: Colors.white, // 팝업 배경색
+                  onSelected: (value) async {
+                    if (value == 'edit') {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (_) => PlanPage()),
+                      );
+                    } else if (value == 'delete') {
+                      final result = await showConfirmDialog(
+                        context,
+                        '계획을 삭제하시겠습니까?',
+                      );
+                      if (result == true) {
+                        if (planState.planId == null) {
+                          planFunc.planClear();
+                        } else {
+                          planFunc.deletePlan(
+                            authState.user!.uid,
+                            planState.planId!,
+                          );
                         }
+                        Navigator.pop(context, true);
                       }
+                    }
+                  },
+                  itemBuilder: (context) => [
+                    PopupMenuItem(
+                      value: 'edit',
+                      child: Row(
+                        children: [
+                          Image.asset(
+                            'assets/images/icon_edit.png',
+                            width: 16,
+                          ),
+                          const SizedBox(width: 8),
+                          const Text('수정'),
+                        ],
+                      ),
+                    ),
+                    PopupMenuItem(
+                      value: 'delete',
+                      child: Row(
+                        children: [
+                          Image.asset(
+                            'assets/images/icon_delete.png',
+                            width: 16,
+                          ),
+                          const SizedBox(width: 8),
+                          const Text('삭제'),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+            Container(
+              margin: EdgeInsets.fromLTRB(20, 20, 0, 20),
+              height: 50,
+              child: ListView.separated(
+                scrollDirection: Axis.horizontal,
+                itemCount: planState.planList.length,
+                itemBuilder: (context, index) {
+                  final tabBtn = btnIndex == index;
+                  return GestureDetector(
+                    onTap: () {
+                      //클릭시 이동
+                      scrollToPlan(index);
+                      setState(() {
+                        if (!tabBtn) {
+                          btnIndex = index;
+                        }
+                      });
                     },
-                    itemBuilder: (context) => [
-                      PopupMenuItem(
-                        value: 'edit',
-                        child: Row(
-                          children: [
-                            Image.asset(
-                              'assets/images/icon_edit.png',
-                              width: 16,
-                            ),
-                            const SizedBox(width: 8),
-                            const Text('수정'),
-                          ],
-                        ),
+                    child: Container(
+                      width: 100,
+                      height: 50,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: tabBtn ? colPrimary : colGreyBg,
                       ),
-                      PopupMenuItem(
-                        value: 'delete',
-                        child: Row(
-                          children: [
-                            Image.asset(
-                              'assets/images/icon_delete.png',
-                              width: 16,
-                            ),
-                            const SizedBox(width: 8),
-                            const Text('삭제'),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-              Container(
-                margin: EdgeInsets.symmetric(vertical: 20),
-                height: 50,
-                child: ListView.separated(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: planState.planList.length,
-                  itemBuilder: (context, index) {
-                    final tabBtn = btnIndex == index;
-                    return GestureDetector(
-                      onTap: () {
-                        //클릭시 이동
-                        scrollToPlan(index);
-                        setState(() {
-                          if (!tabBtn) {
-                            btnIndex = index;
-                          }
-                        });
-                      },
-                      child: Container(
-                        width: 100,
-                        height: 50,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: tabBtn ? colPrimary : colGreyBg,
-                        ),
-                        child: Center(
-                          child: Text(
-                            'Day ${index + 1}',
-                            style: AppTxtSt.txtStL.copyWith(
-                              color: tabBtn ? Colors.white : colBkTxt,
-                            ),
+                      child: Center(
+                        child: Text(
+                          'Day ${index + 1}',
+                          style: AppTxtSt.txtStL.copyWith(
+                            color: tabBtn ? Colors.white : colBkTxt,
                           ),
                         ),
                       ),
-                    );
-                  },
-                  separatorBuilder: (BuildContext context, int index) {
-                    return SizedBox(width: 10);
-                  },
-                ),
+                    ),
+                  );
+                },
+                separatorBuilder: (BuildContext context, int index) {
+                  return SizedBox(width: 10);
+                },
               ),
-              Expanded(
+            ),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: ScrollablePositionedList.builder(
                   itemScrollController: itemScrollController,
                   itemCount: planState.planList.length,
@@ -201,8 +202,8 @@ class _MyPlanDetailPageState extends ConsumerState<MyPlanDetailViewPage> {
                   },
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

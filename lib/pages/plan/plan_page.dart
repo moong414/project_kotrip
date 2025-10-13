@@ -82,130 +82,129 @@ class _PlanPageState extends ConsumerState<PlanPage> {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: Column(
-            children: [
-              SizedBox(height: 20),
-              //상단정보
-              PlanTopInfo(planState: planState, startDate: planState.startFormat, endDate: planState.endFormat),
-              //상단 날짜 & 페이지 이동 컨트롤러
-              Container(
-                height: 56,
-                margin: EdgeInsets.only(top: 20),
-                decoration: BoxDecoration(
-                  color: colGreyBg,
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    (thisPage > 0 && totalDays != 0)
-                        ? GestureDetector(
-                            onTap: prevPage,
-                            child: Container(
-                              width: 56,
-                              height: 56,
-                              padding: EdgeInsets.all(16),
-                              color: Colors.transparent,
-                              child: Image.asset('assets/images/icon_back.png'),
-                            ),
-                          )
-                        : SizedBox(width: 56, height: 56),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text('Day ${thisPage + 1} ', style: AppTxtSt.txtStLB),
-                        Text(pageDate, style: AppTxtSt.txtStR),
-                      ],
-                    ),
-                    (thisPage < totalDays && thisPage != totalDays - 1)
-                        ? GestureDetector(
-                            onTap: nextPage,
-                            child: Container(
-                              width: 56,
-                              height: 56,
-                              padding: EdgeInsets.all(16),
-                              color: Colors.transparent,
-                              child: Image.asset(
-                                'assets/images/icon_go_arrow.png',
-                              ),
-                            ),
-                          )
-                        : SizedBox(width: 56, height: 56),
-                  ],
-                ),
+        child: Column(
+          children: [
+            //상단정보
+            Padding(
+              padding: const EdgeInsets.all(20),
+              child: PlanTopInfo(planState: planState, startDate: planState.startFormat, endDate: planState.endFormat),
+            ),
+            //상단 날짜 & 페이지 이동 컨트롤러
+            Container(
+              height: 56,
+              margin: const EdgeInsets.fromLTRB(20, 0, 20, 20),
+              decoration: BoxDecoration(
+                color: colGreyBg,
+                borderRadius: BorderRadius.circular(10),
               ),
-              //1일 계획 목록
-              SizedBox(height: 20),
-              Expanded(
-                child: PageView.builder(
-                  controller: pageController,
-                  itemCount: totalDays,
-                  itemBuilder: (context, index) {
-                    return PlanOnedayList(today: index, totalDays: totalDays);
-                  },
-                  onPageChanged: (index) {
-                    setState(() {
-                      thisPage = index;
-                    });
-                  },
-                ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  (thisPage > 0 && totalDays != 0)
+                      ? GestureDetector(
+                          onTap: prevPage,
+                          child: Container(
+                            width: 56,
+                            height: 56,
+                            padding: EdgeInsets.all(16),
+                            color: Colors.transparent,
+                            child: Image.asset('assets/images/icon_back.png'),
+                          ),
+                        )
+                      : SizedBox(width: 56, height: 56),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text('Day ${thisPage + 1} ', style: AppTxtSt.txtStLB),
+                      Text(pageDate, style: AppTxtSt.txtStR),
+                    ],
+                  ),
+                  (thisPage < totalDays && thisPage != totalDays - 1)
+                      ? GestureDetector(
+                          onTap: nextPage,
+                          child: Container(
+                            width: 56,
+                            height: 56,
+                            padding: EdgeInsets.all(16),
+                            color: Colors.transparent,
+                            child: Image.asset(
+                              'assets/images/icon_go_arrow.png',
+                            ),
+                          ),
+                        )
+                      : SizedBox(width: 56, height: 56),
+                ],
               ),
-              //하단취소저장버튼
-              Container(
-                height: 72,
-                color: Colors.white,
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: AppButton(
-                        bgColor: colGreyBtn,
-                        txtColor: colBkTxt,
-                        text: '취소',
-                        onPressed: () async {
-                          final result = await showConfirmDialog(
+            ),
+            //1일 계획 목록
+            Expanded(
+              child: PageView.builder(
+                controller: pageController,
+                itemCount: totalDays,
+                itemBuilder: (context, index) {
+                  return PlanOnedayList(today: index, totalDays: totalDays);
+                },
+                onPageChanged: (index) {
+                  setState(() {
+                    thisPage = index;
+                  });
+                },
+              ),
+            ),
+            //하단취소저장버튼
+            Container(
+              height: 72,
+              color: Colors.white,
+              padding: EdgeInsets.symmetric(horizontal: 20),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: AppButton(
+                      bgColor: colGreyBtn,
+                      txtColor: colBkTxt,
+                      text: '취소',
+                      onPressed: () async {
+                        final result = await showConfirmDialog(
+                          context,
+                          '계획을 취소하시겠습니까?',
+                        );
+                        if (result == true) {
+                          ref.read(planViewModelProvider.notifier).planClear();
+                          Navigator.pushAndRemoveUntil(
                             context,
-                            '계획을 취소하시겠습니까?',
+                            MaterialPageRoute(
+                              builder: (context) {
+                                return AppBtNavi(initialIndex: 1);
+                              },
+                            ),(route) => false,
                           );
-                          if (result == true) {
-                            ref.read(planViewModelProvider.notifier).planClear();
-                            Navigator.pushAndRemoveUntil(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) {
-                                  return AppBtNavi(initialIndex: 1);
-                                },
-                              ),(route) => false,
-                            );
-                          }
-                        },
-                      ),
+                        }
+                      },
                     ),
-                    SizedBox(width: 10),
-                    Expanded(
-                      child: AppButton(
-                        bgColor: colBkBtn,
-                        text: '확인',
-                        onPressed: () {
-                          bool hasPlan = planState.planList.any((day) => day.isNotEmpty);
-                          if(!hasPlan){
-                            showErrorActionSheet(context, '일정을 추가해주세요.');
-                            print('planState.planList ${planState.planList}');
-                            return;
-                          }else{
-                            Navigator.push(context, MaterialPageRoute(builder: (context) {
-                            return PlanFinishPage();
-                          },));
-                          }
-                        },
-                      ),
+                  ),
+                  SizedBox(width: 10),
+                  Expanded(
+                    child: AppButton(
+                      bgColor: colBkBtn,
+                      text: '확인',
+                      onPressed: () {
+                        bool hasPlan = planState.planList.any((day) => day.isNotEmpty);
+                        if(!hasPlan){
+                          showErrorActionSheet(context, '일정을 추가해주세요.');
+                          print('planState.planList ${planState.planList}');
+                          return;
+                        }else{
+                          Navigator.push(context, MaterialPageRoute(builder: (context) {
+                          return PlanFinishPage();
+                        },));
+                        }
+                      },
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

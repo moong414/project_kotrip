@@ -31,7 +31,7 @@ class PlanOnedayList extends ConsumerWidget {
           )
         : Expanded(
             child: ReorderableListView.builder(
-              padding: const EdgeInsets.only(bottom: 100),
+              padding: const EdgeInsets.fromLTRB(20, 0, 10, 100),
               itemCount: planState.planList[today].length,
               itemBuilder: (context, index) {
                 return Row(

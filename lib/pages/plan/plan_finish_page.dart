@@ -56,59 +56,61 @@ class _PlanFinishPageState extends ConsumerState<PlanFinishPage> {
         Scaffold(
           appBar: BasicAppBar(),
           body: SafeArea(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: Column(
-                children: [
-                  SizedBox(height: 20),
-                  //상단정보
-                  PlanTopInfo(
+            child: Column(
+              children: [
+                //상단정보
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
+                  child: PlanTopInfo(
                     planState: planState,
                     startDate: planState.startFormat,
                     endDate: planState.endFormat,
                   ),
-                  Container(
-                    margin: EdgeInsets.symmetric(vertical: 20),
-                    height: 50,
-                    child: ListView.separated(
-                      scrollDirection: Axis.horizontal,
-                      itemCount: planState.planList.length,
-                      itemBuilder: (context, index) {
-                        final tabBtn = btnIndex == index;
-                        return GestureDetector(
-                          onTap: () {
-                            //클릭시 이동
-                            scrollToPlan(index);
-                            setState(() {
-                              if(!tabBtn){
-                                btnIndex = index;
-                              }
-                            });
-                          },
-                          child: Container(
-                            width: 100,
-                            height: 50,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              color: tabBtn ? colPrimary : colGreyBg,
-                            ),
-                            child: Center(
-                              child: Text(
-                                'Day ${index + 1}',
-                                style: AppTxtSt.txtStL.copyWith(
-                                  color: tabBtn ? Colors.white : colBkTxt,
-                                ),
+                ),
+                Container(
+                  margin: EdgeInsets.fromLTRB(20, 20, 0, 20),
+                  height: 50,
+                  child: ListView.separated(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: planState.planList.length,
+                    itemBuilder: (context, index) {
+                      final tabBtn = btnIndex == index;
+                      return GestureDetector(
+                        onTap: () {
+                          //클릭시 이동
+                          scrollToPlan(index);
+                          setState(() {
+                            if(!tabBtn){
+                              btnIndex = index;
+                            }
+                          });
+                        },
+                        child: Container(
+                          width: 100,
+                          height: 50,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: tabBtn ? colPrimary : colGreyBg,
+                          ),
+                          child: Center(
+                            child: Text(
+                              'Day ${index + 1}',
+                              style: AppTxtSt.txtStL.copyWith(
+                                color: tabBtn ? Colors.white : colBkTxt,
                               ),
                             ),
                           ),
-                        );
-                      },
-                      separatorBuilder: (BuildContext context, int index) {
-                        return SizedBox(width: 10);
-                      },
-                    ),
+                        ),
+                      );
+                    },
+                    separatorBuilder: (BuildContext context, int index) {
+                      return SizedBox(width: 10);
+                    },
                   ),
-                  Expanded(
+                ),
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: ScrollablePositionedList.builder(
                       itemScrollController: itemScrollController,
                       itemCount: planState.planList.length,
@@ -147,82 +149,83 @@ class _PlanFinishPageState extends ConsumerState<PlanFinishPage> {
                       },
                     ),
                   ),
-                  Container(
-                    height: 72,
-                    color: Colors.white,
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: AppButton(
-                            bgColor: colRedBtn,
-                            text: '삭제',
-                            onPressed: () async {
-                              final result = await showConfirmDialog(
-                                context,
-                                '계획을 삭제하시겠습니까?',
-                              );
-                              if (result == true) {
-                                if (planState.planId == null) {
-                                  planFunc.planClear();
-                                  print('고냥 삭제');
-                                } else {
-                                  planFunc.deletePlan(
-                                    authState.user!.uid,
-                                    planState.planId!,
-                                  );
-                                }
-                                Navigator.pushAndRemoveUntil(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) {
-                                      return AppBtNavi(initialIndex: 0);
-                                    },
-                                  ),
-                                  (route) => false,
+                ),
+                Container(
+                  height: 72,
+                  color: Colors.white,
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: AppButton(
+                          bgColor: colRedBtn,
+                          text: '삭제',
+                          onPressed: () async {
+                            final result = await showConfirmDialog(
+                              context,
+                              '계획을 삭제하시겠습니까?',
+                            );
+                            if (result == true) {
+                              if (planState.planId == null) {
+                                planFunc.planClear();
+                                print('고냥 삭제');
+                              } else {
+                                planFunc.deletePlan(
+                                  authState.user!.uid,
+                                  planState.planId!,
                                 );
                               }
-                            },
-                          ),
-                        ),
-                        SizedBox(width: 10),
-                        Expanded(
-                          child: AppButton(
-                            bgColor: colBkBtn,
-                            text: '저장',
-                            onPressed: () async {
-                              setState(() {
-                                isLoading = true;
-                              });
-                              final result = await showConfirmDialog(
+                              Navigator.pushAndRemoveUntil(
                                 context,
-                                '저장되었습니다.\n마이페이지에서 확인 하실수있습니다.',
-                                justConfirm: false,
+                                MaterialPageRoute(
+                                  builder: (context) {
+                                    return AppBtNavi(initialIndex: 0);
+                                  },
+                                ),
+                                (route) => false,
                               );
-                              setState(() {
-                                isLoading = false; // 로딩 끝
-                              });
-                              if (result == true) {
-                                //파이어베이스 저장
-                                await planFunc.savePlan(authState.user!.uid);
-                                //파이어베이스의 플랜리스트 '내 모든 계획 관리'갱신
-                                await myPlans.loadPlanList(authState.user!.uid);
-                                Navigator.pushAndRemoveUntil(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) {
-                                      return AppBtNavi(initialIndex: 0);
-                                    },
-                                  ),(route) => false,
-                                );
-                              }
-                            },
-                          ),
+                            }
+                          },
                         ),
-                      ],
-                    ),
+                      ),
+                      SizedBox(width: 10),
+                      Expanded(
+                        child: AppButton(
+                          bgColor: colBkBtn,
+                          text: '저장',
+                          onPressed: () async {
+                            setState(() {
+                              isLoading = true;
+                            });
+                            final result = await showConfirmDialog(
+                              context,
+                              '저장되었습니다.\n마이페이지에서 확인 하실수있습니다.',
+                              justConfirm: false,
+                            );
+                            setState(() {
+                              isLoading = false; // 로딩 끝
+                            });
+                            if (result == true) {
+                              //파이어베이스 저장
+                              await planFunc.savePlan(authState.user!.uid);
+                              //파이어베이스의 플랜리스트 '내 모든 계획 관리'갱신
+                              await myPlans.loadPlanList(authState.user!.uid);
+                              Navigator.pushAndRemoveUntil(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) {
+                                    return AppBtNavi(initialIndex: 0);
+                                  },
+                                ),(route) => false,
+                              );
+                            }
+                          },
+                        ),
+                      ),
+                    ],
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ),
