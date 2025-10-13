@@ -3,10 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:project_kotrip/core/theme/colors.dart';
 import 'package:project_kotrip/core/theme/text_style.dart';
-import 'package:project_kotrip/core/widgets/app_bt_navi.dart';
 import 'package:project_kotrip/core/widgets/basic_app_bar.dart';
 import 'package:project_kotrip/core/widgets/show_confirm_dialog.dart';
-import 'package:project_kotrip/pages/my/view_model/my_plan_view_model.dart';
 import 'package:project_kotrip/pages/plan/plan_page.dart';
 import 'package:project_kotrip/pages/plan/view_model/plan_view_model.dart';
 import 'package:project_kotrip/pages/plan/widgets/finish_item_widget.dart';
@@ -49,55 +47,77 @@ class _MyPlanDetailPageState extends ConsumerState<MyPlanDetailViewPage> {
           padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Column(
             children: [
-              //수정삭제버튼
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  //수정
-                  IconButton(onPressed: () async {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) {
-                            return PlanPage();
-                          },
-                        ),
-                      );
-                    }, icon: Image.asset('assets/images/icon_edit.png', width: 24,)),
-                  //삭제
-                  IconButton(onPressed: () async {
-                      final result = await showConfirmDialog(
-                        context,
-                        '계획을 삭제하시겠습니까?',
-                      );
-                      if (result == true) {
-                        if (planState.planId == null) {
-                          planFunc.planClear();
-                        } else {
-                          planFunc.deletePlan(
-                            authState.user!.uid,
-                            planState.planId!,
-                          );
-                        }
-                        Navigator.pushAndRemoveUntil(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) {
-                              return AppBtNavi(initialIndex: 0);
-                            },
-                          ),
-                          (route) => false,
-                        );
-                      }
-                    }, icon: Image.asset('assets/images/icon_delete.png', width: 24,))
-                ],
-              ),
-              SizedBox(height: 10,),
+              SizedBox(height: 10),
               //상단정보
-              PlanTopInfo(
-                planState: planState,
-                startDate: planState.startFormat,
-                endDate: planState.endFormat,
+              Row(
+                children: [
+                  Expanded(
+                    child: PlanTopInfo(
+                      planState: planState,
+                      startDate: planState.startFormat,
+                      endDate: planState.endFormat,
+                    ),
+                  ),
+                  PopupMenuButton<String>(
+                    icon: const Icon(Icons.more_vert),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(16)),
+                    ),
+                    color: Colors.white, // 팝업 배경색
+                    onSelected: (value) async {
+                      if (value == 'edit') {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (_) => PlanPage()),
+                        );
+                      } else if (value == 'delete') {
+                        final result = await showConfirmDialog(
+                          context,
+                          '계획을 삭제하시겠습니까?',
+                        );
+                        if (result == true) {
+                          if (planState.planId == null) {
+                            planFunc.planClear();
+                          } else {
+                            planFunc.deletePlan(
+                              authState.user!.uid,
+                              planState.planId!,
+                            );
+                          }
+                          Navigator.pop(context, true);
+                        }
+                      }
+                    },
+                    itemBuilder: (context) => [
+                      PopupMenuItem(
+                        value: 'edit',
+                        child: Row(
+                          children: [
+                            Image.asset(
+                              'assets/images/icon_edit.png',
+                              width: 16,
+                            ),
+                            const SizedBox(width: 8),
+                            const Text('수정'),
+                          ],
+                        ),
+                      ),
+                      PopupMenuItem(
+                        value: 'delete',
+                        child: Row(
+                          children: [
+                            Image.asset(
+                              'assets/images/icon_delete.png',
+                              width: 16,
+                            ),
+                            const SizedBox(width: 8),
+                            const Text('삭제'),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
               ),
               Container(
                 margin: EdgeInsets.symmetric(vertical: 20),

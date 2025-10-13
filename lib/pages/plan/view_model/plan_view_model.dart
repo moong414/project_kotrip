@@ -203,7 +203,7 @@ class PlanViewModel extends Notifier<PlanState> {
   //파이어베이스 현재계획 삭제
   Future<void> deletePlan(String userId, String planId) async {
     await repo.deletePlan(userId, planId);
-    ref.invalidate(myPlanViewModelProvider); // 삭제 후 목록 갱신
+    await ref.read(myPlanViewModelProvider.notifier).loadPlanList(userId);
   }
 
   //계획1개만 불러와서 상태 업데이트

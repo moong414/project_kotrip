@@ -34,7 +34,7 @@ class _AppBtNaviState extends State<AppBtNavi> {
     pages = [
       HomePage(),
       PlanIntroPage(title: widget.title),
-      PlacePage(),
+      // PlacePage(),
       MyPage(),
     ];
   }
@@ -99,19 +99,19 @@ class _AppBtNaviState extends State<AppBtNavi> {
             ),
             label: '',
           ),
-          BottomNavigationBarItem(
-            icon: Image.asset(
-              'assets/images/icon_menu_location.png',
-              width: 24,
-              height: 24,
-            ),
-            activeIcon: Image.asset(
-              'assets/images/icon_menu_location_on.png',
-              width: 24,
-              height: 24,
-            ),
-            label: '',
-          ),
+          // BottomNavigationBarItem(
+          //   icon: Image.asset(
+          //     'assets/images/icon_menu_location.png',
+          //     width: 24,
+          //     height: 24,
+          //   ),
+          //   activeIcon: Image.asset(
+          //     'assets/images/icon_menu_location_on.png',
+          //     width: 24,
+          //     height: 24,
+          //   ),
+          //   label: '',
+          // ),
           BottomNavigationBarItem(
             icon: Image.asset(
               'assets/images/icon_menu_my.png',

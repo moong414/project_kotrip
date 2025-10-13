@@ -39,8 +39,6 @@ Future<String?> showAddressDialog(BuildContext context) async {
                             padding: EdgeInsets.zero,
                             onPressed: (){
                               Navigator.pop(context);
-                              dialogController.dispose();
-                              debounce?.cancel();
                             },
                             icon: const Icon(Icons.close, color: Colors.black, size: 24),
                           ),

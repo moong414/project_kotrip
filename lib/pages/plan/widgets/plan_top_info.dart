@@ -15,7 +15,7 @@ class PlanTopInfo extends StatelessWidget {
   final String endDate;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context,) {
     return Row(
       children: [
         Expanded(child: Text(planState.area, style: AppTxtSt.titleStB, overflow: TextOverflow.ellipsis,)),

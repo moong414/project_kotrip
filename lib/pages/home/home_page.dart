@@ -47,17 +47,13 @@ class _HomePageState extends State<HomePage> {
         HomePhotoSlide(),
         AiBtn(),
         // PhotoListview(boldTitle: '이런곳', title: '은 어떨까요?', code: code),
-        // Padding(
-        //   padding: const EdgeInsets.all(20),
-        //   child: Row(
-        //     children: [
-        //       Text('오늘의 날씨', style: AppTxtSt.titleSt),
-        //     ],
-        //   ),
-        // ),
         Padding(
           padding: const EdgeInsets.all(20),
-          child: Text('오늘의 날씨', style: AppTxtSt.titleSt),
+          child: Row(
+            children: [
+              Text('오늘의 날씨', style: AppTxtSt.titleSt),
+            ],
+          ),
         ),
         WeatherWidget(),
       ],
