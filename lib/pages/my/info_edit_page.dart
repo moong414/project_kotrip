@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:project_kotrip/core/theme/colors.dart';
 import 'package:project_kotrip/core/theme/input_style.dart';
 import 'package:project_kotrip/core/theme/text_style.dart';
@@ -129,8 +128,12 @@ class _InfoEditPageState extends ConsumerState<InfoEditPage> {
                       ),
                       const SizedBox(height: 10),
                       GestureDetector(
-                        onTap: () {
-                          showAddressDialog(context);
+                        onTap: () async{
+                          final result = await showAddressDialog(context);
+                          if (result != null) {
+                            await userFunc.setUser(address: result);
+                            setState(() {}); // UI 갱신
+                          }
                         },
                         child: Container(
                           width: double.infinity,

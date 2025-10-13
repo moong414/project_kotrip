@@ -8,8 +8,9 @@ import 'package:project_kotrip/pages/my/data/kakao_repository.dart';
 import 'package:project_kotrip/pages/my/model/address_model.dart';
 import 'package:project_kotrip/pages/my/view_model/user_view_model.dart';
 
-Future<void> showAddressDialog(BuildContext context) async {
+Future<String?> showAddressDialog(BuildContext context) async {
   Timer? debounce; //타이머
+  final TextEditingController dialogController = TextEditingController();
 
   await showDialog(
     context: context,
@@ -17,7 +18,6 @@ Future<void> showAddressDialog(BuildContext context) async {
       return Consumer(
         builder: (context, ref, child) {
           List<AddressModel> searchResultList = [];
-          final TextEditingController dialogController = TextEditingController();
           return StatefulBuilder(
             builder: (context, setState) {
               return Dialog(
@@ -37,12 +37,15 @@ Future<void> showAddressDialog(BuildContext context) async {
                           Text('주소', style: AppTxtSt.txtStLB),
                           IconButton(
                             padding: EdgeInsets.zero,
-                            onPressed: () => Navigator.pop(context),
+                            onPressed: (){
+                              Navigator.pop(context);
+                              dialogController.dispose();
+                              debounce?.cancel();
+                            },
                             icon: const Icon(Icons.close, color: Colors.black, size: 24),
                           ),
                         ],
                       ),
-
                       Padding(
                         padding: const EdgeInsets.only(right: 10),
                         child: Form(
@@ -52,11 +55,10 @@ Future<void> showAddressDialog(BuildContext context) async {
                               DialogTextFormField(
                                 controller: dialogController,
                                 hintText: '주소 입력',
-                                autoFocus: true,
                                 onChanged: (value) async {
                                   if (debounce?.isActive ?? false) debounce!.cancel();//타이머취소
                                   // 새 타이머 시작
-                                  debounce = Timer(const Duration(microseconds: 500), () async {
+                                  debounce = Timer(const Duration(milliseconds: 500), () async {
                                     if (value.isEmpty) {
                                       setState(() => searchResultList = []);
                                       return;
@@ -67,7 +69,6 @@ Future<void> showAddressDialog(BuildContext context) async {
                                 },
                               ),
                               const SizedBox(height: 10),
-                              TextButton(onPressed: (){}, child: Text('검색!')),
                               SizedBox(
                                 height: 160,
                                 child: searchResultList.isEmpty
@@ -85,7 +86,7 @@ Future<void> showAddressDialog(BuildContext context) async {
                                               onTap: () {
                                                 //userViewModel 업데이트
                                                 ref.read(userViewModelProvider.notifier).setUser(address: addItem.addressName);
-                                                Navigator.pop(context);
+                                                Navigator.pop(context, addItem.addressName);
                                               },
                                               child: Padding(
                                                 padding: const EdgeInsets.all(10),
@@ -119,5 +120,9 @@ Future<void> showAddressDialog(BuildContext context) async {
         },
       );
     },
-  );
+  ).then((_) {
+    dialogController.dispose();
+    debounce?.cancel();
+  });
+  return null;
 }
