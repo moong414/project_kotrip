@@ -4,8 +4,6 @@ import 'package:intl/intl.dart';
 import 'package:project_kotrip/core/theme/colors.dart';
 import 'package:project_kotrip/core/theme/text_style.dart';
 import 'package:project_kotrip/core/widgets/app_bt_navi.dart';
-import 'package:project_kotrip/core/widgets/app_button.dart';
-import 'package:project_kotrip/core/widgets/app_icon_button.dart';
 import 'package:project_kotrip/core/widgets/basic_app_bar.dart';
 import 'package:project_kotrip/core/widgets/show_confirm_dialog.dart';
 import 'package:project_kotrip/pages/my/view_model/my_plan_view_model.dart';
@@ -51,7 +49,50 @@ class _MyPlanDetailPageState extends ConsumerState<MyPlanDetailViewPage> {
           padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Column(
             children: [
-              SizedBox(height: 20),
+              //수정삭제버튼
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  //수정
+                  IconButton(onPressed: () async {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) {
+                            return PlanPage();
+                          },
+                        ),
+                      );
+                    }, icon: Image.asset('assets/images/icon_edit.png', width: 24,)),
+                  //삭제
+                  IconButton(onPressed: () async {
+                      final result = await showConfirmDialog(
+                        context,
+                        '계획을 삭제하시겠습니까?',
+                      );
+                      if (result == true) {
+                        if (planState.planId == null) {
+                          planFunc.planClear();
+                        } else {
+                          planFunc.deletePlan(
+                            authState.user!.uid,
+                            planState.planId!,
+                          );
+                        }
+                        Navigator.pushAndRemoveUntil(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) {
+                              return AppBtNavi(initialIndex: 0);
+                            },
+                          ),
+                          (route) => false,
+                        );
+                      }
+                    }, icon: Image.asset('assets/images/icon_delete.png', width: 24,))
+                ],
+              ),
+              SizedBox(height: 10,),
               //상단정보
               PlanTopInfo(
                 planState: planState,
@@ -140,69 +181,6 @@ class _MyPlanDetailPageState extends ConsumerState<MyPlanDetailViewPage> {
                   },
                 ),
               ),
-              Container(
-                    height: 72,
-                    color: Colors.white,
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: AppButton(
-                            bgColor: colGreyBg,
-                            img: Image.asset('assets/images/icon_photo_gr.png', width: 16,),
-                            txtColor: colBkTxt,
-                            text: '갤러리에 저장',
-                            onPressed: () {}
-                          ),
-                        ),
-                        SizedBox(width: 10),
-                        //수정
-                        AppIconButton(
-                          img: Image.asset('assets/images/icon_edit_wt.png', width: 24,),
-                          bgColor: colBkBtn,
-                          onPressed: () async {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) {
-                              return PlanPage();
-                            },
-                          ),
-                        );
-                      },),
-                        SizedBox(width: 10),
-                        //삭제
-                        AppIconButton(
-                          img: Image.asset('assets/images/icon_delete_wt.png', width: 24,),
-                          bgColor: colRedBtn,
-                          onPressed: () async {
-                              final result = await showConfirmDialog(
-                                context,
-                                '계획을 삭제하시겠습니까?',
-                              );
-                              if (result == true) {
-                                if (planState.planId == null) {
-                                  planFunc.planClear();
-                                  print('고냥 삭제');
-                                } else {
-                                  planFunc.deletePlan(
-                                    authState.user!.uid,
-                                    planState.planId!,
-                                  );
-                                }
-                                Navigator.pushAndRemoveUntil(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) {
-                                      return AppBtNavi(initialIndex: 0);
-                                    },
-                                  ),
-                                  (route) => false,
-                                );
-                              }
-                            },),
-                      ],
-                    ),
-                  ),
             ],
           ),
         ),

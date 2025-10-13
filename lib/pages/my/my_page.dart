@@ -9,7 +9,6 @@ import 'package:project_kotrip/pages/my/my_plan_list_page.dart';
 import 'package:project_kotrip/pages/my/view_model/my_plan_view_model.dart';
 import 'package:project_kotrip/pages/my/view_model/user_view_model.dart';
 import 'package:project_kotrip/pages/my/widgets/my_plan_link.dart';
-import 'package:project_kotrip/pages/my/widgets/my_review_link.dart';
 import 'package:project_kotrip/pages/splash/splash_page.dart';
 import 'package:project_kotrip/pages/splash/view_model/auth_view_model.dart';
 
@@ -149,7 +148,7 @@ class _MyPageState extends ConsumerState<MyPage> {
               : ListView.separated(
                   shrinkWrap: true,
                   physics: NeverScrollableScrollPhysics(),
-                  itemCount: min(1, myPlans.plans.length),
+                  itemCount: min(3, myPlans.plans.length),
                   itemBuilder: (context, index) {
                     return MyPlanLink(
                       myPlans: myPlans.plans[index],
@@ -161,11 +160,11 @@ class _MyPageState extends ConsumerState<MyPage> {
                   },
                 ),
           //Todo: 내 리뷰 기능
-          Padding(
-            padding: EdgeInsetsGeometry.only(top: 20, bottom: 10),
-            child: Text('내 리뷰 보기', style: AppTxtSt.titleSt),
-          ),
-          MyReviewLink(),
+          // Padding(
+          //   padding: EdgeInsetsGeometry.only(top: 20, bottom: 10),
+          //   child: Text('내 리뷰 보기', style: AppTxtSt.titleSt),
+          // ),
+          // MyReviewLink(),
           SizedBox(height: 10),
           //-- 로그아웃 버튼 --
           Row(

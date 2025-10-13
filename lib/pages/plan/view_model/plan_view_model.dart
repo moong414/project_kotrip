@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
+import 'package:project_kotrip/pages/my/view_model/my_plan_view_model.dart';
 import 'package:project_kotrip/pages/plan/data/gemini_repository.dart';
 import 'package:project_kotrip/pages/plan/model/plan_model.dart';
 import 'package:project_kotrip/pages/plan/data/fire_plan_repository.dart';
@@ -190,7 +191,7 @@ class PlanViewModel extends Notifier<PlanState> {
   //파이어베이스 현재계획 삭제
   Future<void> deletePlan(String userId, String planId) async {
     await repo.deletePlan(userId, planId);
-    planClear();
+    ref.invalidate(myPlanViewModelProvider); // 삭제 후 목록 갱신
   }
 
   //계획1개만 불러와서 상태 업데이트
