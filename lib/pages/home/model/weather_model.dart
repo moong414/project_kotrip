@@ -23,22 +23,42 @@ class WeatherModel {
   String get sky {
     switch (weathercode) {
       case 0:
-        return '맑음';
       case 1:
+        return 'clear';
       case 2:
-        return '부분적 구름';
+        return 'partly_cloudy';
       case 3:
-        return '흐림';
+        return 'cloudy';
+      case 45:
+      case 48:
+        return 'hail';
+      case 51:
+      case 53:
+      case 55:
+      case 56:
+      case 57:
       case 61:
       case 63:
       case 65:
-        return '비';
+      case 66:
+      case 67:
+      case 80:
+      case 81:
+      case 82:
+        return 'rain';
       case 71:
       case 73:
       case 75:
-        return '눈';
+      case 77:
+      case 85:
+      case 86:
+        return 'snow';            
+      case 95:       
+      case 96:
+      case 99:
+        return 'thunder_storm';    
       default:
-        return '알 수 없음';
+        return 'default';
     }
   }
 }

@@ -26,7 +26,7 @@ class _MyPageState extends ConsumerState<MyPage> {
     final authState = ref.watch(authViewModelProvider);
     final authFunc = ref.read(authViewModelProvider.notifier);
     final myPlans = ref.watch(myPlanViewModelProvider);
-    final userState = ref.watch(userViewModelProvider).user;
+    final userState = ref.watch(userViewModelProvider);
 
     return SingleChildScrollView(
       padding: const EdgeInsets.all(20),
@@ -50,7 +50,7 @@ class _MyPageState extends ConsumerState<MyPage> {
                         SizedBox(width: 6),
                         Text('안녕하세요! ', style: AppTxtSt.txtStL),
                         Text(
-                          userState?.nickName ?? userState?.displayName ?? '익명',
+                          userState.user?.nickName ?? userState.user?.displayName ?? '익명',
                           style: AppTxtSt.txtStLB,
                           overflow: TextOverflow.ellipsis,
                         ),
@@ -88,8 +88,9 @@ class _MyPageState extends ConsumerState<MyPage> {
                       Image.asset('assets/images/icon_location.png', width: 20),
                       SizedBox(width: 6),
                       Text(
-                        userState!.address,
-                        style: (userState.address != '주소가 없습니다.')
+                        userState.user?.address.isNotEmpty == true
+                        ? userState.user!.address : '주소를 입력해주세요',
+                        style: (userState.user?.address.isNotEmpty == true)
                             ? AppTxtSt.txtStL
                             : AppTxtSt.hintStL,
                       ),

@@ -12,11 +12,8 @@ class AddressModel {
   });
 
   factory AddressModel.fromJson(Map<String, dynamic> map) {
-    final road = map['road_address'];
-    final addr = map['address'];
-
     return AddressModel(
-      addressName: road?['address_name'] ?? addr?['address_name'] ?? '',
+      addressName: map['address_name'] ?? '',
       placeName: map['place_name'] ?? '',
       mapX: map['x'] ?? '',
       mapY: map['y'] ?? '',

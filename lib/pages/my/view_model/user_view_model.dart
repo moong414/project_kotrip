@@ -63,7 +63,6 @@ class UserViewModel extends Notifier<UserState> {
   Future<void> updateAgreedTerms(bool value) async {
     final user = state.user;
     if (user == null) return;
-
     await repository.updateUserField(user.id, 'hasAgreedTerms', value);
     state = state.copyWith(user: user.copyWith(hasAgreedTerms: value));
   }

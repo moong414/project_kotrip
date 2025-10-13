@@ -35,9 +35,7 @@ class _WeatherState extends ConsumerState<WeatherWidget> {
     final userState = ref.watch(userViewModelProvider);
     final weatherState = ref.watch(weatherProvider);
     final temperature = weatherState?.temperature.toStringAsFixed(1) ?? '-';
-    final sky = weatherState?.sky ?? '-';
-    final time = weatherState?.time ?? '-';
-    final rain = weatherState?.rain.toStringAsFixed(0) ?? '0';
+    final rain = weatherState?.rain.toStringAsFixed(0) ?? '-';
 
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 20),
@@ -56,8 +54,8 @@ class _WeatherState extends ConsumerState<WeatherWidget> {
                 children: [
                   Row(
                     children: [
-                      Image.asset('assets/images/icon_weather01.png', width: 32),
-                      SizedBox(width: 10),
+                      Image.asset('assets/images/icon_weather_${weatherState?.sky ?? 'default'}.png', width: 24),
+                      SizedBox(width: 8),
                       Text('$temperature℃', style: TextStyle(fontSize: 18)),
                     ],
                   ),
