@@ -158,6 +158,18 @@ class PlanViewModel extends Notifier<PlanState> {
     state = state.copyWith(planList: newPlanList);
   }
 
+  //할 일 수정
+  void updateTodo(int dayIndex, int todoIndex, PlanModel updatedTodo) {
+    final newPlanList = List<List<PlanModel>>.from(state.planList);
+    final todayPlans = List<PlanModel>.from(newPlanList[dayIndex]);
+
+    // 기존 위치에 수정된 아이템 교체
+    todayPlans[todoIndex] = updatedTodo;
+
+    newPlanList[dayIndex] = todayPlans;
+    state = state.copyWith(planList: newPlanList);
+  }
+
   //할 일 순서 바꿈
   void reorderTodo(int dayIndex, int oldIndex, int newIndex) {
     final newList = List<List<PlanModel>>.from(state.planList);

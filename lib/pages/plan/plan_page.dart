@@ -11,8 +11,8 @@ import 'package:project_kotrip/core/widgets/show_error_action_sheet.dart';
 import 'package:project_kotrip/pages/plan/plan_finish_page.dart';
 import 'package:project_kotrip/pages/plan/view_model/plan_view_model.dart';
 import 'package:project_kotrip/pages/plan/widgets/plan_oneday_list.dart';
-import 'package:project_kotrip/pages/plan/widgets/plan_dialog_btn.dart';
 import 'package:project_kotrip/pages/plan/widgets/plan_top_info.dart';
+import 'package:project_kotrip/pages/plan/widgets/show_plan_dialog.dart';
 
 class PlanPage extends ConsumerStatefulWidget {
   const PlanPage({super.key});
@@ -38,7 +38,6 @@ class _PlanPageState extends ConsumerState<PlanPage> {
     final totalDays = planState.endDate.difference(planState.startDate).inDays + 1;
     //페이지별 날짜 표시
     final pageDate = DateFormat('yy.MM.dd').format(planState.startDate.add(Duration(days: thisPage)));
-
     //페이지 이동
     void nextPage() {
       if (thisPage < totalDays) {
@@ -67,7 +66,20 @@ class _PlanPageState extends ConsumerState<PlanPage> {
 
     return Scaffold(
       appBar: BasicAppBar(),
-      floatingActionButton: PlanDialogBtn(thisPage: thisPage),
+      //추가버튼 
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.only(bottom: 70),
+        child: FloatingActionButton(
+          onPressed: () {
+            showPlanDialog(context, ref, thisPage);
+          },
+          elevation: 0,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadiusGeometry.circular(10),
+          ),
+          child: Icon(Icons.add),
+        ),
+      ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       body: SafeArea(
         child: Padding(

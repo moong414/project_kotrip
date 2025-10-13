@@ -5,6 +5,7 @@ import 'package:project_kotrip/core/theme/text_style.dart';
 import 'package:project_kotrip/core/widgets/show_confirm_dialog.dart';
 import 'package:project_kotrip/pages/plan/view_model/plan_view_model.dart';
 import 'package:project_kotrip/pages/plan/widgets/oneday_plan_item.dart';
+import 'package:project_kotrip/pages/plan/widgets/show_plan_dialog.dart';
 
 class PlanOnedayList extends ConsumerWidget {
   PlanOnedayList({super.key, required this.today, required this.totalDays});
@@ -43,17 +44,39 @@ class PlanOnedayList extends ConsumerWidget {
                         item: planState.planList[today][index],
                       ),
                     ),
-                    IconButton(
-                      onPressed: () async {
-                        final result = await showConfirmDialog(
+                    //수정버튼
+                    SizedBox(
+                      width: 40,
+                      height: 40,
+                      child: IconButton(
+                        onPressed: () {
+                          showPlanDialog(
                           context,
-                          '삭제하시겠습니까?',
+                          ref,
+                          today,
+                          planmodel: planState.planList[today][index],
+                          index: index,
                         );
-                        if (result == true) {
-                          planViewModel.deleteTodo(today, index);
-                        }
-                      },
-                      icon: Icon(Icons.close, color: colBkTxt,),
+                        },
+                        icon: Image.asset(('assets/images/icon_edit.png'), width: 20,),
+                      ),
+                    ),
+                    //삭제버튼
+                    SizedBox(
+                      width: 40,
+                      height: 40,
+                      child: IconButton(
+                        onPressed: () async {
+                          final result = await showConfirmDialog(
+                            context,
+                            '삭제하시겠습니까?',
+                          );
+                          if (result == true) {
+                            planViewModel.deleteTodo(today, index);
+                          }
+                        },
+                        icon: Icon(Icons.close, color: colBkTxt,),
+                      ),
                     ),
                   ],
                 );

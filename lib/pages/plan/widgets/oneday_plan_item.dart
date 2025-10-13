@@ -14,12 +14,6 @@ class OnedayPlanItem extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Container(
-            width: 18,
-            height: 22,
-            margin: EdgeInsets.only(right: 9),
-            child: Image.asset('assets/images/icon_plan_list.png'),
-          ),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
