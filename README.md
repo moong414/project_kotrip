@@ -25,11 +25,29 @@
 
 ---
 ## 스크린샷
-* 홈 화면: 오늘의 날씨와 여행 추천 보기
-![홈 화면](assets/images/readme01.png)
+### 스플래시, 홈화면
+<p float="left">
+  <img src="assets/images/readme0101.png" width="200" />
+  <img src="assets/images/readme0102.png" width="200" />
+  <img src="assets/images/readme0103.gif" width="200" />
+</p>
 
-* 여행지 추천 화면: 국내 여행지 추천
-![여행지 추천 화면](assets/images/readme02.png)
+### 여행지 추천 화면
+<p float="left">
+  <img src="assets/images/readme0201.png" width="200" />
+  <img src="assets/images/readme0202.png" width="200" />
+</p>
 
-* 계획 화면: 여행 계획 작성 및 관리
-![계획 화면](assets/images/readme03.gif)
+### 여행 계획 화면
+<p float="left">
+  <img src="assets/images/readme0301.png" width="200" />
+  <img src="assets/images/readme0302.png" width="200" />
+  <img src="assets/images/readme0303.png" width="200" />
+  <img src="assets/images/readme0304.png" width="200" />
+</p>
+
+### 마이페이지
+<p float="left">
+  <img src="assets/images/readme0401.png" width="200" />
+  <img src="assets/images/readme0402.png" width="200" />
+</p>
