@@ -69,7 +69,7 @@ class AuthViewModel extends Notifier<AuthState> {
       } else {
         // 로그아웃 → 초기화
         ref.read(userViewModelProvider.notifier).clearUser();
-        ref.read(myPlanViewModelProvider.notifier).state = PlanListState(plans: []);
+        ref.read(myPlanViewModelProvider.notifier).state = PlanListState(plans: [], pastPlans: []);
       }
     });
     

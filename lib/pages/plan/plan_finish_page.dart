@@ -67,10 +67,11 @@ class _PlanFinishPageState extends ConsumerState<PlanFinishPage> {
                     endDate: planState.endFormat,
                   ),
                 ),
-                Container(
+                (planState.planList.length > 1)
+                ? Container(
                   margin: EdgeInsets.fromLTRB(20, 20, 0, 20),
                   height: 50,
-                  child: ListView.separated(
+                  child: ListView.builder(
                     scrollDirection: Axis.horizontal,
                     itemCount: planState.planList.length,
                     itemBuilder: (context, index) {
@@ -88,6 +89,7 @@ class _PlanFinishPageState extends ConsumerState<PlanFinishPage> {
                         child: Container(
                           width: 100,
                           height: 50,
+                          margin: EdgeInsets.only(right: 10),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10),
                             color: tabBtn ? colPrimary : colGreyBg,
@@ -103,11 +105,9 @@ class _PlanFinishPageState extends ConsumerState<PlanFinishPage> {
                         ),
                       );
                     },
-                    separatorBuilder: (BuildContext context, int index) {
-                      return SizedBox(width: 10);
-                    },
                   ),
-                ),
+                )
+                : SizedBox(height: 20,),
                 Expanded(
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20),

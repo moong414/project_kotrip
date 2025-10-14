@@ -118,10 +118,11 @@ class _MyPlanDetailPageState extends ConsumerState<MyPlanDetailViewPage> {
                 ),
               ],
             ),
-            Container(
-              margin: EdgeInsets.fromLTRB(20, 20, 0, 20),
+            (planState.planList.length > 1)
+            ? Container(
+              margin: EdgeInsets.fromLTRB(20, 10, 0, 20),
               height: 50,
-              child: ListView.separated(
+              child: ListView.builder(
                 scrollDirection: Axis.horizontal,
                 itemCount: planState.planList.length,
                 itemBuilder: (context, index) {
@@ -139,6 +140,7 @@ class _MyPlanDetailPageState extends ConsumerState<MyPlanDetailViewPage> {
                     child: Container(
                       width: 100,
                       height: 50,
+                      margin: EdgeInsets.only(right: 10),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10),
                         color: tabBtn ? colPrimary : colGreyBg,
@@ -154,11 +156,9 @@ class _MyPlanDetailPageState extends ConsumerState<MyPlanDetailViewPage> {
                     ),
                   );
                 },
-                separatorBuilder: (BuildContext context, int index) {
-                  return SizedBox(width: 10);
-                },
               ),
-            ),
+            )
+            :SizedBox(height: 20,),
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -167,9 +167,7 @@ class _MyPlanDetailPageState extends ConsumerState<MyPlanDetailViewPage> {
                   itemCount: planState.planList.length,
                   itemBuilder: (context, dayIndex) {
                     //페이지별 날짜
-                    final pageDate = DateFormat(
-                      'yy.MM.dd',
-                    ).format(planState.startDate.add(Duration(days: dayIndex)));
+                    final pageDate = DateFormat('yy.MM.dd',).format(planState.startDate.add(Duration(days: dayIndex)));
                     return Column(
                       children: [
                         Padding(
