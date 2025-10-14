@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:project_kotrip/core/theme/colors.dart';
 import 'package:project_kotrip/core/theme/text_style.dart';
+import 'package:project_kotrip/core/widgets/basic_app_bar.dart';
 import 'package:project_kotrip/pages/place/widgets/photo_listview.dart';
 import 'package:project_kotrip/pages/home/data/place_code_map.dart';
 import 'package:project_kotrip/pages/place/view_model/place_view_model.dart';
@@ -104,14 +105,14 @@ class _PlacePageState extends ConsumerState<PlacePage> {
   Widget build(BuildContext context) {
     final state = ref.watch(placeViewModelProvider);
 
-    final thisPlace = placeCodeMap.entries
-    .firstWhere(
+    final thisPlace = placeCodeMap.entries.firstWhere(
       (element) => element.value == state.areaCode,
       orElse: () => placeCodeMap.entries.first,
-    )
-    .key;
+    ).key;
 
-    return SafeArea(
+    return Scaffold(
+      appBar: BasicAppBar(),
+      body: SafeArea(
       child: Column(
         children: [
           Padding(
@@ -209,6 +210,7 @@ class _PlacePageState extends ConsumerState<PlacePage> {
           ),
         ],
       ),
+    ),
     );
   }
 }

@@ -17,6 +17,7 @@ class PlaceState {
     this.etcPlaceList = const [],
   });
 
+  //리스트불러오기
   List<PlaceModel> funcPlaceList(String kindPlace){
     if(kindPlace == 'tourPlaceList'){
       return tourPlaceList;
@@ -45,14 +46,19 @@ class PlaceViewModel extends Notifier<PlaceState> {
     final foodData = await placeRepository.fetchPlaceList(areaCode: areaCode, contentTypeId: '39'); //음식점
     final etcData = await placeRepository.fetchPlaceList(areaCode: areaCode, contentTypeId: '38'); //쇼핑
 
-    // 이미지 없는 항목 제거
-    // final tourList = tourData.where((place) => place.firstimage.isNotEmpty).toList();
-    // final culList = culData.where((place) => place.firstimage.isNotEmpty).toList();
-    // final foodList = foodData.where((place) => place.firstimage.isNotEmpty).toList();
-    // final etcList = etcData.where((place) => place.firstimage.isNotEmpty).toList();
-
     state = PlaceState(areaCode: areaCode, tourPlaceList: tourData, culturePlaceList: culData, foodPlaceList: foodData, etcPlaceList: etcData);
   }
+
+  //데이터 통신 확인용
+  Future<bool> pingTourApi({required String areaCode}) async {
+  try {
+    final result = await placeRepository.fetchPlaceList(areaCode: areaCode);
+    return result.isNotEmpty;
+  } catch (e) {
+    print('pingTourApi 실패: $e');
+    return false;
+  }
+}
   
 }
 

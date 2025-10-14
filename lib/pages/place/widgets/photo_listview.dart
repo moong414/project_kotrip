@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:project_kotrip/core/theme/text_style.dart';
-import 'package:project_kotrip/core/widgets/app_bt_navi.dart';
 import 'package:project_kotrip/core/widgets/loading_widget.dart';
 import 'package:project_kotrip/pages/place/place_detail_page.dart';
+import 'package:project_kotrip/pages/place/place_page.dart';
 import 'package:project_kotrip/pages/place/view_model/place_view_model.dart';
 
 class PhotoListview extends ConsumerStatefulWidget {
@@ -57,7 +57,7 @@ class _PhotoListviewState extends ConsumerState<PhotoListview> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (_) => AppBtNavi(initialIndex: 2),
+                            builder: (_) => PlacePage(),
                           ),
                         );
                       },
