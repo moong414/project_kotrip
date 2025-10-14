@@ -43,7 +43,7 @@
 <tr>
   <td><img src="assets/images/screenshot/readme0101.png" width="200" style="border:1px solid #ddd; border-radius:8px;"/></td>
   <td><img src="assets/images/screenshot/readme0102.png" width="200" style="border:1px solid #ddd; border-radius:8px;"/></td>
-  <td><img src="assets/images/screenshot/readme0103.gif" width="200" style="border:1px solid #ddd; border-radius:8px;"/></td>
+  <td><img src="assets/images/screenshot/readme0103.png" width="200" style="border:1px solid #ddd; border-radius:8px;"/></td>
 </tr>
 </table>
 
