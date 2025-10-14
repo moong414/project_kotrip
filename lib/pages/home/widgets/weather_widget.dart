@@ -95,7 +95,7 @@ class _WeatherState extends ConsumerState<WeatherWidget> {
                             ),
                             SizedBox(width: 4),
                             Text(
-                              (userState.user!.address == '주소가 없습니다.') ? '서울 용산구 남산공원길 105' : userState.user!.address,
+                              (userState.user!.address == '주소가 없습니다.') ? '서울의 날씨' : userState.user!.address,
                               style: AppTxtSt.txtStR,
                               textAlign: TextAlign.end,
                               overflow: TextOverflow.ellipsis,
