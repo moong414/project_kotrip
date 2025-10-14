@@ -101,6 +101,7 @@ class _WeatherState extends ConsumerState<WeatherWidget> {
                         ),
                         child: Column(
                           children: [
+                            Text('assets/images/icon_weather_${weatherState?.sky ?? 'default'}.png',),
                             Padding(
                               padding: const EdgeInsets.fromLTRB(15, 18, 15, 10),
                               child: Row(
