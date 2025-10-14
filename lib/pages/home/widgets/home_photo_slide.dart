@@ -63,7 +63,7 @@ class _HomePhotoSlideState extends State<HomePhotoSlide> {
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(10),
                           child: Image.asset(
-                            'assets/images/img_$code.png', // 코드 기반 이미지
+                            'assets/images/img_$code.png', 
                             fit: BoxFit.cover,
                             width: double.infinity,
                             height: double.infinity,

@@ -21,6 +21,7 @@ class _WeatherState extends ConsumerState<WeatherWidget> {
     fetchInitialData();
   }
 
+  //날씨불러오기
   Future<void> fetchInitialData() async {
     final userVm = ref.read(userViewModelProvider);
     if (userVm.user?.address != '주소가 없습니다.') {
