@@ -42,7 +42,7 @@ class _AppBtNaviState extends State<AppBtNavi> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: BasicAppBar(),
-      body: pages[thisIndex],
+      body: IndexedStack(index: thisIndex, children: pages),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: thisIndex,
         onTap: btnTap,

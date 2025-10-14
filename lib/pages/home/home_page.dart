@@ -44,35 +44,53 @@ class _HomePageState extends ConsumerState<HomePage> {
     });
   }
 
+  //새로고침
+  Future<void> refreshData() async {
+    setState(() {
+      randomKey = keys[random.nextInt(keys.length)];
+      code = placeCodeMap[randomKey]!;
+      hasData = false;
+    });
+    //다시한번 데이터통신 확인하기
+    final success = await ref.read(placeViewModelProvider.notifier).pingTourApi(areaCode: code);
+    setState(() {
+      hasData = success;
+    });
+    setState(() {});
+  }
+
+
   @override
   Widget build(BuildContext context) {
-
-    return ListView(
-      children: [
-        Padding(
-          padding: const EdgeInsets.all(20),
-          child: Row(
-            children: [
-              Text('이번엔', style: AppTxtSt.titleSt),
-              Text(' 어디로', style: AppTxtSt.titleStB),
-              Text(' 갈까요?', style: AppTxtSt.titleSt),
-            ],
+    return RefreshIndicator(
+      onRefresh: refreshData,
+      child: ListView(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(20),
+            child: Row(
+              children: [
+                Text('이번엔', style: AppTxtSt.titleSt),
+                Text(' 어디로', style: AppTxtSt.titleStB),
+                Text(' 갈까요?', style: AppTxtSt.titleSt),
+              ],
+            ),
           ),
-        ),
-        HomePhotoSlide(),
-        AiBtn(),
-        if(hasData)//데이터없으면 표시안함
-        PhotoListview(boldTitle: '이런곳', title: '은 어떨까요?', code: code),
-        Padding(
-          padding: const EdgeInsets.all(20),
-          child: Row(
-            children: [
-              Text('오늘의 날씨', style: AppTxtSt.titleSt),
-            ],
+          HomePhotoSlide(),
+          AiBtn(),
+          if(hasData)
+          PhotoListview(boldTitle: '이런곳', title: '은 어떨까요?', code: code),
+          Padding(
+            padding: const EdgeInsets.all(20),
+            child: Row(
+              children: [
+                Text('오늘의 날씨', style: AppTxtSt.titleSt),
+              ],
+            ),
           ),
-        ),
-        WeatherWidget(),
-      ],
+          WeatherWidget(),
+        ],
+      ),
     );
   }
 }
