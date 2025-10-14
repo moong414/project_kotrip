@@ -36,18 +36,27 @@ class _WeatherState extends ConsumerState<WeatherWidget> {
   Future<void> fetchData() async {
     setState(() => isLoading = true);
     final userVm = ref.read(userViewModelProvider);
+    double latitude;
+    double longitude;
+
     if (userVm.user?.address != '주소가 없습니다.') {
       final kakaorepo = KakaoRepository();
       final location = await kakaorepo.getAddress(userVm.user!.address);
-      await ref
-          .read(weatherProvider.notifier)
-          .fetchWeather(
-            double.parse(location.first.mapY),
-            double.parse(location.first.mapX),
-          );
+      latitude = double.parse(location.first.mapY);
+      longitude = double.parse(location.first.mapX);
+    } else {
+      // 주소가 없으면 남산타워 좌표 사용
+      latitude = 37.5511694;
+      longitude = 126.9882266;
     }
+
+    await ref
+        .read(weatherProvider.notifier)
+        .fetchWeather(latitude, longitude);
+
     setState(() => isLoading = false);
   }
+
 
   // 새로고침함수
   Future<void> refreshData() async {
@@ -86,7 +95,7 @@ class _WeatherState extends ConsumerState<WeatherWidget> {
                             ),
                             SizedBox(width: 4),
                             Text(
-                              userState.user?.address ?? '서울시의 날씨',
+                              (userState.user!.address == '주소가 없습니다.') ? '서울 용산구 남산공원길 105' : userState.user!.address,
                               style: AppTxtSt.txtStR,
                               textAlign: TextAlign.end,
                               overflow: TextOverflow.ellipsis,
@@ -101,7 +110,6 @@ class _WeatherState extends ConsumerState<WeatherWidget> {
                         ),
                         child: Column(
                           children: [
-                            Text('assets/images/icon_weather_${weatherState?.sky ?? 'default'}.png',),
                             Padding(
                               padding: const EdgeInsets.fromLTRB(15, 18, 15, 10),
                               child: Row(
