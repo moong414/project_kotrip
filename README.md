@@ -3,7 +3,7 @@
   <img src="assets/images/logo.png" width="120"/>
 </p>
 
-<h3 align="center"> 여행 일정 추천부터 계획, 관리까지 한 곳에서 가능한 Flutter 앱입니다. </h3> 
+<h3 align="center"> 여행지 추천부터 AI를 이용한 여행 계획, 관리가 가능한 Flutter 앱입니다. </h3> 
 <p align="center"> 프로젝트 일정 : 25.09.10 ~ 25.10.14 </p> 
 
 <hr/>
