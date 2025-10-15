@@ -21,71 +21,67 @@ class PlanOnedayList extends ConsumerWidget {
         planState.planList[today].isNotEmpty;
 
     return (!hasPlans)
-        ? Expanded(
-            child: Center(
-              child: Text(
-                '일정을 추가해보세요!',
-                style: AppTxtSt.txtStL.copyWith(color: Color(0xff999999)),
-              ),
-            ),
-          )
-        : Expanded(
-            child: ReorderableListView.builder(
-              padding: const EdgeInsets.fromLTRB(20, 0, 10, 100),
-              itemCount: planState.planList[today].length,
-              itemBuilder: (context, index) {
-                return Row(
-                  key: ValueKey('${today}_$index'),
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Expanded(
-                      child: OnedayPlanItem(
-                        index: index,
-                        item: planState.planList[today][index],
-                      ),
-                    ),
-                    //수정버튼
-                    SizedBox(
-                      width: 40,
-                      height: 40,
-                      child: IconButton(
-                        onPressed: () {
-                          showPlanDialog(
-                          context,
-                          ref,
-                          today,
-                          planmodel: planState.planList[today][index],
-                          index: index,
-                        );
-                        },
-                        icon: Image.asset(('assets/images/icon_edit.png'), width: 20,),
-                      ),
-                    ),
-                    //삭제버튼
-                    SizedBox(
-                      width: 40,
-                      height: 40,
-                      child: IconButton(
-                        onPressed: () async {
-                          final result = await showConfirmDialog(
-                            context,
-                            '삭제하시겠습니까?',
-                          );
-                          if (result == true) {
-                            planViewModel.deleteTodo(today, index);
-                          }
-                        },
-                        icon: Icon(Icons.close, color: colBkTxt,),
-                      ),
-                    ),
-                  ],
-                );
-              },
-              onReorder: (int oldIndex, int newIndex) {
-                if (newIndex > oldIndex) newIndex -= 1;
-                planViewModel.reorderTodo(today, oldIndex, newIndex);
-              },
-            ),
-          );
+        ? Center(
+          child: Text(
+            '일정을 추가해보세요!',
+            style: AppTxtSt.txtStL.copyWith(color: Color(0xff999999)),
+          ),
+        )
+        : ReorderableListView.builder(
+          padding: const EdgeInsets.fromLTRB(20, 0, 10, 100),
+          itemCount: planState.planList[today].length,
+          itemBuilder: (context, index) {
+            return Row(
+              key: ValueKey('${today}_$index'),
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(
+                  child: OnedayPlanItem(
+                    index: index,
+                    item: planState.planList[today][index],
+                  ),
+                ),
+                //수정버튼
+                SizedBox(
+                  width: 40,
+                  height: 40,
+                  child: IconButton(
+                    onPressed: () {
+                      showPlanDialog(
+                      context,
+                      ref,
+                      today,
+                      planmodel: planState.planList[today][index],
+                      index: index,
+                    );
+                    },
+                    icon: Image.asset(('assets/images/icon_edit.png'), width: 20,),
+                  ),
+                ),
+                //삭제버튼
+                SizedBox(
+                  width: 40,
+                  height: 40,
+                  child: IconButton(
+                    onPressed: () async {
+                      final result = await showConfirmDialog(
+                        context,
+                        '삭제하시겠습니까?',
+                      );
+                      if (result == true) {
+                        planViewModel.deleteTodo(today, index);
+                      }
+                    },
+                    icon: Icon(Icons.close, color: colBkTxt,),
+                  ),
+                ),
+              ],
+            );
+          },
+          onReorder: (int oldIndex, int newIndex) {
+            if (newIndex > oldIndex) newIndex -= 1;
+            planViewModel.reorderTodo(today, oldIndex, newIndex);
+          },
+        );
   }
 }

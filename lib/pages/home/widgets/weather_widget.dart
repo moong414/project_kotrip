@@ -34,7 +34,9 @@ class _WeatherState extends ConsumerState<WeatherWidget> {
 
   //주소, 날씨불러오기
   Future<void> fetchData() async {
+    if (!mounted) return; // 위젯이 화면에 없으면 바로 종료
     setState(() => isLoading = true);
+
     final userVm = ref.read(userViewModelProvider);
     double latitude;
     double longitude;
@@ -54,6 +56,7 @@ class _WeatherState extends ConsumerState<WeatherWidget> {
         .read(weatherProvider.notifier)
         .fetchWeather(latitude, longitude);
 
+    if (!mounted) return;
     setState(() => isLoading = false);
   }
 

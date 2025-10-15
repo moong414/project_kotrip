@@ -51,59 +51,61 @@ class _TutorialPageState extends State<TutorialPage> {
           body: SafeArea(
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 20),
-              child: Column(
-                children: [
-                  const SizedBox(height: 20),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      AnchorButton(
-                        selected: currentPage == 0,
-                        onTap: () => goToPage(0),
-                      ),
-                      AnchorButton(
-                        selected: currentPage == 1,
-                        onTap: () => goToPage(1),
-                      ),
-                      AnchorButton(
-                        selected: currentPage == 2,
-                        onTap: () => goToPage(2),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 30),
-                  Expanded(
-                    child: PageView(
-                      controller: pageController,
-                      onPageChanged: (index) {
-                        setState(() => currentPage = index);
-                      },
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    const SizedBox(height: 20),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        TutorialSection(
-                          title: '이번엔 어디로 갈까요?',
-                          txt: '직접 여행을 계획하거나\nAI에게 부탁할수도 있어요!',
-                          img: 'assets/images/img_tu01.png',
-                          btnTxt: '다음',
-                          onNext: onNextPressed,
+                        AnchorButton(
+                          selected: currentPage == 0,
+                          onTap: () => goToPage(0),
                         ),
-                        TutorialSection(
-                          title: '이런곳은 어떨까요?',
-                          txt: '전국의 관광지, 문화시설, 음식, 쇼핑\n정보를 볼 수 있어요!',
-                          img: 'assets/images/img_tu02.png',
-                          btnTxt: '다음',
-                          onNext: onNextPressed,
+                        AnchorButton(
+                          selected: currentPage == 1,
+                          onTap: () => goToPage(1),
                         ),
-                        TutorialSection(
-                          title: '내 장소의 날씨를 확인하세요!',
-                          txt: '마이페이지에서 내 장소나 여행지의 장소를 등록하고\n실시간 날씨를 확인하세요!',
-                          img: 'assets/images/img_tu03.png',
-                          btnTxt: '시작하기',
-                          onNext: onNextPressed,
+                        AnchorButton(
+                          selected: currentPage == 2,
+                          onTap: () => goToPage(2),
                         ),
                       ],
                     ),
-                  ),
-                ],
+                    const SizedBox(height: 30),
+                    Expanded(
+                      child: PageView(
+                        controller: pageController,
+                        onPageChanged: (index) {
+                          setState(() => currentPage = index);
+                        },
+                        children: [
+                          TutorialSection(
+                            title: '이번엔 어디로 갈까요?',
+                            txt: '직접 여행을 계획하거나\nAI에게 부탁할수도 있어요!',
+                            img: 'assets/images/img_tu01.png',
+                            btnTxt: '다음',
+                            onNext: onNextPressed,
+                          ),
+                          TutorialSection(
+                            title: '이런곳은 어떨까요?',
+                            txt: '전국의 관광지, 문화시설, 음식, 쇼핑\n정보를 볼 수 있어요!',
+                            img: 'assets/images/img_tu02.png',
+                            btnTxt: '다음',
+                            onNext: onNextPressed,
+                          ),
+                          TutorialSection(
+                            title: '내 장소의 날씨를 확인하세요!',
+                            txt: '마이페이지에서 내 장소나 여행지의 장소를 등록하고\n실시간 날씨를 확인하세요!',
+                            img: 'assets/images/img_tu03.png',
+                            btnTxt: '시작하기',
+                            onNext: onNextPressed,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),

@@ -142,7 +142,8 @@ class _InfoEditPageState extends ConsumerState<InfoEditPage> {
                             userState.user?.address.isNotEmpty == true
                             ? userState.user!.address
                             : '주소를 입력해주세요',
-                            style: userState.user?.address.isNotEmpty == true ? AppTxtSt.txtStL : AppTxtSt.hintStL,
+                            style: (userState.user?.address != null && userState.user!.address != '주소가 없습니다.')
+                            ? AppTxtSt.txtStL : AppTxtSt.hintStL,
                           ),
                         ),
                       ),

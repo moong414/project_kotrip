@@ -120,7 +120,6 @@ class _PlaceDetailPageState extends ConsumerState<PlaceDetailPage> {
                             reviewList: state.reviewModel.reviews,
                           ),
                     PlaceMapBtn(placeId: state.placeId, placeName: widget.placeName,),
-                    MyReviewDialog(),
                     SizedBox(height: 30),
                   ], 
                 ),
