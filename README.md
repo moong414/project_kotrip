@@ -11,7 +11,9 @@
 ## 주요 기능
 - Firebase 인증 (Google, Apple)
 - Firestore 데이터베이스 연동
+- 한국관광공사 TourAPI를 이용한 지역별 관광지 추천
 - 현재 위치 기반 주소 검색
+- 날씨 정보
 
 <hr/>
 
