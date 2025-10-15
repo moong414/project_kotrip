@@ -3,7 +3,7 @@
   <img src="assets/images/logo.png" width="120"/>
 </p>
 
-<h3 align="center"> 여행 일정 추천부터 계획, 관리까지 한 곳에서 가능한 Flutter 앱입니다. </h3> 
+<h3 align="center"> 여행지 추천부터 AI를 이용한 여행 계획, 관리가 가능한 Flutter 앱입니다. </h3> 
 <p align="center"> 프로젝트 일정 : 25.09.10 ~ 25.10.14 </p> 
 
 <hr/>
@@ -11,7 +11,9 @@
 ## 주요 기능
 - Firebase 인증 (Google, Apple)
 - Firestore 데이터베이스 연동
+- 한국관광공사 TourAPI를 이용한 지역별 관광지 추천
 - 현재 위치 기반 주소 검색
+- 날씨 정보
 
 <hr/>
 
