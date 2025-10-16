@@ -43,10 +43,7 @@ class AuthViewModel extends Notifier<AuthState> {
           userVm.setUserModel(userModel);
         } else {
           // 신규 로그인:로그인 방식에 따라 분기
-          final newUserId = user.providerData.isNotEmpty
-              ? user.providerData.first.providerId
-              : 'anonymous';
-
+          final newUserId = user.providerData.isNotEmpty ? user.providerData.first.providerId : 'anonymous';
           userModel = UserModel.fromFirebaseUser(user).copyWith(
             hasSeenTutorial: false,
             hasAgreedTerms: false,
@@ -82,31 +79,19 @@ class AuthViewModel extends Notifier<AuthState> {
   /// 구글 로그인
   Future<bool> signInWithGoogle() async {
     final currentUser = await auth.signInWithGoogle();
-    if (currentUser != null) {
-      await updateUserState(currentUser);
-      return true;
-    }
-    return false;
+    return currentUser != null;
   }
 
   /// 애플 로그인
   Future<bool> signInWithApple() async {
     final currentUser = await auth.signInWithApple();
-    if (currentUser != null) {
-      await updateUserState(currentUser);
-      return true;
-    }
-    return false;
+    return currentUser != null;
   }
 
   /// 익명 로그인
   Future<bool> signInAnonymously() async {
     final currentUser = await auth.signInAnonymously();
-    if (currentUser != null) {
-      await updateUserState(currentUser);
-      return true;
-    }
-    return false;
+    return currentUser != null;
   }
 
   /// 로그아웃

@@ -7,39 +7,30 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:project_kotrip/core/widgets/app_bt_navi.dart';
 import 'package:project_kotrip/pages/my/view_model/user_view_model.dart';
 import 'package:project_kotrip/pages/splash/splash_page.dart';
+import 'package:project_kotrip/pages/splash/tutorial_page.dart';
 import 'package:project_kotrip/pages/splash/view_model/auth_view_model.dart';
 import 'firebase_options.dart';
 
-void main() async{
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load(fileName: ".env");
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
-  runApp(const ProviderScope(child: MyApp()));
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  runApp(ProviderScope(child: MyApp()));
 }
 
-class MyApp extends ConsumerStatefulWidget {
+class MyApp extends ConsumerWidget {
   const MyApp({super.key});
 
   @override
-  ConsumerState<MyApp> createState() => _MyAppState();
-}
-
-class _MyAppState extends ConsumerState<MyApp> {
-
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final authState = ref.watch(authViewModelProvider);
     final userState = ref.watch(userViewModelProvider);
-    final isLoggedIn = authState.isSignedIn && userState.user != null;
+    final isLoggedIn = authState.isSignedIn && userState.user != null && !authState.user!.isAnonymous;
+
 
     return MaterialApp(
       locale: const Locale('ko'),
-      supportedLocales: const [
-        Locale('en'),
-        Locale('ko'),
-      ],
+      supportedLocales: const [Locale('en'), Locale('ko')],
       localizationsDelegates: const [
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
@@ -57,9 +48,8 @@ class _MyAppState extends ConsumerState<MyApp> {
         ),
         fontFamily: 'SCDream',
       ),
-      home: isLoggedIn
-          ? AppBtNavi()
-          : const SplashPage(),
+      // home: isLoggedIn ? AppBtNavi() : const SplashPage(),
+      home: TutorialPage(),
     );
-}
+  }
 }

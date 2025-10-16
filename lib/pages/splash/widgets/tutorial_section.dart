@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:project_kotrip/core/theme/colors.dart';
 import 'package:project_kotrip/core/theme/text_style.dart';
@@ -31,29 +30,33 @@ class TutorialSection extends StatelessWidget {
             Text(txt, style: AppTxtSt.txtStR, textAlign: TextAlign.center),
           ],
         ),
-        const Spacer(),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Image.asset(img, fit: BoxFit.contain),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: TextButton(
-                onPressed: onNext,
-                style: TextButton.styleFrom(
-                  backgroundColor: colPrimary,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  minimumSize: const Size(double.infinity, 56),
-                ),
-                child: Text(
-                  btnTxt,
-                  style: AppTxtSt.txtStL.copyWith(color: Colors.white),
-                ),
-              ),
+        Spacer(),
+        Expanded(
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                
+                Image.asset(img, fit: BoxFit.contain)],
             ),
-          ],
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: TextButton(
+            onPressed: onNext,
+            style: TextButton.styleFrom(
+              backgroundColor: colPrimary,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+              minimumSize: const Size(double.infinity, 56),
+            ),
+            child: Text(
+              btnTxt,
+              style: AppTxtSt.txtStL.copyWith(color: Colors.white),
+            ),
+          ),
         ),
       ],
     );
