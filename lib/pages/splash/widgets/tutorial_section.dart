@@ -20,45 +20,52 @@ class TutorialSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Column(
-          children: [
-            Text(title, style: AppTxtSt.titleStL),
-            const SizedBox(height: 20),
-            Text(txt, style: AppTxtSt.txtStR, textAlign: TextAlign.center),
-          ],
-        ),
-        Spacer(),
-        Expanded(
-          child: SingleChildScrollView(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                
-                Image.asset(img, fit: BoxFit.contain)],
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        return SingleChildScrollView(
+          child: ConstrainedBox(
+            constraints: BoxConstraints(
+              minHeight: constraints.maxHeight,
             ),
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: TextButton(
-            onPressed: onNext,
-            style: TextButton.styleFrom(
-              backgroundColor: colPrimary,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
+            child: IntrinsicHeight(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Column(
+                    children: [
+                      Text(title, style: AppTxtSt.titleStL),
+                      const SizedBox(height: 20),
+                      Text(txt, style: AppTxtSt.txtStR, textAlign: TextAlign.center),
+                    ],
+                  ),
+                  Column(
+                    children: [
+                      Image.asset(img, fit: BoxFit.contain),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        child: TextButton(
+                          onPressed: onNext,
+                          style: TextButton.styleFrom(
+                            backgroundColor: colPrimary,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            minimumSize: const Size(double.infinity, 56),
+                          ),
+                          child: Text(
+                            btnTxt,
+                            style: AppTxtSt.txtStL.copyWith(color: Colors.white),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
               ),
-              minimumSize: const Size(double.infinity, 56),
-            ),
-            child: Text(
-              btnTxt,
-              style: AppTxtSt.txtStL.copyWith(color: Colors.white),
             ),
           ),
-        ),
-      ],
+        );
+      },
     );
   }
 }

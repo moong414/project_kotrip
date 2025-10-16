@@ -38,21 +38,31 @@ class _SplashPageState extends ConsumerState<SplashPage> with TickerProviderStat
   //튜토리얼, 약관동의 분기
   Future<void> handleLoginSuccess(BuildContext context) async {
     final userVm = ref.read(userViewModelProvider.notifier);
-    final user = userVm.state.user;
+    final authVm = ref.read(authViewModelProvider.notifier);
 
+    final user = userVm.state.user;
     if (user == null) {
-      // 유저 정보가 없으면 에러 처리
+      final currentUser = authVm.state.user;
+      if (currentUser == null) {
+        showErrorActionSheet(context, '로그인 정보가 없습니다.');
+        return;
+      }
+      await userVm.loadUser(currentUser.uid);
+    }
+
+    final loadedUser = userVm.state.user;
+    if (loadedUser == null) {
       showErrorActionSheet(context, '유저 정보를 가져오지 못했습니다.');
       return;
     }
 
     // 분기 처리
-    if (!user.hasAgreedTerms) {
+    if (!loadedUser.hasAgreedTerms) {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (_) => TermsPage()), // 약관동의
       );
-    } else if (!user.hasSeenTutorial) {
+    } else if (!loadedUser.hasSeenTutorial) {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (_) => TutorialPage()), // 튜토리얼
