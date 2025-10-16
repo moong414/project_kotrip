@@ -41,7 +41,8 @@ class _InfoEditPageState extends ConsumerState<InfoEditPage> {
     final authFunc = ref.read(authViewModelProvider.notifier);
     final userFunc = ref.read(userViewModelProvider.notifier);
     final userState = ref.watch(userViewModelProvider);
-
+    final addressText = (userState.user?.address ?? '').trim();
+    
     return Stack(
       children: [
         Scaffold(
@@ -96,8 +97,7 @@ class _InfoEditPageState extends ConsumerState<InfoEditPage> {
                                 setState(() => isLoading = true);
                                 final position = await GeolocatorHelper.getPositon();
                                 if (position != null) {
-                                  final address = await KakaoRepository()
-                                      .getAddressFromGps('${position.longitude}', '${position.latitude}');
+                                  final address = await KakaoRepository().getAddressFromGps('${position.longitude}', '${position.latitude}');
                                   if(address != null){
                                     await userFunc.setUser(address: address.addressName);
                                   }
@@ -127,26 +127,23 @@ class _InfoEditPageState extends ConsumerState<InfoEditPage> {
                       const SizedBox(height: 10),
                       //주소찾기다이얼로그
                       GestureDetector(
-                        onTap: () async {
-                          await showAddressDialog(context, ref);
-                        },
-                        child: Container(
-                          width: double.infinity,
-                          height: 56,
-                          padding: const EdgeInsets.all(16),
-                          decoration: BoxDecoration(
-                            border: Border.all(color: colGreyBtn, width: 1),
-                            borderRadius: BorderRadius.circular(10),
+                            onTap: () async {
+                              await showAddressDialog(context, ref);
+                            },
+                            child: Container(
+                              width: double.infinity,
+                              height: 56,
+                              padding: const EdgeInsets.all(16),
+                              decoration: BoxDecoration(
+                                border: Border.all(color: colGreyBtn, width: 1),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: Text(
+                                addressText.isNotEmpty ? addressText : '주소를 입력해주세요',
+                                style: addressText.isNotEmpty ? AppTxtSt.txtStL : AppTxtSt.hintStL,
+                              ),
+                            ),
                           ),
-                          child: Text(
-                            userState.user?.address.isNotEmpty == true
-                            ? userState.user!.address
-                            : '주소를 입력해주세요',
-                            style: (userState.user?.address != null && userState.user!.address != '주소가 없습니다.')
-                            ? AppTxtSt.txtStL : AppTxtSt.hintStL,
-                          ),
-                        ),
-                      ),
                       const SizedBox(height: 20),
                       AppButton(
                         text: '저장',

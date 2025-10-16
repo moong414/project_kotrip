@@ -34,32 +34,33 @@ class _WeatherState extends ConsumerState<WeatherWidget> {
 
   //주소, 날씨불러오기
   Future<void> fetchData() async {
-    if (!mounted) return; // 위젯이 화면에 없으면 바로 종료
+    if (!mounted) return;
     setState(() => isLoading = true);
 
-    final userVm = ref.read(userViewModelProvider);
-    double latitude;
-    double longitude;
+    try {
+      final userVm = ref.read(userViewModelProvider);
+      double latitude = 37.5511694;
+      double longitude = 126.9882266;
 
-    if (userVm.user?.address != '주소가 없습니다.') {
-      final kakaorepo = KakaoRepository();
-      final location = await kakaorepo.getAddress(userVm.user!.address);
-      latitude = double.parse(location.first.mapY);
-      longitude = double.parse(location.first.mapX);
-    } else {
-      // 주소가 없으면 남산타워 좌표 사용
-      latitude = 37.5511694;
-      longitude = 126.9882266;
+      // 카카오 API로 좌표 가져오기
+      if (userVm.user?.address != null &&
+          userVm.user!.address.trim().isNotEmpty &&
+          userVm.user!.address != '주소가 없습니다.') {
+        final kakaorepo = KakaoRepository();
+        final location = await kakaorepo.getAddress(userVm.user!.address);
+        if (location.isNotEmpty) {
+          latitude = double.parse(location.first.mapY);
+          longitude = double.parse(location.first.mapX);
+        }
+      }
+
+      await ref.read(weatherProvider.notifier).fetchWeather(latitude, longitude);
+    } catch (e, st) {
+      print('WeatherWidget fetchData error: $e\n$st');
+    } finally {
+      if (mounted) setState(() => isLoading = false);
     }
-
-    await ref
-        .read(weatherProvider.notifier)
-        .fetchWeather(latitude, longitude);
-
-    if (!mounted) return;
-    setState(() => isLoading = false);
   }
-
 
   // 새로고침함수
   Future<void> refreshData() async {
@@ -73,6 +74,7 @@ class _WeatherState extends ConsumerState<WeatherWidget> {
     final weatherState = ref.watch(weatherProvider);
     final temperature = weatherState?.temperature.toStringAsFixed(1) ?? '-';
     final rain = weatherState?.rain.toStringAsFixed(0) ?? '-';
+    final displayAddress = (userState.user?.address == null || userState.user!.address.trim().isEmpty || userState.user!.address == '주소가 없습니다.')? '서울의 날씨': userState.user!.address;
 
     return Column(
       children: [
@@ -98,7 +100,7 @@ class _WeatherState extends ConsumerState<WeatherWidget> {
                             ),
                             SizedBox(width: 4),
                             Text(
-                              (userState.user!.address == '주소가 없습니다.') ? '서울의 날씨' : userState.user!.address,
+                              displayAddress,
                               style: AppTxtSt.txtStR,
                               textAlign: TextAlign.end,
                               overflow: TextOverflow.ellipsis,

@@ -1,17 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:project_kotrip/core/theme/colors.dart';
 import 'package:project_kotrip/core/widgets/app_bt_navi.dart';
 import 'package:project_kotrip/core/widgets/loading_widget.dart';
+import 'package:project_kotrip/pages/my/view_model/user_view_model.dart';
 import 'package:project_kotrip/pages/splash/widgets/tutorial_section.dart';
 
-class TutorialPage extends StatefulWidget {
+class TutorialPage extends ConsumerStatefulWidget {
   const TutorialPage({super.key});
 
   @override
-  State<TutorialPage> createState() => _TutorialPageState();
+  ConsumerState<TutorialPage> createState() => _TutorialPageState();
 }
 
-class _TutorialPageState extends State<TutorialPage> {
+class _TutorialPageState extends ConsumerState<TutorialPage> {
   bool isLoading = false;
   final PageController pageController = PageController();
   int currentPage = 0;
@@ -26,18 +28,22 @@ class _TutorialPageState extends State<TutorialPage> {
   }
 
   //페이지이동
-  void onNextPressed() async{
+  void onNextPressed() async {
     if (currentPage < 2) {
       goToPage(currentPage + 1);
     } else {
-      //0.5초 딜레이
       setState(() => isLoading = true);
       await Future.delayed(const Duration(milliseconds: 500));
+      
+      final userViewModel = ref.read(userViewModelProvider.notifier);
+      await userViewModel.updateTutorialDone(true);
+
       setState(() => isLoading = false);
-      //홈으로 이동
+
+      // 홈으로 이동
       Navigator.pushAndRemoveUntil(
         context,
-        MaterialPageRoute(builder: (_) => AppBtNavi(initialIndex: 0)), // 홈
+        MaterialPageRoute(builder: (_) => AppBtNavi(initialIndex: 0)),
         (route) => false,
       );
     }

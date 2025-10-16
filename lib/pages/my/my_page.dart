@@ -88,11 +88,10 @@ class _MyPageState extends ConsumerState<MyPage> {
                       Image.asset('assets/images/icon_location.png', width: 20),
                       SizedBox(width: 6),
                       Text(
-                        userState.user?.address.isNotEmpty == true
-                        ? userState.user!.address : '주소를 입력해주세요',
-                        style: (userState.user?.address != null && userState.user!.address != '주소가 없습니다.')
-                        ? AppTxtSt.txtStR
-                        : AppTxtSt.hintStR,
+                        userState.user?.address.isNotEmpty == true ? userState.user!.address : '주소를 입력해주세요',
+                        style: (userState.user?.address == null || userState.user!.address.trim().isEmpty || userState.user!.address == '주소가 없습니다.')
+                        ? AppTxtSt.hintStR
+                        : AppTxtSt.txtStR,
                       ),
                     ],
                   ),

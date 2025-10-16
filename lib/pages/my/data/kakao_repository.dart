@@ -1,5 +1,6 @@
 
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:project_kotrip/pages/my/model/address_model.dart';
 
@@ -32,19 +33,21 @@ class KakaoRepository {
         }
         return addressList;
       } else {
-        print('kakao api의 리턴값이 올바르지 않음');
+        debugPrint('kakao api의 리턴값이 올바르지 않음');
         return [];
       }
     } catch (e) {
-      print('KakaoRepository 에러: $e');
+      debugPrint('KakaoRepository 에러: $e');
       return [];
     }
   }
 
   //GPS연동 좌표 검색
   Future<AddressModel?> getAddressFromGps(String x, String y) async {
+    debugPrint('REST API KEY: $key');
+    debugPrint('GPS 요청 x=$x, y=$y');
     try {
-      final response = await dio.post(
+      final response = await dio.get(
         geoUrl,
         options: Options(
           headers: {
@@ -56,20 +59,35 @@ class KakaoRepository {
           'y': y,
         }
       );
+
+      debugPrint('응답 상태: ${response.statusCode}');
+      debugPrint('응답 데이터: ${response.data}');
+
       if (response.statusCode == 200) {
         final results = response.data['documents'];
 
-        if(results == [] || results.isEmpty) return null;
-        
-        final firstResult = AddressModel.fromJson(Map<String, dynamic>.from(results[0]));
+        if (results == null || results.isEmpty) return null;
+
+        final firstDoc = results[0];
+
+        // road_address가 있으면 우선 사용, 없으면 address 사용
+        final addressData = firstDoc['road_address'] ?? firstDoc['address'];
+
+        if (addressData == null) return null;
+
+        final firstResult = AddressModel.fromJson(
+          Map<String, dynamic>.from(addressData),
+        );
+
         return firstResult;
       } else {
-        print('kakao api의 리턴값이 올바르지 않음');
+        debugPrint('kakao api의 리턴값이 올바르지 않음');
         return null;
       }
     } catch (e) {
-      print('KakaoRepository 에러: $e');
+      debugPrint('KakaoRepository 에러: $e');
       return null;
     }
   }
+
 }

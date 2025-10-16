@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 import 'package:project_kotrip/pages/plan/view_model/plan_view_model.dart';
 
 class FirePlanRepository {
@@ -34,7 +35,7 @@ class FirePlanRepository {
       return planList;
 
     } catch (e) {
-      print('Plan 리스트 불러오기에서 error발생!! $e');
+      debugPrint('Plan 리스트 불러오기에서 error발생!! $e');
       return [];
     }
   }

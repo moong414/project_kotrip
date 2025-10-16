@@ -35,29 +35,24 @@ class UserViewModel extends Notifier<UserState> {
   // 닉네임, 주소 변경 후 Firestore에 저장 (문서 없으면 생성)
   Future<bool> setUser({String? nickName, String? address}) async {
     final currentUser = state.user;
-    if (currentUser == null || currentUser.id.isEmpty) {
-      print('Firestore 저장 실패: 유효한 id가 없습니다.');
-      return false;
-    }
+    if (currentUser == null || currentUser.id.isEmpty) return false;
 
-    final updatedUser = currentUser.copyWith(
-      nickName: nickName,
-      address: address,
-    );
-
-    state = state.copyWith(user: updatedUser);
+    final updatedUser = currentUser.copyWith(nickName: nickName, address: address);
 
     try {
       await repository.updateUser(updatedUser.id, {
         'nickName': updatedUser.nickName,
         'address': updatedUser.address,
       });
+      
+      state = state.copyWith(user: updatedUser);
       return true;
     } catch (e) {
       print('Firestore 저장 실패: $e');
       return false;
     }
   }
+
 
   // 약관동의 업데이트
   Future<void> updateAgreedTerms(bool value) async {
