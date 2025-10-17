@@ -19,16 +19,18 @@
 
 ## 사용 기술
 
-| 카테고리       | 사용 기술                                   |
-| ------------- | ---------------------------------------- |
+| 카테고리       | 사용 기술                                    |
+| ---------- | ---------------------------------------- |
 | 상태 관리      | Riverpod                                 |
 | 네트워킹       | Dio                                      |
-| Firebase       | Core, Auth, Firestore                    |
+| Firebase   | Core, Auth, Firestore                    |
 | 로그인        | Google Sign-In, Apple Sign-In            |
+| AI 기능      | **Gemini API (Google Generative AI)**    |
 | UI & 애니메이션 | Carousel Slider, Lottie, Cupertino Icons |
 | 위치 정보      | Geolocator                               |
 | 환경 변수      | Flutter Dotenv                           |
-| 기타           | URL Launcher, Intl                       |
+| 기타         | URL Launcher, Intl                       |
+
 
 <hr/>
 
