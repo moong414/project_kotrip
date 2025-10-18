@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:project_kotrip/core/theme/colors.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:project_kotrip/core/widgets/app_bt_navi.dart';
+import 'package:project_kotrip/core/widgets/loading_widget.dart';
 import 'package:project_kotrip/pages/my/view_model/user_view_model.dart';
 import 'package:project_kotrip/pages/splash/splash_page.dart';
 import 'package:project_kotrip/pages/splash/view_model/auth_view_model.dart';
@@ -24,8 +25,18 @@ class MyApp extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final authState = ref.watch(authViewModelProvider);
     final userState = ref.watch(userViewModelProvider);
-    final isLoggedIn = authState.isSignedIn && userState.user != null && !authState.user!.isAnonymous;
 
+    if (authState.isLoading) {
+      return const MaterialApp(
+        home: Scaffold(
+          body: LoadingWidget(),
+        ),
+      );
+    }
+
+    final isLoggedIn = authState.isSignedIn &&
+        userState.user != null &&
+        !authState.user!.isAnonymous;
 
     return MaterialApp(
       locale: const Locale('ko'),
@@ -42,9 +53,8 @@ class MyApp extends ConsumerWidget {
         ),
         appBarTheme: const AppBarTheme(backgroundColor: Colors.white),
         scaffoldBackgroundColor: Colors.white,
-        bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-          backgroundColor: Colors.white,
-        ),
+        bottomNavigationBarTheme:
+            const BottomNavigationBarThemeData(backgroundColor: Colors.white),
         fontFamily: 'SCDream',
       ),
       home: isLoggedIn ? AppBtNavi() : const SplashPage(),

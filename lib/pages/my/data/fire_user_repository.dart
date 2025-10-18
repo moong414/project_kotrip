@@ -38,4 +38,22 @@ class FireUserRepository {
     final docRef = users.doc(userId);
     await docRef.update({key: value});
   }
+
+  //유저 컬렉션 삭제
+  Future<void> deleteUser(String userId) async {
+    try {
+      final docRef = firestore.collection('users').doc(userId);
+      final doc = await docRef.get();
+
+      if (doc.exists) {
+        await docRef.delete();
+        print('Firestore 유저 문서 삭제 완료: $userId');
+      } else {
+        print('삭제할 유저 문서가 존재하지 않음: $userId');
+      }
+    } catch (e) {
+      print('Firestore 유저 문서 삭제 실패: $e');
+    }
+  }
+
 }

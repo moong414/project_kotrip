@@ -40,15 +40,14 @@ class _SplashPageState extends ConsumerState<SplashPage> with TickerProviderStat
     final userVm = ref.read(userViewModelProvider.notifier);
     final authVm = ref.read(authViewModelProvider.notifier);
 
-    final user = userVm.state.user;
-    if (user == null) {
-      final currentUser = authVm.state.user;
-      if (currentUser == null) {
-        showErrorActionSheet(context, '로그인 정보가 없습니다.');
-        return;
-      }
-      await userVm.loadUser(currentUser.uid);
+    final currentUser = authVm.state.user;
+    if (currentUser == null) {
+      showErrorActionSheet(context, '로그인 정보가 없습니다.');
+      return;
     }
+
+    // 항상 Firestore에서 최신 유저 정보 로드
+    await userVm.loadUser(currentUser.uid);
 
     final loadedUser = userVm.state.user;
     if (loadedUser == null) {
@@ -75,6 +74,7 @@ class _SplashPageState extends ConsumerState<SplashPage> with TickerProviderStat
       );
     }
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -209,12 +209,11 @@ class _SplashPageState extends ConsumerState<SplashPage> with TickerProviderStat
                             onPressed: () async {
                               setState(() => isLoading = true);
                               final result = await authState.signInAnonymously();
-                              setState(() => isLoading = true);
-                              if (result) {
-                                await handleLoginSuccess(context);
-                              } else {
-                                showErrorActionSheet(context, '로그인 실패');
-                              }
+                              setState(() => isLoading = false);
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(builder: (_) => TermsPage()),
+                              );
                             },
                             child: Text('로그인 없이 시작하기', style: AppTxtSt.hintStR),
                           ),
