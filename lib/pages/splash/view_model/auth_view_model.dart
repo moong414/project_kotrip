@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:project_kotrip/pages/my/data/fire_user_repository.dart';
 import 'package:project_kotrip/pages/my/model/user_model.dart';
 import 'package:project_kotrip/pages/my/view_model/my_plan_view_model.dart';
 import 'package:project_kotrip/pages/my/view_model/user_view_model.dart';
@@ -31,15 +32,15 @@ class AuthState {
 
 class AuthViewModel extends Notifier<AuthState> {
   late final FirebaseAuthRepository auth;
+  late final FireUserRepository userRepository;
 
   @override
   AuthState build() {
     auth = FirebaseAuthRepository();
+    userRepository = FireUserRepository();
 
-    // 초기 로딩 상태
     state = AuthState(user: null, isSignedIn: false, isLoading: true);
 
-    // Firebase Auth 상태 변화 감지
     auth.auth.authStateChanges().listen((user) async {
       state = state.copyWith(
         user: user,
@@ -56,10 +57,8 @@ class AuthViewModel extends Notifier<AuthState> {
         UserModel? userModel = await userVm.repository.getUser(user.uid);
 
         if (userModel != null) {
-          // 기존 유저
           userVm.setUserModel(userModel);
         } else {
-          // 신규 로그인: 로그인 방식에 따라 분기
           final newUserId = user.providerData.isNotEmpty
               ? user.providerData.first.providerId
               : 'anonymous';
@@ -74,10 +73,8 @@ class AuthViewModel extends Notifier<AuthState> {
           await userVm.repository.saveUser(userModel);
         }
 
-        // PlanList 업데이트
         await planVm.loadPlanList(user.uid);
       } else {
-        // 로그아웃 상태
         ref.read(userViewModelProvider.notifier).clearUser();
         ref.read(myPlanViewModelProvider.notifier).clearPlanList();
       }
@@ -117,33 +114,32 @@ class AuthViewModel extends Notifier<AuthState> {
     ref.read(myPlanViewModelProvider.notifier).clearPlanList();
   }
 
-  /// 회원 탈퇴
+  /// 계정 탈퇴
   Future<void> deleteAccount() async {
+    final user = auth.currentUser;
+    if (user == null) return;
+
+    final uid = user.uid;
     try {
-      final user = auth.currentUser;
-      if (user != null) {
-        final uid = user.uid;
+      final userVm = ref.read(userViewModelProvider.notifier);
 
-        // Firestore의 유저 문서 삭제
-        final userVm = ref.read(userViewModelProvider.notifier);
-        await userVm.repository.deleteUser(uid);
+      // Firestore 유저 + 서브컬렉션 plans 삭제
+      await userVm.repository.deleteUserWithPlans(uid);
 
-        // Firebase Auth 계정 삭제
-        await user.delete();
+      // Firebase Auth 계정 삭제
+      await user.delete();
 
-        // 로그아웃 및 상태 초기화
-        await auth.signOut();
-        state = state.copyWith(user: null, isSignedIn: false, isLoading: false);
-        ref.read(userViewModelProvider.notifier).clearUser();
-        ref.read(myPlanViewModelProvider.notifier).clearPlanList();
+      // 로그아웃 및 상태 초기화
+      await auth.signOut();
+      state = state.copyWith(user: null, isSignedIn: false, isLoading: false);
+      ref.read(userViewModelProvider.notifier).clearUser();
+      ref.read(myPlanViewModelProvider.notifier).clearPlanList();
 
-        print('계정 및 Firestore 유저 데이터 완전 삭제 완료');
-      }
+      print('계정 및 Firestore 데이터 완전 삭제 완료');
     } catch (e) {
       print('계정 삭제 실패: $e');
     }
   }
-
 
   /// 로그인 후 UserModel과 PlanList 업데이트
   Future<void> updateUserState(User currentUser) async {

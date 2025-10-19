@@ -106,16 +106,40 @@ class PlanViewModel extends Notifier<PlanState> {
 
   //플랜뷰모델 초기화
   void planClear() {
-    state = PlanState(
-      area: '',
-      startDate: DateTime(1970, 1, 1),
-      endDate: DateTime(1970, 1, 1),
-      planList: [],
-      planId: '',
-      startFormat: '',
-      endFormat: ''
-    );
+  state = PlanState(
+    area: '',
+    startDate: DateTime(1970, 1, 1),
+    endDate: DateTime(1970, 1, 1),
+    planList: [],
+    planId: null,
+    startFormat: '',
+    endFormat: ''
+  );
+}
+
+
+  // 플랜뷰모델(직접여행계획세우기) 초기화
+  void prepareDirectPlan({String? area}) {
+    // 장소 업데이트
+    if (area != null) updatePlace(area);
+
+    // 시작일/종료일 기본값 처리
+    if (state.startDate == DateTime(1970, 1, 1)) {
+      updateStartDate(DateTime.now());
+    }
+    if (state.endDate == DateTime(1970, 1, 1)) {
+      updateEndDate(DateTime.now().add(Duration(days: 1)));
+    }
+
+    // planList 초기화 / 최소 1일
+    final days = state.endDate.difference(state.startDate).inDays + 1;
+    final newPlanList = List<List<PlanModel>>.from(state.planList);
+    while (newPlanList.length < days) {
+      newPlanList.add([]);
+    }
+    state = state.copyWith(planList: newPlanList);
   }
+
 
   // 장소 업데이트
   void updatePlace(String text) {

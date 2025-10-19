@@ -24,6 +24,7 @@ class _PlanIntroPageState extends ConsumerState<PlanIntroPage> {
   @override
   void initState() {
     super.initState();
+    ref.read(planViewModelProvider.notifier).planClear();
     regionController = TextEditingController(text: widget.title ?? '');
   }
 
@@ -90,7 +91,9 @@ class _PlanIntroPageState extends ConsumerState<PlanIntroPage> {
                   text: '직접 여행 계획 세우기',
                   onPressed: () {
                     //뷰모델에 전달
-                    planState.updatePlace(regionController.text);
+                    ref.read(planViewModelProvider.notifier).prepareDirectPlan(
+                      area: regionController.text,
+                    );
                     onTapNextBtn(PlanPage());
                   },
                 ),
