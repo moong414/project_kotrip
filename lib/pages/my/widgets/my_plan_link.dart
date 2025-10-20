@@ -5,7 +5,6 @@ import 'package:project_kotrip/core/theme/text_style.dart';
 import 'package:project_kotrip/core/widgets/show_confirm_dialog.dart';
 import 'package:project_kotrip/core/widgets/show_error_action_sheet.dart';
 import 'package:project_kotrip/pages/my/my_plan_detail_view_page.dart';
-import 'package:project_kotrip/pages/my/view_model/my_plan_view_model.dart';
 import 'package:project_kotrip/pages/plan/view_model/plan_view_model.dart';
 import 'package:project_kotrip/pages/splash/view_model/auth_view_model.dart';
 
@@ -18,7 +17,9 @@ class MyPlanLink extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final planFunc = ref.read(planViewModelProvider.notifier);
     final today = DateTime.now();
-    final dday = myPlans.startDate.difference(DateTime(today.year, today.month, today.day)).inDays;
+    final todayDate = DateTime(today.year, today.month, today.day);
+    final startDate = DateTime(myPlans.startDate.year, myPlans.startDate.month, myPlans.startDate.day);
+    final dday = startDate.difference(todayDate).inDays;
 
     return GestureDetector(
       onLongPress: () async {
