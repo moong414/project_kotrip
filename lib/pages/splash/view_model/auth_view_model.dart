@@ -134,12 +134,31 @@ class AuthViewModel extends Notifier<AuthState> {
       state = state.copyWith(user: null, isSignedIn: false, isLoading: false);
       ref.read(userViewModelProvider.notifier).clearUser();
       ref.read(myPlanViewModelProvider.notifier).clearPlanList();
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'requires-recent-login') {
+        try {
+          await auth.reauthenticate();
+          
+          // 재인증 후 currentUser를 다시 불러오기
+          final refreshedUser = auth.currentUser;
+          await refreshedUser?.delete();
 
-      print('계정 및 Firestore 데이터 완전 삭제 완료');
+          await auth.signOut();
+          state = state.copyWith(user: null, isSignedIn: false, isLoading: false);
+          ref.read(userViewModelProvider.notifier).clearUser();
+          ref.read(myPlanViewModelProvider.notifier).clearPlanList();
+        } catch (e) {
+          print('재인증 후 삭제 실패: $e');
+        }
+      } else {
+        print('계정 삭제 실패: $e');
+      }
     } catch (e) {
-      print('계정 삭제 실패: $e');
+      print('계정 삭제 중 알 수 없는 오류: $e');
     }
   }
+
+
 
   /// 로그인 후 UserModel과 PlanList 업데이트
   Future<void> updateUserState(User currentUser) async {

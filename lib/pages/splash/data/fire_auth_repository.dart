@@ -74,4 +74,44 @@ class FirebaseAuthRepository {
       print('로그아웃 에러: $e');
     }
   }
+
+  //재인증
+  Future<void> reauthenticate() async {
+  final user = auth.currentUser;
+  if (user == null) return;
+
+  final providerId = user.providerData.isNotEmpty
+      ? user.providerData.first.providerId
+      : null;
+
+  try {
+    if (providerId == 'google.com') {
+      final googleUser = await googleSignIn.signIn();
+      if (googleUser == null) return;
+
+      final googleAuth = await googleUser.authentication;
+      final credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
+      await user.reauthenticateWithCredential(credential);
+    } else if (providerId == 'apple.com') {
+      final appleCredential = await SignInWithApple.getAppleIDCredential(
+        scopes: [AppleIDAuthorizationScopes.email, AppleIDAuthorizationScopes.fullName],
+      );
+      final oauthCredential = OAuthProvider("apple.com").credential(
+        idToken: appleCredential.identityToken,
+        accessToken: appleCredential.authorizationCode,
+      );
+      await user.reauthenticateWithCredential(oauthCredential);
+    } else {
+      // 익명 로그인 사용자는 재인증 없이 바로 가능
+      print('익명 계정은 재인증 불필요');
+    }
+  } catch (e) {
+    print('재인증 실패: $e');
+    rethrow;
+  }
+}
+
 }
