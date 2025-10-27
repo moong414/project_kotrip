@@ -25,8 +25,6 @@
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
-			<key>CFBundleURLName</key>
-			<string>google_sign_in</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>com.googleusercontent.apps.741185542562-a5ng6nci0rvcdgjh3bjfnnu265l1r2nl</string>
@@ -39,7 +37,6 @@
 		<string>com.google</string>
 		<string>com.googleusercontent.apps.741185542562-a5ng6nci0rvcdgjh3bjfnnu265l1r2nl</string>
 	</array>
-
 	<key>CFBundleVersion</key>
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
 	<key>LSRequiresIPhoneOS</key>
@@ -67,5 +64,7 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>GIDClientID</key>
+	<string>741185542562-a5ng6nci0rvcdgjh3bjfnnu265l1r2nl.apps.googleusercontent.com</string>
 </dict>
 </plist>
