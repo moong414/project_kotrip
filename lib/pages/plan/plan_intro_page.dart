@@ -24,8 +24,11 @@ class _PlanIntroPageState extends ConsumerState<PlanIntroPage> {
   @override
   void initState() {
     super.initState();
-    ref.read(planViewModelProvider.notifier).planClear();
     regionController = TextEditingController(text: widget.title ?? '');
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      ref.read(planViewModelProvider.notifier).planClear();
+    });
   }
 
   @override
