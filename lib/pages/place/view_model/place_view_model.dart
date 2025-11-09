@@ -51,14 +51,14 @@ class PlaceViewModel extends Notifier<PlaceState> {
 
   //데이터 통신 확인용
   Future<bool> pingTourApi({required String areaCode}) async {
-  try {
-    final result = await placeRepository.fetchPlaceList(areaCode: areaCode);
-    return result.isNotEmpty;
-  } catch (e) {
-    print('pingTourApi 실패: $e');
-    return false;
+    try {
+      final result = await placeRepository.fetchPlaceList(areaCode: areaCode);
+      return result.isNotEmpty;
+    } catch (e) {
+      print('pingTourApi 실패: $e');
+      return false;
+    }
   }
-}
   
 }
 

@@ -15,9 +15,22 @@ class MyPlanListPage extends ConsumerStatefulWidget {
 }
 
 class _MyPlanListPageState extends ConsumerState<MyPlanListPage> {
-  //상단페이지 컨트롤러
   final PageController pageController = PageController();
   int currentPage = 0;
+
+  @override
+  void initState() {
+    super.initState();
+
+    // 로그인된 사용자만 계획 불러오기 (앱 진입 시 한 번만)
+    Future.microtask(() {
+      final authState = ref.read(authViewModelProvider);
+      final user = authState.user;
+      if (user != null) {
+        ref.read(myPlanViewModelProvider.notifier).loadPlanList(user.uid);
+      }
+    });
+  }
 
   @override
   void dispose() {
@@ -25,9 +38,12 @@ class _MyPlanListPageState extends ConsumerState<MyPlanListPage> {
     super.dispose();
   }
 
-  //페이지이동함수
   void jumpToPage(int page) {
-    pageController.animateToPage(page, duration: const Duration(milliseconds: 300), curve: Curves.easeInOut,);
+    pageController.animateToPage(
+      page,
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.easeInOut,
+    );
     setState(() {
       currentPage = page;
     });
@@ -37,6 +53,7 @@ class _MyPlanListPageState extends ConsumerState<MyPlanListPage> {
   Widget build(BuildContext context) {
     final authState = ref.watch(authViewModelProvider);
     final myPlans = ref.watch(myPlanViewModelProvider);
+
     final pages = [
       {'title': '내 여행 계획', 'list': myPlans.plans},
       {'title': '지난 계획', 'list': myPlans.pastPlans},
@@ -52,37 +69,46 @@ class _MyPlanListPageState extends ConsumerState<MyPlanListPage> {
               // 상단 페이지 컨트롤러
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: List.generate(pages.length, (index) => Expanded(
+                children: List.generate(
+                  pages.length,
+                  (index) => Expanded(
                     child: TextButton(
                       style: TextButton.styleFrom(
-                        backgroundColor: currentPage == index ? colGreyBg : Colors.white,
+                        backgroundColor: currentPage == index
+                            ? colGreyBg
+                            : Colors.white,
                       ),
                       onPressed: () => jumpToPage(index),
-                      child: Text('${pages[index]['title']}', style: AppTxtSt.txtStR,),
+                      child: Text(
+                        '${pages[index]['title']}',
+                        style: AppTxtSt.txtStR,
+                      ),
                     ),
-                  ),)
+                  ),
+                ),
               ),
               const SizedBox(height: 10),
-              //목록페이지
+              // 목록 페이지
               Expanded(
                 child: PageView.builder(
                   controller: pageController,
                   itemCount: pages.length,
                   onPageChanged: (index) {
-                    //페이지이동
-                    setState(() {currentPage = index;});
+                    setState(() {
+                      currentPage = index;
+                    });
                   },
                   itemBuilder: (context, index) {
                     final page = pages[index];
                     final plans = page['list'] as List;
                     if (plans.isEmpty) {
-                    return Center(
-                      child: Text(
-                        '${page.values.first}이 없습니다.',
-                        style: AppTxtSt.hintStL,
-                      ),
-                    );
-                  }
+                      return Center(
+                        child: Text(
+                          '${page.values.first}이 없습니다.',
+                          style: AppTxtSt.hintStL,
+                        ),
+                      );
+                    }
                     return ListView.separated(
                       shrinkWrap: true,
                       itemCount: plans.length,
@@ -92,7 +118,8 @@ class _MyPlanListPageState extends ConsumerState<MyPlanListPage> {
                           authState: authState,
                         );
                       },
-                      separatorBuilder: (context, i) => const SizedBox(height: 10),
+                      separatorBuilder: (context, i) =>
+                          const SizedBox(height: 10),
                     );
                   },
                 ),

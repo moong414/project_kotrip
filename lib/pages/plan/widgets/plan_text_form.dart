@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:project_kotrip/core/theme/colors.dart';
 import 'package:project_kotrip/core/theme/input_style.dart';
 import 'package:project_kotrip/core/theme/text_style.dart';
@@ -6,24 +7,30 @@ import 'package:project_kotrip/core/theme/text_style.dart';
 class PlanTextForm extends StatelessWidget {
   final String? hintText;
   final TextEditingController controller;
+  final int maxLength;
 
   const PlanTextForm({
     super.key,
     this.hintText,
     required this.controller,
+    this.maxLength = 50,
   });
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
       controller: controller,
+      inputFormatters: [LengthLimitingTextInputFormatter(maxLength)],
       validator: (value) {
-        if (value == null || value.isEmpty) {
+        final trimmed = value?.trim() ?? '';
+        if (trimmed.isEmpty) {
           return '지역을 입력하세요';
         }
+        if (trimmed.length > maxLength) return '최대 $maxLength자까지 입력 가능합니다';
         return null;
       },
       cursorColor: colPrimary,
+      maxLength: maxLength,
       decoration: InputDecoration(
         contentPadding: EdgeInsets.all(16),
         hintText: hintText ?? '입력해주세요',

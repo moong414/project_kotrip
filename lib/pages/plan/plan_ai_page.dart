@@ -85,6 +85,7 @@ class _PlanAiPageState extends ConsumerState<PlanAiPage> {
                   PlanTextForm(
                     hintText: '자유롭게 입력하세요',
                     controller: themeController,
+                    maxLength: 100,
                   ),
                   SizedBox(height: 20),
                   Text('여행 키워드', style: AppTxtSt.titleSt),
